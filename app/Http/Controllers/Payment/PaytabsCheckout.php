@@ -33,12 +33,10 @@ class PaytabsCheckout
                 'state_id' => $state,
                 "shipping_id" => $shipping,
                 'bill_first_name' => 'required',
-                'bill_last_name' => 'required',
                 'bill_email' => 'required',
                 'bill_phone' => 'required',
                 'bill_address1' => 'required',
-                'bill_city' => 'required',
-                'bill_zip' => 'required',
+                'bill_country' => 'required',
             ]);
         }else{
             $request->validate([
@@ -106,10 +104,10 @@ class PaytabsCheckout
         $customer_email = $user ? $user->email : Session::get('billing_address')['bill_email'];
         $customer_phone = Session::get('billing_address')['bill_phone'];
         $customer_address = Session::get('billing_address')['bill_address1'];
-        $customer_city = Session::get('billing_address')['bill_city'];
+        $customer_city = Session::get('billing_address')['bill_country'] ?? 'Dhaka';
         $customer_state = '';
         $customer_country = Session::get('billing_address')['bill_country'];
-        $customer_zip = Session::get('billing_address')['bill_zip'];
+        $customer_zip = Session::get('billing_address')['bill_zip'] ?? '1200';
         $customer_ip = request()->ip();
 
 

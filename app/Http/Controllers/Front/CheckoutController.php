@@ -180,12 +180,10 @@ class CheckoutController extends Controller
         // laravel validation
         $request->validate([
             'bill_first_name' => 'required',
-            'bill_last_name' => 'required',
             'bill_email' => 'required|email',
             'bill_phone' => 'required',
             'bill_address1' => 'required',
-            'bill_city' => 'required',
-            'bill_zip' => 'required',
+            'bill_country' => 'required',
         ]);
 
         if ($request->same_ship_address) {
@@ -286,12 +284,10 @@ class CheckoutController extends Controller
         // laravel validation
         $request->validate([
             'ship_first_name' => 'required',
-            'ship_last_name' => 'required',
             'ship_email' => 'required|email',
             'ship_phone' => 'required',
             'ship_address1' => 'required',
-            'ship_zip' => 'required',
-            'ship_city' => 'required',
+            'ship_country' => 'required',
         ]);
 
         Session::put('shipping_address', $request->all());

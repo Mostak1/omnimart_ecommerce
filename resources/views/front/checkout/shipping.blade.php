@@ -39,18 +39,11 @@
                         <form id="checkoutShipping" action="{{ route('front.checkout.shipping.store') }}" method="POST">
                             @csrf
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label for="checkout-fn">{{ __('First Name') }}*</label>
+                                        <label for="checkout-fn">{{ __('Name') }}*</label>
                                         <input class="form-control {{ $errors->has('ship_first_name') ? 'requireInput' : '' }}" name="ship_first_name" type="text" id="checkout-fn"
                                             value="{{ isset($user) ? $user->first_name : '' }}">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="checkout-ln">{{ __('Last Name') }}*</label>
-                                        <input class="form-control {{ $errors->has('ship_last_name') ? 'requireInput' : '' }}" name="ship_last_name" type="text" id="checkout-ln"
-                                            value="{{ isset($user) ? $user->last_name : '' }}">
                                     </div>
                                 </div>
                             </div>
@@ -81,31 +74,15 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="checkout-zip">{{ __('Zip Code') }} *</label>
-                                        <input class="form-control {{ $errors->has('ship_zip') ? 'requireInput' : '' }}" name="ship_zip" type="text" id="checkout-zip"
-                                            value="{{ isset($user) ? $user->ship_zip : '' }}">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="checkout-city">{{ __('City') }} *</label>
-                                        <input class="form-control {{ $errors->has('ship_city') ? 'requireInput' : '' }}" name="ship_city" type="text"
-                                            id="checkout-city" value="{{ isset($user) ? $user->ship_city : '' }}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label for="checkout-country">{{ __('Country') }}</label>
+                                        <label for="checkout-country">{{ __('District') }}</label>
                                         <select class="form-control" name="ship_country"  id="billing-country">
-                                            <option selected>{{ __('Choose Country') }}</option>
-                                            @foreach (DB::table('countries')->get() as $country)
-                                                <option value="{{ $country->name }}"
-                                                    {{ isset($user) && $user->ship_country == $country->name ? 'selected' : '' }}>
-                                                    {{ $country->name }}</option>
+                                            <option selected>{{ __('Choose District') }}</option>
+                                            @foreach (config('bangladesh.districts', []) as $district)
+                                                <option value="{{ $district }}"
+                                                    {{ isset($user) && $user->ship_country == $district ? 'selected' : '' }}>
+                                                    {{ $district }}</option>
                                             @endforeach
                                         </select>
                                     </div>

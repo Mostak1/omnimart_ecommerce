@@ -56,15 +56,15 @@ class Shipping
     {
         $billing = Session::get('billing_address');
         return [
-            'name' => $billing['bill_first_name'] . ' ' . $billing['bill_last_name'],
-            'company' => $billing['bill_company'],
-            'street1' => $billing['bill_city'],
-            'city' => $billing['bill_city'],
-            'zip' => $billing['bill_zip'],
+            'name' => trim(($billing['bill_first_name'] ?? '') . ' ' . ($billing['bill_last_name'] ?? '')),
+            'company' => $billing['bill_company'] ?? '',
+            'street1' => $billing['bill_address1'] ?? '',
+            'city' => $billing['bill_country'] ?? 'Dhaka',
+            'zip' => $billing['bill_zip'] ?? '1200',
             //'country' => $billing['bill_country'],
             'country' => 'Bangladesh',
-            'phone' => $billing['bill_phone'],
-            'email' => $billing['bill_email'],
+            'phone' => $billing['bill_phone'] ?? '',
+            'email' => $billing['bill_email'] ?? '',
         ];
     }
 

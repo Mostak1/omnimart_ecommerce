@@ -968,10 +968,10 @@ CREATE TABLE `currencies` (
 --
 
 INSERT INTO `currencies` (`id`, `name`, `sign`, `value`, `is_default`, `created_at`, `updated_at`) VALUES
-(1, 'USD', '$', 1, 1, NULL, NULL),
+(1, 'USD', '$', 1, 0, NULL, NULL),
 (6, 'EUR', '€', 0.89, 0, NULL, NULL),
 (7, 'INR', '₹', 74, 0, NULL, NULL),
-(8, 'BDT', '৳', 84, 0, NULL, NULL),
+(8, 'BDT', 'TK', 84, 1, NULL, NULL),
 (9, 'NGN', '₦', 411, 0, NULL, NULL);
 
 -- --------------------------------------------------------

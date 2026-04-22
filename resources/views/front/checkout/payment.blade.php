@@ -42,7 +42,7 @@
                                 @endphp
                                 <ul class="list-unstyled">
                                     <li><span class="text-muted pay-label">{{ __('Name') }}:
-                                        </span>{{ $ship['ship_first_name'] }} {{ $ship['ship_last_name'] }}</li>
+                                        </span>{{ $ship['ship_first_name'] }}</li>
                                     @if (PriceHelper::CheckDigital())
                                         <li><span class="text-muted pay-label">{{ __('Address') }}:
                                             </span>{{ $ship['ship_address1'] }} {{ @$ship['ship_address2'] }}</li>
@@ -55,7 +55,7 @@
                                 <h6 class="fz-16-bold">{{ __('Shipping address') }} :</h6>
                                 <ul class="list-unstyled">
                                     <li><span class="text-muted pay-label">{{ __('Name') }}:
-                                        </span>{{ $bill['bill_first_name'] }} {{ $bill['bill_last_name'] }}</li>
+                                        </span>{{ $bill['bill_first_name'] }}</li>
                                     @if (PriceHelper::CheckDigital())
                                         <li><span class="text-muted pay-label">{{ __('Address') }}:
                                             </span>{{ $ship['ship_address1'] }} {{ @$ship['ship_address2'] }}</li>

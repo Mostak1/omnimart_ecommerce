@@ -49,24 +49,6 @@
                    </div>
                    <div class="col-md-6">
                       <div class="form-group">
-                         <label for="billing-zip">{{__('Zip Code')}}</label>
-                         <input class="form-control" type="text" name="bill_zip" id="billing-zip" value="{{$user->bill_zip}}">
-                         @error('bill_zip')
-                         <p class="text-danger">{{$message}}</p>
-                         @endif
-                        </div>
-                   </div>
-                   <div class="col-md-6">
-                      <div class="form-group">
-                         <label for="billing-company">{{__('City')}} *</label>
-                         <input class="form-control" type="text" name="bill_city" id="billing-city" value="{{$user->bill_city}}">
-                         @error('bill_city')
-                         <p class="text-danger">{{$message}}</p>
-                         @endif
-                        </div>
-                   </div>
-                   <div class="col-md-6">
-                      <div class="form-group">
                          <label for="billing-company">{{__('Company')}}</label>
                          <input class="form-control" type="text" name="bill_company" id="billing-company" value="{{$user->bill_company}}">
                          @error('bill_company')
@@ -76,11 +58,11 @@
                    </div>
                    <div class="col-md-6">
                       <div class="form-group">
-                         <label for="billing-country">{{__('Country')}}</label>
+                         <label for="billing-country">{{__('District')}}</label>
                          <select class="form-control" name="bill_country" id="billing-country">
-                          <option selected>{{__('Choose Country')}}</option>
-                          @foreach (DB::table('countries')->get() as $country)
-                          <option value="{{$country->name}}" {{$user->bill_country == $country->name ? 'selected' :''}} >{{$country->name}}</option>
+                          <option selected>{{__('Choose District')}}</option>
+                          @foreach (config('bangladesh.districts', []) as $district)
+                          <option value="{{$district}}" {{$user->bill_country == $district ? 'selected' :''}} >{{$district}}</option>
                           @endforeach
                          </select>
                      @error('bill_country')
@@ -119,24 +101,6 @@
                    </div>
                    <div class="col-md-6">
                       <div class="form-group">
-                         <label for="shipping-zip">{{__('Zip Code')}}</label>
-                         <input class="form-control" type="text" value="{{$user->ship_zip}}" name="ship_zip" id="shipping-zip">
-                         @error('ship_zip')
-                         <p class="text-danger">{{$message}}</p>
-                         @endif
-                        </div>
-                   </div>
-                   <div class="col-md-6">
-                      <div class="form-group">
-                         <label for="shipping-company">{{__('City')}} *</label>
-                         <input class="form-control" type="text" name="ship_city" id="shippingcity" value="{{$user->ship_city}}">
-                         @error('ship_city')
-                         <p class="text-danger">{{$message}}</p>
-                         @endif
-                        </div>
-                   </div>
-                   <div class="col-md-6">
-                      <div class="form-group">
                          <label for="shipping-company">{{__('Company')}}</label>
                          <input class="form-control" type="text" name="ship_company" id="shipping-company" value="{{$user->ship_company}}">
                          @error('ship_company')
@@ -163,11 +127,11 @@
              
                    <div class="{{DB::table('states')->count() > 0  ? 'col-md-12' : 'col-md-6'}} ">
                       <div class="form-group">
-                         <label for="shipping-country">{{__('Country')}}</label>
+                         <label for="shipping-country">{{__('District')}}</label>
                          <select class="form-control" name="ship_country" id="shipping-country">
-                            <option>{{__('Choose Country')}}</option>
-                            @foreach (DB::table('countries')->get() as $country)
-                            <option value="{{$country->name}}" {{$user->ship_country == $country->name ? 'selected' :''}} >{{$country->name}}</option>
+                            <option>{{__('Choose District')}}</option>
+                            @foreach (config('bangladesh.districts', []) as $district)
+                            <option value="{{$district}}" {{$user->ship_country == $district ? 'selected' :''}} >{{$district}}</option>
                             @endforeach
                          </select>
                          @error('ship_country')
