@@ -84,12 +84,12 @@
                                         <option value="" selected disabled>{{ __('Select Shipping Method') }}</option>
 
                                         @foreach (DB::table('shipping_services')->whereStatus(1)->get() as $shipping)
-                                            @if ($shipping->id == 1 && isset($free_shipping) &&  $free_shipping->minimum_price <= $cart_total)
+                                            @if ($shipping->id == 1 && $free_shipping && $free_shipping->minimum_price <= $cart_total)
                                                 <option value="{{ $shipping->id }}"
                                                     data-href="{{ route('front.shipping.setup') }}">{{ $shipping->title }}
                                                 </option>
                                             @else
-                                                @if ($shipping->id != 1 && $free_shipping->minimum_price >= $cart_total)
+                                                @if ($shipping->id != 1 && (!$free_shipping || $free_shipping->minimum_price >= $cart_total))
                                                     <option value="{{ $shipping->id }}"
                                                         data-href="{{ route('front.shipping.setup') }}">{{ $shipping->title }}
                                                         ({{ PriceHelper::setCurrencyPrice($shipping->price) }})
