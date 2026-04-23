@@ -13,7 +13,7 @@
                      <input type="hidden" name="state_id"
                          value="{{ auth()->check() && auth()->user()->state_id ? auth()->user()->state_id : '' }}"
                          class="state_id_setup">
-                     <input type="hidden" name="shipping_id" value="" class="shipping_id_setup">
+                     <input type="hidden" name="shipping_id" value="{{ isset($shipping) && $shipping ? $shipping->id : "" }}" class="shipping_id_setup">
                      <div class="card-body">
                          <p>{{ PriceHelper::GatewayText('cod') }}</p>
                      </div>
@@ -43,7 +43,7 @@
                      <form action="{{ route('front.checkout.submit') }}" method="POST">
                          @csrf
                          <input type="hidden" name="payment_method" value="Mollie">
-                         <input type="hidden" name="shipping_id" value="" class="shipping_id_setup">
+                         <input type="hidden" name="shipping_id" value="{{ isset($shipping) && $shipping ? $shipping->id : "" }}" class="shipping_id_setup">
                          <input type="hidden" name="state_id"
                              value="{{ auth()->check() && auth()->user()->state_id ? auth()->user()->state_id : '' }}"
                              class="state_id_setup">
@@ -74,7 +74,7 @@
                          </div>
                      </div>
                      <input type="hidden" name="payment_method" value="Paypal">
-                     <input type="hidden" name="shipping_id" value="" class="shipping_id_setup">
+                     <input type="hidden" name="shipping_id" value="{{ isset($shipping) && $shipping ? $shipping->id : "" }}" class="shipping_id_setup">
                      <input type="hidden" name="state_id"
                          value="{{ auth()->check() && auth()->user()->state_id ? auth()->user()->state_id : '' }}"
                          class="state_id_setup">
@@ -107,7 +107,7 @@
                              @csrf
 
                              <input type="hidden" name="payment_method" value="Stripe">
-                             <input type="hidden" name="shipping_id" value="" class="shipping_id_setup">
+                             <input type="hidden" name="shipping_id" value="{{ isset($shipping) && $shipping ? $shipping->id : "" }}" class="shipping_id_setup">
                              <input type="hidden" name="state_id"
                                  value="{{ auth()->check() && auth()->user()->state_id ? auth()->user()->state_id : '' }}"
                                  class="state_id_setup">
@@ -145,7 +145,7 @@
                                      placeholder="{{ __('Card Number') }}" required>
                              </div>
                              <input type="hidden" name="payment_method" value="Authorize.Net">
-                             <input type="hidden" name="shipping_id" value="" class="shipping_id_setup">
+                             <input type="hidden" name="shipping_id" value="{{ isset($shipping) && $shipping ? $shipping->id : "" }}" class="shipping_id_setup">
                              <input type="hidden" name="state_id"
                                  value="{{ auth()->check() && auth()->user()->state_id ? auth()->user()->state_id : '' }}"
                                  class="state_id_setup">
@@ -194,7 +194,7 @@
                          </div>
                      </div>
                      <input type="hidden" name="payment_method" value="Paypal">
-                     <input type="hidden" name="shipping_id" value="" class="shipping_id_setup">
+                     <input type="hidden" name="shipping_id" value="{{ isset($shipping) && $shipping ? $shipping->id : "" }}" class="shipping_id_setup">
                      <input type="hidden" name="state_id"
                          value="{{ auth()->check() && auth()->user()->state_id ? auth()->user()->state_id : '' }}"
                          class="state_id_setup">
@@ -228,7 +228,7 @@
                          </div>
                      </div>
                      <input type="hidden" name="payment_method" value="Rezorpay">
-                     <input type="hidden" name="shipping_id" value="" class="shipping_id_setup">
+                     <input type="hidden" name="shipping_id" value="{{ isset($shipping) && $shipping ? $shipping->id : "" }}" class="shipping_id_setup">
                      <input type="hidden" name="state_id"
                          value="{{ auth()->check() && auth()->user()->state_id ? auth()->user()->state_id : '' }}"
                          class="state_id_setup">
@@ -261,7 +261,7 @@
                          </div>
                      </div>
                      <input type="hidden" name="payment_method" value="Flutterwave">
-                     <input type="hidden" name="shipping_id" value="" class="shipping_id_setup">
+                     <input type="hidden" name="shipping_id" value="{{ isset($shipping) && $shipping ? $shipping->id : "" }}" class="shipping_id_setup">
                      <input type="hidden" name="state_id"
                          value="{{ auth()->check() && auth()->user()->state_id ? auth()->user()->state_id : '' }}"
                          class="state_id_setup">
@@ -293,7 +293,7 @@
                          </div>
                      </div>
                      <input type="hidden" name="payment_method" value="Paytm">
-                     <input type="hidden" name="shipping_id" value="" class="shipping_id_setup">
+                     <input type="hidden" name="shipping_id" value="{{ isset($shipping) && $shipping ? $shipping->id : "" }}" class="shipping_id_setup">
                      <input type="hidden" name="state_id"
                          value="{{ auth()->check() && auth()->user()->state_id ? auth()->user()->state_id : '' }}"
                          class="state_id_setup">
@@ -325,7 +325,7 @@
                          </div>
                      </div>
                      <input type="hidden" name="payment_method" value="SSLCommerz">
-                     <input type="hidden" name="shipping_id" value="" class="shipping_id_setup">
+                     <input type="hidden" name="shipping_id" value="{{ isset($shipping) && $shipping ? $shipping->id : "" }}" class="shipping_id_setup">
                      <input type="hidden" name="state_id"
                          value="{{ auth()->check() && auth()->user()->state_id ? auth()->user()->state_id : '' }}"
                          class="state_id_setup">
@@ -394,7 +394,7 @@
                              </div>
                          </div>
                          <input type="hidden" name="payment_method" value="Mercadopago">
-                         <input type="hidden" name="shipping_id" value="" class="shipping_id_setup">
+                         <input type="hidden" name="shipping_id" value="{{ isset($shipping) && $shipping ? $shipping->id : "" }}" class="shipping_id_setup">
                          <input type="hidden" name="state_id"
                              value="{{ auth()->check() && auth()->user()->state_id ? auth()->user()->state_id : '' }}"
                              class="state_id_setup">
@@ -563,7 +563,7 @@
                          </div>
                      </div>
                      <input type="hidden" name="payment_method" value="Paystack">
-                     <input type="hidden" name="shipping_id" value="" class="shipping_id_setup">
+                     <input type="hidden" name="shipping_id" value="{{ isset($shipping) && $shipping ? $shipping->id : "" }}" class="shipping_id_setup">
                      <input type="hidden" name="state_id"
                          value="{{ auth()->check() && auth()->user()->state_id ? auth()->user()->state_id : '' }}"
                          class="state_id_setup">
@@ -639,7 +639,7 @@
 
                          @csrf
                          <input type="hidden" name="payment_method" value="Bank">
-                         <input type="hidden" name="shipping_id" value="" class="shipping_id_setup">
+                         <input type="hidden" name="shipping_id" value="{{ isset($shipping) && $shipping ? $shipping->id : "" }}" class="shipping_id_setup">
                          <input type="hidden" name="state_id"
                              value="{{ auth()->check() && auth()->user()->state_id ? auth()->user()->state_id : '' }}"
                              class="state_id_setup">
@@ -671,7 +671,7 @@
                             @csrf
 
                             <input type="hidden" name="payment_method" value="Paytabs">
-                            <input type="hidden" name="shipping_id" value="" class="shipping_id_setup">
+                            <input type="hidden" name="shipping_id" value="{{ isset($shipping) && $shipping ? $shipping->id : "" }}" class="shipping_id_setup">
                             <input type="hidden" name="state_id"
                                 value="{{ auth()->check() && auth()->user()->state_id ? auth()->user()->state_id : '' }}"
                                 class="state_id_setup">

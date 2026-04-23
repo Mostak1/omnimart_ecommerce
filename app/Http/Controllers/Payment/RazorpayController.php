@@ -95,7 +95,7 @@ class RazorpayController extends Controller
         if (!PriceHelper::Digital()) {
             $shipping = null;
         }else{
-            $shipping = ShippingService::findOrFail($request['shipping_id']);
+            $shipping = PriceHelper::appliedShippingService($request['shipping_id']);
         }
 
         if (!PriceHelper::Digital()){
@@ -230,7 +230,7 @@ class RazorpayController extends Controller
                 if (!PriceHelper::Digital()) {
                     $shipping = null;
                 }else{
-                    $shipping = ShippingService::findOrFail($requestData['shipping_id']);
+                    $shipping = PriceHelper::appliedShippingService($requestData['shipping_id']);
                 }
                 if(!$shipping){
                     $shipping = ShippingService::whereStatus(1)->where('id','!=',1)->first(); 

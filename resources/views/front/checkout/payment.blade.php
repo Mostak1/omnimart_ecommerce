@@ -39,7 +39,9 @@
 
                                     $ship = Session::get('shipping_address');
                                     $bill = Session::get('billing_address');
+                                    $selectedDistrict = $ship['ship_country'] ?? ($bill['bill_country'] ?? '');
                                 @endphp
+                                <input type="hidden" id="selected_checkout_district" value="{{ $selectedDistrict }}">
                                 <ul class="list-unstyled">
                                     <li><span class="text-muted pay-label">{{ __('Name') }}:
                                         </span>{{ $ship['ship_first_name'] }}</li>
@@ -69,41 +71,23 @@
                             </div>
                         </div>
                         @if (PriceHelper::CheckDigital() == true)
-                        <h6 class="pb-2 widget-title2">{{ __('Shipping Options') }} :</h6>
+                        <h6 class="pb-2 widget-title2">{{ __('Shipping Charge') }} :</h6>
                         @endif
                         <div class="row">
                             <div class="col-sm-6  mb-4">
-                                 @if (PriceHelper::CheckDigital() == true)
-                                    
-                            
-                                    @php
-                                        $free_shipping = DB::table('shipping_services')->whereStatus(1)->whereIsCondition(1)->first();
-                                    @endphp
-                            
-                                    <select name="shipping_id" class="form-control" id="shipping_id_select" required>
-                                        <option value="" selected disabled>{{ __('Select Shipping Method') }}</option>
-
-                                        @foreach (DB::table('shipping_services')->whereStatus(1)->get() as $shipping)
-                                            @if ($shipping->id == 1 && $free_shipping && $free_shipping->minimum_price <= $cart_total)
-                                                <option value="{{ $shipping->id }}"
-                                                    data-href="{{ route('front.shipping.setup') }}">{{ $shipping->title }}
-                                                </option>
-                                            @else
-                                                @if ($shipping->id != 1 && (!$free_shipping || $free_shipping->minimum_price >= $cart_total))
-                                                    <option value="{{ $shipping->id }}"
-                                                        data-href="{{ route('front.shipping.setup') }}">{{ $shipping->title }}
-                                                        ({{ PriceHelper::setCurrencyPrice($shipping->price) }})
-                                                    </option>
-                                                @endif
-                                            @endif
-                                        @endforeach
-                                    </select>
-
-                                    <small class="text-primary shipping_message">{{ __('Please select shipping method') }}</small>
+                                @if (PriceHelper::CheckDigital() == true)
+                                    <div class="border rounded p-3">
+                                        <p class="mb-2"><strong>{{ __('District') }}:</strong>
+                                            {{ $shipping && $shipping->calculated_district ? $shipping->calculated_district : __('Not Selected') }}</p>
+                                        <p class="mb-2"><strong>{{ __('Total Weight') }}:</strong>
+                                            {{ $shipping ? number_format($shipping->calculated_weight, 2) : '0.00' }} KG</p>
+                                        <p class="mb-0"><strong>{{ __('Shipping Charge') }}:</strong>
+                                            <span class="set__shipping_price">{{ PriceHelper::setCurrencyPrice($shipping ? $shipping->price : 0) }}</span>
+                                        </p>
+                                    </div>
                                     @error('shipping_id')
-                                        <p class="text-danger shipping_message">{{ $message }}</p>
+                                        <p class="text-danger mt-2 shipping_message">{{ $message }}</p>
                                     @enderror
-
                                 @endif
                             </div>
                             <div class="col-sm-6  mb-4">

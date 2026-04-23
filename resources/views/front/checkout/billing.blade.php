@@ -104,14 +104,14 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="form-group">
-                                            <label for="checkout-country">{{ __('Country') }}</label>
+                                            <label for="checkout-country">{{ __('District') }}</label>
                                             <select class="form-control {{ $errors->has('bill_country') ? 'requireInput' : '' }}"  name="bill_country"
-                                                id="billing-country">
-                                                <option selected>{{ __('Choose Country') }}</option>
-                                                @foreach (DB::table('countries')->get() as $country)
-                                                    <option value="{{ $country->name }}"
-                                                        {{ isset($user) && $user->bill_country == $country->name ? 'selected' : '' }}>
-                                                        {{ $country->name }}</option>
+                                                id="billing-country" required>
+                                                <option value="" selected disabled>{{ __('Choose District') }}</option>
+                                                @foreach (config('bangladesh.districts', []) as $district)
+                                                    <option value="{{ $district }}"
+                                                        {{ isset($user) && $user->bill_country == $district ? 'selected' : '' }}>
+                                                        {{ $district }}</option>
                                                 @endforeach
                                             </select>
                                         </div>

@@ -69,7 +69,7 @@ trait PaypalCheckout
         if (!PriceHelper::Digital()) {
             $shipping = null;
         } else {
-            $shipping = ShippingService::findOrFail($data['shipping_id']);
+            $shipping = PriceHelper::appliedShippingService($data['shipping_id']);
         }
 
         $discount = [];
@@ -174,7 +174,7 @@ trait PaypalCheckout
             if (!PriceHelper::Digital()) {
                 $shipping = null;
             } else {
-                $shipping = ShippingService::findOrFail($order_input_data['shipping_id']);
+                $shipping = PriceHelper::appliedShippingService($order_input_data['shipping_id']);
             }
             $discount = [];
             if (Session::has('coupon')) {

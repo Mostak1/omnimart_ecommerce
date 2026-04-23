@@ -265,6 +265,15 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="shipping_weight">{{ __('Shipping Weight (KG)') }} *</label>
+                        <div class="input-group mb-3">
+                            <input type="text" id="shipping_weight"
+                                name="shipping_weight" class="form-control"
+                                placeholder="{{ __('Enter Shipping Weight In KG') }}" value="{{ old('shipping_weight', 1) }}">
+                        </div>
+                        <small class="text-info">{{ __('This weight is used for automatic shipping charge calculation.') }}</small>
+                    </div>
+                    <div class="form-group">
                         <label for="tax_id">{{ __('Select Tax') }} *</label>
                         <select name="tax_id" id="tax_id" class="form-control">
                             <option value="">{{__('Select One')}}</option>

@@ -47,7 +47,7 @@ trait BankCheckout
         if (!PriceHelper::Digital()) {
             $shipping = null;
         }else{
-            $shipping = ShippingService::findOrFail($data['shipping_id']);
+            $shipping = PriceHelper::appliedShippingService($data['shipping_id']);
         }
         
         $discount = [];

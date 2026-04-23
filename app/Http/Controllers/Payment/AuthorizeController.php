@@ -108,7 +108,7 @@ class AuthorizeController extends Controller
             if (!PriceHelper::Digital()) {
                 $shipping = null;
             } else {
-                $shipping = ShippingService::findOrFail($request['shipping_id']);
+                $shipping = PriceHelper::appliedShippingService($request['shipping_id']);
             }
 
             if (!$shipping) {

@@ -1144,16 +1144,59 @@ $(function ($) {
 
 // state price set up 
 
+function getCheckoutDistrictValue() {
+    if ($('#billing-country').length && $('#billing-country').val()) {
+        return $('#billing-country').val();
+    }
+
+    if ($('#shipping-country').length && $('#shipping-country').val()) {
+        return $('#shipping-country').val();
+    }
+
+    if ($('#selected_checkout_district').length && $('#selected_checkout_district').val()) {
+        return $('#selected_checkout_district').val();
+    }
+
+    return '';
+}
+
+function updateAutomatedShipping(url, district, stateId) {
+    if (!url || !district) {
+        return;
+    }
+
+    url = url + '?district=' + encodeURIComponent(district) + '&state_id=' + (stateId || '');
+    $.get(url, function (response) {
+        $('.set__shipping_price_tr').removeClass('d-none');
+        $('.set__shipping_price').text(response.shipping_price);
+        $('.grand_total_set').text(response.grand_total);
+        $('.shipping_id_setup').val(response.shipping_id);
+        if (response.state_price) {
+            $('.set__state_price_tr').removeClass('d-none');
+            $('.set__state_price').text(response.state_price);
+        }
+        $(".shipping_message").addClass('d-none');
+    })
+}
+
 $(document).on('change', '#state_id_select', function () {
     var url = $('option:selected', this).attr('data-href');
     var state_id = $(this).val();
-    var shipping_id = $('#shipping_id_select option:selected').val();
-    url = url + '?state_id=' + state_id + '&shipping_id=' + shipping_id;
+    var shipping_id = $('.shipping_id_setup').first().val();
+    var district = getCheckoutDistrictValue();
+    url = url + '?state_id=' + state_id + '&shipping_id=' + shipping_id + '&district=' + encodeURIComponent(district);
     $.get(url, function (response) {
         $('.set__state_price_tr').removeClass('d-none');
         $('.set__state_price').text(response.state_price);
+        if (response.shipping_price) {
+            $('.set__shipping_price_tr').removeClass('d-none');
+            $('.set__shipping_price').text(response.shipping_price);
+        }
         $('.grand_total_set').text(response.grand_total);
         $('.state_id_setup').val(state_id);
+        if (response.shipping_id) {
+            $('.shipping_id_setup').val(response.shipping_id);
+        }
         $(".state_message").addClass('d-none');
     })
 })
@@ -1173,6 +1216,13 @@ $(document).on('change', '#shipping_id_select', function () {
     })
 })
 
+$(document).on('change', '#billing-country[data-shipping-url], #shipping-country[data-shipping-url]', function () {
+    var url = $(this).data('shipping-url');
+    var district = $(this).val();
+    var stateId = $('#state_id_select option:selected').val();
+    updateAutomatedShipping(url, district, stateId);
+})
+
 
 
 
@@ -1189,6 +1239,11 @@ $(document).on('click', '#trams__condition', function () {
 
 
 $(window).on('load', function (event) {
+    var billingDistrict = $('#billing-country[data-shipping-url]');
+    if (billingDistrict.length && billingDistrict.val()) {
+        billingDistrict.trigger('change');
+    }
+
     // Preloader
     $('#preloader').fadeOut(500);
     // announcement
@@ -1203,5 +1258,4 @@ $(window).on('load', function (event) {
     }
 
 });
-
 

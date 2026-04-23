@@ -47,7 +47,7 @@ trait MollieCheckout
                 $total_tax += $item->tax->value;
             }
         }
-        $shipping = ShippingService::findOrFail($data['shipping_id']); 
+        $shipping = PriceHelper::appliedShippingService($data['shipping_id']); 
 
         $discount = [];
         if(Session::has('coupon')){
@@ -116,7 +116,7 @@ trait MollieCheckout
         if (!PriceHelper::Digital()) {
             $shipping = null;
         }else{
-            $shipping = ShippingService::findOrFail($input_data['shipping_id']);
+            $shipping = PriceHelper::appliedShippingService($input_data['shipping_id']);
         }
         $discount = [];
         if(Session::has('coupon')){

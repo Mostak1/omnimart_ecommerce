@@ -94,7 +94,7 @@ class FlutterwaveController extends Controller
         if (!PriceHelper::Digital()) {
             $shipping = null;
         } else {
-            $shipping = ShippingService::findOrFail($request['shipping_id']);
+            $shipping = PriceHelper::appliedShippingService($request['shipping_id']);
         }
         $discount = [];
         if (Session::has('coupon')) {
@@ -225,7 +225,7 @@ class FlutterwaveController extends Controller
                         if (!PriceHelper::Digital()) {
                             $shipping = null;
                         } else {
-                            $shipping = ShippingService::findOrFail($requestData['shipping_id']);
+                            $shipping = PriceHelper::appliedShippingService($requestData['shipping_id']);
                         }
                         $discount = [];
                         if (Session::has('coupon')) {

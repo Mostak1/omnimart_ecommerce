@@ -54,7 +54,12 @@ class ShippingServiceController extends Controller
     {
         $input = $request->all();
         $curr = Currency::where('is_default',1)->first();
-        $input['price'] = $request->price / $curr->value;
+        $input['price'] = $request->price ? $request->price / $curr->value : 0;
+        $input['minimum_price'] = $request->minimum_price ? $request->minimum_price / $curr->value : 0;
+        $input['dhaka_price'] = $request->dhaka_price ? $request->dhaka_price / $curr->value : 0;
+        $input['outside_dhaka_price'] = $request->outside_dhaka_price ? $request->outside_dhaka_price / $curr->value : 0;
+        $input['per_kg_price'] = $request->per_kg_price ? $request->per_kg_price / $curr->value : 0;
+        $input['is_automated'] = $request->has('is_automated') ? 1 : 0;
 
         ShippingService::create($input);
 
@@ -98,6 +103,7 @@ class ShippingServiceController extends Controller
     {
         $input = $request->all();
         $curr = Currency::where('is_default',1)->first();
+        $input['is_automated'] = $request->has('is_automated') ? 1 : 0;
         if($shipping->id == 1){
             if($request->is_condition){
                 $input['is_condition'] = 1;
@@ -108,7 +114,10 @@ class ShippingServiceController extends Controller
             }
         }
         
-        $input['price'] = $request->price / $curr->value;
+        $input['price'] = $request->price ? $request->price / $curr->value : 0;
+        $input['dhaka_price'] = $request->dhaka_price ? $request->dhaka_price / $curr->value : 0;
+        $input['outside_dhaka_price'] = $request->outside_dhaka_price ? $request->outside_dhaka_price / $curr->value : 0;
+        $input['per_kg_price'] = $request->per_kg_price ? $request->per_kg_price / $curr->value : 0;
 
         $shipping->update($input);
 

@@ -1266,6 +1266,7 @@ CREATE TABLE `items` (
   `discount_price` double DEFAULT '0',
   `previous_price` double DEFAULT '0',
   `stock` int DEFAULT '0',
+  `shipping_weight` double DEFAULT '1',
   `meta_keywords` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `meta_description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `status` tinyint DEFAULT '1',
@@ -1967,6 +1968,10 @@ CREATE TABLE `shipping_services` (
   `price` double NOT NULL DEFAULT '0',
   `minimum_price` double NOT NULL DEFAULT '0',
   `is_condition` tinyint NOT NULL DEFAULT '0',
+  `is_automated` tinyint NOT NULL DEFAULT '0',
+  `dhaka_price` double NOT NULL DEFAULT '0',
+  `outside_dhaka_price` double NOT NULL DEFAULT '0',
+  `per_kg_price` double NOT NULL DEFAULT '0',
   `status` tinyint NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -1976,9 +1981,9 @@ CREATE TABLE `shipping_services` (
 -- Dumping data for table `shipping_services`
 --
 
-INSERT INTO `shipping_services` (`id`, `title`, `price`, `minimum_price`, `is_condition`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Free Delevery', 0, 1000, 1, 1, NULL, NULL),
-(2, 'Delivery', 20, 0, 0, 1, NULL, NULL);
+INSERT INTO `shipping_services` (`id`, `title`, `price`, `minimum_price`, `is_condition`, `is_automated`, `dhaka_price`, `outside_dhaka_price`, `per_kg_price`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Free Delevery', 0, 1000, 1, 0, 0, 0, 0, 1, NULL, NULL),
+(2, 'Delivery', 0, 0, 0, 1, 80, 130, 30, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 

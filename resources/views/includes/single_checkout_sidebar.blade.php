@@ -45,8 +45,8 @@
                 </tr>
             @endif
 
-            @if ($shipping)
-                <tr class="d-none set__shipping_price_tr">
+            @if ($shipping || PriceHelper::CheckDigital())
+                <tr class="{{ $shipping ? '' : 'd-none' }} set__shipping_price_tr">
                     <td>{{ __('Shipping') }}:</td>
                     <td class="text-gray-dark set__shipping_price">
                         {{ PriceHelper::setCurrencyPrice($shipping ? $shipping->price : 0) }}</td>
@@ -62,36 +62,11 @@
 
     @if (PriceHelper::CheckDigital() == true)
     <section class="card widget widget-featured-posts widget-order-summary p-4">
-        <h3 class="widget-title">{{ __('Shipping Options') }}</h3>
+        <h3 class="widget-title">{{ __('Shipping Charge') }}</h3>
         <div class="row">
             <div class="col-sm-12 mb-3">
-                @if (PriceHelper::CheckDigital() == true)
-                    @php
-                        $free_shipping = DB::table('shipping_services')->whereStatus(1)->whereIsCondition(1)->first();
-                    @endphp
-
-                    <select name="shipping_id" class="form-control" id="shipping_id_select" required>
-                        <option value="" selected disabled>{{ __('Select Shipping Method') }}*</option>
-                        @foreach (DB::table('shipping_services')->whereStatus(1)->get() as $shipping)
-                            @if ($shipping->id == 1 && $free_shipping && $free_shipping->minimum_price <= $cart_total)
-                                <option value="{{ $shipping->id }}" data-href="{{ route('front.shipping.setup') }}">
-                                    {{ $shipping->title }}
-                                </option>
-                            @else
-                                @if ($shipping->id != 1 && (!$free_shipping || $free_shipping->minimum_price >= $cart_total))
-                                    <option value="{{ $shipping->id }}"
-                                        data-href="{{ route('front.shipping.setup') }}">{{ $shipping->title }}
-                                        ({{ PriceHelper::setCurrencyPrice($shipping->price) }})
-                                    </option>
-                                @endif
-                            @endif
-                        @endforeach
-                    </select>
-                    @error('shipping_id')
-                        <p class="text-danger shipping_message">{{ $message }}</p>
-                    @enderror
-
-                @endif
+                <small class="text-info">{{ __('Shipping is calculated automatically from district and total product weight.') }}</small>
+                <p class="mb-0 mt-2 shipping_message">{{ __('Select district to calculate shipping automatically.') }}</p>
             </div>
             <div class="col-sm-12 mb-3">
                 @if (PriceHelper::CheckDigital() == true)

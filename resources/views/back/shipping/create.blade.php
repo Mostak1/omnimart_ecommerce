@@ -52,6 +52,47 @@
                                                 value="{{ old('price') }}" >
                                         </div>
                                     </div>
+
+                                    <div class="form-group">
+                                        <label for="is_automated" class="text-left">
+                                            <input type="checkbox" name="is_automated" {{ old('is_automated') ? 'checked' : '' }} class="my-2" id="is_automated">
+                                            {{ __('Use Automated District Shipping') }}
+                                        </label>
+                                        <small class="d-block text-info">{{ __('Dhaka = base rate, outside Dhaka = outside rate, every extra KG adds extra rate.') }}</small>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="dhaka_price">{{ __('Dhaka Shipping Cost') }}</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">{{ PriceHelper::adminCurrency() }}</span>
+                                            </div>
+                                            <input type="text" id="dhaka_price" name="dhaka_price" class="form-control"
+                                                placeholder="{{ __('Enter Dhaka Shipping Cost') }}" value="{{ old('dhaka_price', 80) }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="outside_dhaka_price">{{ __('Outside Dhaka Shipping Cost') }}</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">{{ PriceHelper::adminCurrency() }}</span>
+                                            </div>
+                                            <input type="text" id="outside_dhaka_price" name="outside_dhaka_price" class="form-control"
+                                                placeholder="{{ __('Enter Outside Dhaka Shipping Cost') }}" value="{{ old('outside_dhaka_price', 130) }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="per_kg_price">{{ __('Extra Charge Per KG') }}</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">{{ PriceHelper::adminCurrency() }}</span>
+                                            </div>
+                                            <input type="text" id="per_kg_price" name="per_kg_price" class="form-control"
+                                                placeholder="{{ __('Enter Extra Charge Per KG') }}" value="{{ old('per_kg_price', 30) }}">
+                                        </div>
+                                    </div>
 								
 
 									<div class="form-group">

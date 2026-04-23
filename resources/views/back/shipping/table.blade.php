@@ -4,7 +4,11 @@
             {{ $data->title }}
         </td>
         <td>
-            @if ($data->id != 1)
+            @if ($data->is_automated)
+            {{ __('Dhaka') }}: {{ PriceHelper::adminCurrencyPrice($data->dhaka_price) }}<br>
+            {{ __('Outside Dhaka') }}: {{ PriceHelper::adminCurrencyPrice($data->outside_dhaka_price) }}<br>
+            {{ __('Per KG') }}: {{ PriceHelper::adminCurrencyPrice($data->per_kg_price) }}
+            @elseif ($data->id != 1)
             {{ $data->price == 0  ? __('Free') : PriceHelper::adminCurrencyPrice($data->price) }}
             @else
             {{$data->id == 1 && $data->is_condition == 1 ? PriceHelper::adminCurrencyPrice($data->minimum_price). ' Up Condition' : 'Free'}}

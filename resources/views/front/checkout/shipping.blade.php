@@ -77,8 +77,8 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label for="checkout-country">{{ __('District') }}</label>
-                                        <select class="form-control" name="ship_country"  id="billing-country">
-                                            <option selected>{{ __('Choose District') }}</option>
+                                        <select class="form-control" name="ship_country"  id="shipping-country" required>
+                                            <option value="" selected disabled>{{ __('Choose District') }}</option>
                                             @foreach (config('bangladesh.districts', []) as $district)
                                                 <option value="{{ $district }}"
                                                     {{ isset($user) && $user->ship_country == $district ? 'selected' : '' }}>

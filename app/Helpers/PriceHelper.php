@@ -7,6 +7,7 @@ use App\Models\Currency;
 use App\Models\Item;
 use App\Models\PaymentSetting;
 use App\Models\Setting;
+use App\Models\ShippingService;
 use App\Models\State;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Session;
@@ -469,6 +470,27 @@ class PriceHelper
         }
 
         return $state_price;
+    }
+
+    public static function appliedShippingService($shippingId = null)
+    {
+        if (!self::Digital()) {
+            return null;
+        }
+
+        $cart = Session::get('cart', []);
+        $district = Session::get('shipping_address')['ship_country']
+            ?? Session::get('billing_address')['bill_country']
+            ?? null;
+
+        if ($shippingId) {
+            $service = ShippingService::findOrFail($shippingId);
+            if (!(bool) $service->is_automated) {
+                return $service;
+            }
+        }
+
+        return ShippingService::appliedService($district, $cart);
     }
 
     public static function checkCheckout($request)

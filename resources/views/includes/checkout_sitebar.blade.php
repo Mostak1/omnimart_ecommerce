@@ -46,8 +46,8 @@
                 </tr>
             @endif
 
-            @if ($shipping)
-                <tr class="d-none set__shipping_price_tr">
+            @if ($shipping || PriceHelper::CheckDigital())
+                <tr class="{{ $shipping ? '' : 'd-none' }} set__shipping_price_tr">
                     <td>{{ __('Shipping') }}:</td>
                     <td class="text-gray-dark set__shipping_price">
                         {{ PriceHelper::setCurrencyPrice($shipping ? $shipping->price : 0) }}</td>

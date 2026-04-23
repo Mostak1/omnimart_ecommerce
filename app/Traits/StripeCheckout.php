@@ -70,7 +70,7 @@ trait StripeCheckout
         if (!PriceHelper::Digital()) {
             $shipping = null;
         } else {
-            $shipping = ShippingService::findOrFail($data['shipping_id']);
+            $shipping = PriceHelper::appliedShippingService($data['shipping_id']);
         }
 
         $orderData['state'] =  $data['state_id'] ? json_encode(State::findOrFail($data['state_id']), true) : null;
@@ -162,7 +162,7 @@ trait StripeCheckout
             if (!PriceHelper::Digital()) {
                 $shipping = null;
             } else {
-                $shipping = ShippingService::findOrFail($order_input_data['shipping_id']);
+                $shipping = PriceHelper::appliedShippingService($order_input_data['shipping_id']);
             }
             $discount = [];
             if (Session::has('coupon')) {

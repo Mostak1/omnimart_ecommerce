@@ -23,11 +23,13 @@ class ShippingServiceRequest extends FormRequest
      */
     public function rules()
     {
-
-        $conditin = isset($this->shipping->id) && $this->shipping->id == 1 ? '' : 'required';
         return  [
            'title' => 'required|max:255',
-           'price'  => $conditin.'|numeric|max:999',
+           'price'  => 'nullable|numeric|max:9999999999',
+           'minimum_price' => 'nullable|numeric|max:9999999999',
+           'dhaka_price' => 'nullable|numeric|max:9999999999',
+           'outside_dhaka_price' => 'nullable|numeric|max:9999999999',
+           'per_kg_price' => 'nullable|numeric|max:9999999999',
         ];
     }
 

@@ -88,9 +88,11 @@ class CheckoutController extends Controller
 
         if (!PriceHelper::Digital()) {
             $shipping = null;
+        } else {
+            $shipping = ShippingService::appliedService($this->checkoutDistrict(), $cart);
         }
 
-        $grand_total = ($cart_total  + $total_tax);
+        $grand_total = ($cart_total + ($shipping ? $shipping->price : 0) + $total_tax);
         $grand_total = $grand_total - ($discount ? $discount['discount'] : 0);
         $state_tax = Auth::check() && Auth::user()->state_id ? ($cart_total * Auth::user()->state->price) / 100 : 0;
         $grand_total = $grand_total + $state_tax;
@@ -336,9 +338,11 @@ class CheckoutController extends Controller
 
         if (!PriceHelper::Digital()) {
             $shipping = null;
+        } else {
+            $shipping = ShippingService::appliedService($this->checkoutDistrict(), $cart);
         }
 
-        $grand_total = ($cart_total  + $total_tax);
+        $grand_total = ($cart_total + ($shipping ? $shipping->price : 0) + $total_tax);
         $grand_total = $grand_total - ($discount ? $discount['discount'] : 0);
         $state_tax = Auth::check() && Auth::user()->state_id ? ($cart_total * Auth::user()->state->price) / 100 : 0;
         $grand_total = $grand_total + $state_tax;
@@ -709,6 +713,8 @@ class CheckoutController extends Controller
         if ($shipping_id) {
             $shipping = ShippingService::findOrFail($shipping_id);
         }
+        $district = $this->checkoutDistrict($request);
+        $shipping = ShippingService::appliedService($district, $cart);
         $discount = [];
         if (Session::has('coupon')) {
             $discount = Session::get('coupon');
@@ -741,6 +747,8 @@ class CheckoutController extends Controller
         $total_amount = $grand_total + $state_price;
 
         $data['state_price'] = PriceHelper::setCurrencyPrice($state_price);
+        $data['shipping_price'] = PriceHelper::setCurrencyPrice($shipping ? $shipping->price : 0);
+        $data['shipping_id'] = $shipping ? $shipping->id : '';
         $data['grand_total'] = PriceHelper::setCurrencyPrice($total_amount);
 
         return response()->json($data);
@@ -772,7 +780,8 @@ class CheckoutController extends Controller
             }
         }
 
-        $shipping = ShippingService::findOrFail($shipping_id);
+        $district = $this->checkoutDistrict($request);
+        $shipping = ShippingService::appliedService($district, $cart);
 
         $discount = [];
         if (Session::has('coupon')) {
@@ -806,9 +815,31 @@ class CheckoutController extends Controller
         $total_amount = $grand_total + $state_price;
 
         $data['state_price'] = PriceHelper::setCurrencyPrice($state_price);
-        $data['shipping_price'] = PriceHelper::setCurrencyPrice($shipping->price);
+        $data['shipping_price'] = PriceHelper::setCurrencyPrice($shipping ? $shipping->price : 0);
+        $data['shipping_id'] = $shipping ? $shipping->id : '';
         $data['grand_total'] = PriceHelper::setCurrencyPrice($total_amount);
 
         return response()->json($data);
+    }
+
+    private function checkoutDistrict(Request $request = null)
+    {
+        if ($request && $request->district) {
+            return $request->district;
+        }
+
+        if (Session::has('shipping_address') && !empty(Session::get('shipping_address')['ship_country'])) {
+            return Session::get('shipping_address')['ship_country'];
+        }
+
+        if (Session::has('billing_address') && !empty(Session::get('billing_address')['bill_country'])) {
+            return Session::get('billing_address')['bill_country'];
+        }
+
+        if (Auth::check()) {
+            return Auth::user()->ship_country ?: Auth::user()->bill_country;
+        }
+
+        return null;
     }
 }
