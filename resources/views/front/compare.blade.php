@@ -9,6 +9,7 @@
 @endsection
 @section('content')
     <!-- Page Title-->
+@if (data_get($site_visibility, 'compare_breadcrumb', 1))
 <div class="page-title">
     <div class="container">
       <div class="row">
@@ -22,7 +23,9 @@
       </div>
     </div>
   </div>
+@endif
   <!-- Page Content-->
+  @if (data_get($site_visibility, 'compare_table', 1))
   <div class="container">
         <div class="card">
             <div class="card-body">
@@ -158,5 +161,6 @@
             </div>
         </div>
   </div>
+  @endif
 @endsection
 

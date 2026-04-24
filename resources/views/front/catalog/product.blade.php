@@ -22,6 +22,7 @@
 
 
 @section('content')
+    @if (data_get($site_visibility, 'product_breadcrumb', 1))
     <div class="page-title">
         <div class="container">
             <div class="row">
@@ -39,10 +40,12 @@
             </div>
         </div>
     </div>
+    @endif
     <!-- Page Content-->
     <div class="container padding-bottom-1x mb-1">
         <div class="row">
             <!-- Poduct Gallery-->
+            @if (data_get($site_visibility, 'product_gallery', 1))
             <div class="col-xxl-5 col-lg-6 col-md-6">
                 <div class="product-gallery">
                     @if ($item->video)
@@ -86,7 +89,9 @@
                     </div>
                 </div>
             </div>
+            @endif
             <!-- Product Info-->
+            @if (data_get($site_visibility, 'product_summary', 1))
             <div class="col-xxl-7 col-lg-6 col-md-6">
                 <div class="details-page-top-right-content d-flex align-items-center">
                     <div class="div w-100">
@@ -263,6 +268,8 @@
                     </div>
                 </div>
             </div>
+            @endif
+            @if (data_get($site_visibility, 'product_description', 1))
             <div class=" padding-top-3x mb-3" id="details">
                 <div class="col-lg-12">
                     <ul class="nav nav-tabs" role="tablist">
@@ -312,11 +319,13 @@
                     </div>
                 </div>
             </div>
+            @endif
         </div>
     </div>
 
 
     <!-- Reviews-->
+    @if (data_get($site_visibility, 'product_reviews', 1))
     <div class="container  review-area">
         <div class="row">
             <div class="col-lg-12">
@@ -437,8 +446,9 @@
             </div>
         </div>
     </div>
+    @endif
 
-    @if (count($related_items) > 0)
+    @if (data_get($site_visibility, 'product_related_products', 1) && count($related_items) > 0)
         <div class="relatedproduct-section container padding-bottom-3x mb-1 s-pt-30">
             <!-- Related Products Carousel-->
             <div class="row">

@@ -2,6 +2,7 @@
     <div class="padding-top-2x hidden-lg-up"></div>
     <!-- Items in Cart Widget-->
 
+    @if (data_get($site_visibility, 'checkout_order_summary', 1))
     <section class="card widget widget-featured-posts widget-order-summary p-4">
         <h3 class="widget-title">{{ __('Order Summary') }}</h3>
         @php
@@ -45,8 +46,10 @@
             </tr>
         </table>
     </section>
+    @endif
 
     @if (PriceHelper::CheckDigital() == true && DB::table('states')->whereStatus(1)->count() > 0)
+    @if (data_get($site_visibility, 'checkout_order_summary', 1))
     <section class="card widget widget-featured-posts widget-order-summary p-4">
         <h3 class="widget-title">{{ __('Shipping Charge') }}</h3>
         <div class="row">
@@ -78,7 +81,9 @@
 
     </section>
     @endif
+    @endif
 
+    @if (data_get($site_visibility, 'checkout_order_summary', 1))
     <section class="card widget widget-featured-posts widget-order-summary p-4">
         <h3 class="widget-title">{{ __('Coupon') }}</h3>
         <form method="post" id="checkout_coupon_form" action="{{ route('front.promo.submit') }}">
@@ -93,10 +98,12 @@
             </p>
         </form>
     </section>
+    @endif
 
 
 
     <!-- Order Summary Widget-->
+    @if (data_get($site_visibility, 'checkout_payment_methods', 1))
     <section class="card widget  widget-order-summary p-4 mb-0">
         <h3 class="widget-title">{{ __('Pay now') }}</h3>
         <div class="row">
@@ -137,6 +144,7 @@
 
         </div>
     </section>
+    @endif
 
 </aside>
 

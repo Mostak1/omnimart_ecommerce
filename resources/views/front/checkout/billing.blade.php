@@ -6,6 +6,7 @@
 
 @section('content')
     <!-- Page Title-->
+    @if (data_get($site_visibility, 'checkout_breadcrumb', 1))
     <div class="page-title">
         <div class="container">
             <div class="column">
@@ -17,11 +18,13 @@
             </div>
         </div>
     </div>
+    @endif
 
     <!-- Page Content-->
     <div class="container padding-bottom-3x mb-1 checkut-page">
         <div class="row">
             <!-- Billing Adress-->
+            @if (data_get($site_visibility, 'checkout_billing_form', 1))
             <div class="col-xl-9 col-lg-8">
                 <div class="steps flex-sm-nowrap mb-5">
                     <a class="step active" href="{{ route('front.checkout.billing') }}">
@@ -159,10 +162,13 @@
                     </div>
                 </div>
             </div>
+            @endif
             <!-- Sidebar  -->
+            @if (data_get($site_visibility, 'checkout_order_summary', 1))
             <div class="col-xl-3 col-lg-4">
                 @include('includes.checkout_sitebar', $cart)
             </div>
+            @endif
         </div>
     </div>
 @endsection

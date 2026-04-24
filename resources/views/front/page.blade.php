@@ -6,6 +6,7 @@
 
 @section('content')
     <!-- Page Title-->
+@if (data_get($site_visibility, 'page_breadcrumb', 1))
 <div class="page-title">
   <div class="container">
     <div class="row">
@@ -19,7 +20,9 @@
     </div>
   </div>
 </div>
+@endif
 <!-- Page Content-->
+@if (data_get($site_visibility, 'page_content', 1))
 <div class="">
     <div class="container other-page-data">
         <!-- Categories-->
@@ -37,5 +40,6 @@
         </div>
       </div>
 </div>
+@endif
 
 @endsection

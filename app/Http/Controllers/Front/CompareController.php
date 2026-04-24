@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Helpers\VisibilityHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Item;
 use Illuminate\Http\Request;
@@ -51,6 +52,7 @@ class CompareController extends Controller
 
     public function compare_product()
     {
+        abort_unless(VisibilityHelper::isEnabled('compare_page'), 404);
 
         if(Session::has('compare')){
             $sname = [];

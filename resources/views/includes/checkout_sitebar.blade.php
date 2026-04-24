@@ -3,6 +3,7 @@
     <!-- Items in Cart Widget-->
 
 
+    @if (data_get($site_visibility, 'checkout_order_summary', 1))
     <section class="card widget widget-featured-posts widget-order-summary p-4">
         <h3 class="widget-title">{{ __('Order Summary') }}</h3>
         @php
@@ -46,7 +47,9 @@
             </tr>
         </table>
     </section>
+    @endif
 
+    @if (data_get($site_visibility, 'checkout_order_summary', 1))
     <section class="card widget widget-featured-posts widget-order-summary p-4">
         <h3 class="widget-title">{{ __('Coupon') }}</h3>
         <form method="post" id="checkout_coupon_form" action="{{ route('front.promo.submit') }}">
@@ -61,8 +64,9 @@
             </p>
         </form>
     </section>
+    @endif
 
-
+    @if (data_get($site_visibility, 'checkout_order_summary', 1))
     <section class="card widget widget-featured-posts widget-featured-products p-4">
         <h3 class="widget-title">{{ __('Items In Your Cart') }}</h3>
         @foreach ($cart as $key => $item)
@@ -95,6 +99,7 @@
             </div>
         @endforeach
     </section>
+    @endif
 
 </aside>
 

@@ -16,6 +16,7 @@ use App\{
 };
 use App\Helpers\PriceHelper;
 use App\Helpers\SmsHelper;
+use App\Helpers\VisibilityHelper;
 use App\Models\Currency;
 use App\Models\District;
 use App\Models\Item;
@@ -49,6 +50,7 @@ class CheckoutController extends Controller
     public function __construct()
     {
         $setting = Setting::first();
+        abort_unless(VisibilityHelper::isEnabled('checkout_page', true, $setting), 404);
         if ($setting->is_guest_checkout != 1) {
             $this->middleware('auth');
         }
@@ -655,6 +657,7 @@ class CheckoutController extends Controller
 
     public function paymentSuccess()
     {
+        abort_unless(VisibilityHelper::isEnabled('checkout_success_page'), 404);
         if (Session::has('order_id')) {
             $order_id = Session::get('order_id');
             $order = Order::find($order_id);

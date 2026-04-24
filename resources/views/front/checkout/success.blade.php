@@ -6,6 +6,7 @@
 
 @section('content')
     <!-- Page Title-->
+    @if (data_get($site_visibility, 'checkout_breadcrumb', 1))
     <div class="page-title">
         <div class="container">
             <div class="column">
@@ -17,7 +18,9 @@
             </div>
         </div>
     </div>
+    @endif
     <!-- Page Content-->
+    @if (data_get($site_visibility, 'checkout_success_content', 1))
     <div class="container padding-bottom-3x mb-1">
         <div class="card text-center">
             <div class="card-body">
@@ -37,4 +40,5 @@
             </div>
         </div>
     </div>
+    @endif
 @endsection

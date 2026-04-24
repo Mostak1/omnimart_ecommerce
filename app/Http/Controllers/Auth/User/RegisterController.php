@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth\User;
 
 use App\{
+    Helpers\VisibilityHelper,
     Http\Requests\UserRequest,
     Http\Controllers\Controller,
     Repositories\Front\UserRepository
@@ -40,6 +41,7 @@ class RegisterController extends Controller
 
     public function showForm()
     {
+      abort_unless(VisibilityHelper::isEnabled('register_page'), 404);
 
       return view('user.auth.register');
     }

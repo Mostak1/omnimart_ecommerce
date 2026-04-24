@@ -9,6 +9,7 @@
 
 @section('content')
     <!-- Page Title-->
+@if (data_get($site_visibility, 'contact_breadcrumb', 1))
 <div class="page-title">
     <div class="container">
       <div class="row">
@@ -22,9 +23,11 @@
       </div>
     </div>
   </div>
+@endif
   <!-- Page Content-->
   <div class="container padding-bottom-3x mb-1 contact-page">
     <div class="row">
+      @if (data_get($site_visibility, 'contact_info', 1))
       <div class="col-lg-4 col-md-5 col-sm-5 order-lg-1 order-md-2 order-sm-2">
 
         <!-- Widget Contacts-->
@@ -58,7 +61,9 @@
           </div>
         </section>
       </div>
+      @endif
 
+      @if (data_get($site_visibility, 'contact_form', 1))
       <div class="col-lg-8 col-md-7 col-sm-7 order-lg-2 order-md-1 order-sm-1">
         <div class="contact-form-box card">
 
@@ -133,6 +138,7 @@
               </form>
         </div>
       </div>
+      @endif
     </div>
   </div>
 @endsection

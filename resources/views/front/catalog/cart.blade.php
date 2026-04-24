@@ -8,6 +8,7 @@
 @endsection
 @section('content')
     <!-- Page Title-->
+@if (data_get($site_visibility, 'cart_breadcrumb', 1))
 <div class="page-title">
     <div class="container">
         <div class="row">
@@ -21,14 +22,17 @@
         </div>
     </div>
   </div>
+@endif
 
   @if(Session::has('cart') && count(Session::get('cart')) > 0)
   <div class="container  padding-bottom-3x mb-1">
 
     <!-- Shopping Cart-->
+    @if (data_get($site_visibility, 'cart_table', 1) || data_get($site_visibility, 'cart_summary', 1))
     <div id="view_cart_load">
         @include('includes.cart')
     </div>
+    @endif
 
 </div>
   @else
@@ -44,4 +48,3 @@
 
 
 @endsection
-

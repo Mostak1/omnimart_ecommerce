@@ -6,6 +6,7 @@
     
 @endphp
 
+@if (data_get($site_visibility, 'cart_table', 1))
 <div class="card border-0">
     <div class="card-body">
         <div class="table-responsive shopping-cart">
@@ -91,8 +92,9 @@
         </div>
     </div>
 </div>
+@endif
 
-
+@if (data_get($site_visibility, 'cart_summary', 1))
 <div class="card border-0 mt-4">
     <div class="card-body">
         <div class="shopping-cart-footer">
@@ -111,4 +113,5 @@
     </div>
 </div>
 </div>
+@endif
 

@@ -12,6 +12,7 @@ use App\{
     Http\Controllers\Controller,
 };
 use App\Helpers\PriceHelper;
+use App\Helpers\VisibilityHelper;
 use App\Models\Attribute;
 use App\Models\AttributeOption;
 use App\Models\Brand;
@@ -29,6 +30,7 @@ class CatalogController extends Controller
 
 	public function index(Request $request)
 	{
+        abort_unless(VisibilityHelper::isEnabled('shop_page'), 404);
 
         // attribute search
         $attr_item_ids = [];

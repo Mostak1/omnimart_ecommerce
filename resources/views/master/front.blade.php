@@ -126,6 +126,7 @@ body_theme4 @endif
     <!-- Header-->
 
     <header class="site-header navbar-sticky">
+        @if (data_get($site_visibility, 'global_topbar', 1))
         <div class="menu-top-area">
             <div class="container">
                 <div class="row">
@@ -194,6 +195,7 @@ body_theme4 @endif
                 </div>
             </div>
         </div>
+        @endif
         <!-- Topbar-->
         <div class="topbar">
             <div class="container">
@@ -206,6 +208,7 @@ body_theme4 @endif
                                         src="{{ url('/storage/images/' . $setting->logo) }}"
                                         alt="{{ $setting->title }}"></a></div>
                             <!-- Search / Categories-->
+                            @if (data_get($site_visibility, 'global_header_search', 1))
                             <div class="search-box-wrap d-none d-lg-block d-flex">
                                 <div class="search-box-inner align-self-center">
                                     <div class="search-box d-flex">
@@ -234,21 +237,25 @@ body_theme4 @endif
                                 </div>
                                 <span class="d-block d-lg-none close-m-serch"><i class="icon-x"></i></span>
                             </div>
+                            @endif
                             <!-- Toolbar-->
                             <div class="toolbar d-flex">
 
+                                @if (data_get($site_visibility, 'global_header_search', 1))
                                 <div class="toolbar-item close-m-serch visible-on-mobile"><a href="#">
                                         <div>
                                             <i class="icon-search"></i>
                                         </div>
                                     </a>
                                 </div>
+                                @endif
                                 <div class="toolbar-item visible-on-mobile mobile-menu-toggle"><a href="#">
                                         <div><i class="icon-menu"></i><span
                                                 class="text-label">{{ __('Menu') }}</span></div>
                                     </a>
                                 </div>
 
+                                @if (data_get($site_visibility, 'global_compare_button', 1))
                                 <div class="toolbar-item hidden-on-mobile"><a
                                         href="{{ route('fornt.compare.index') }}">
                                         <div><span class="compare-icon"><i class="icon-repeat"></i><span
@@ -256,6 +263,8 @@ body_theme4 @endif
                                                 class="text-label">{{ __('Compare') }}</span></div>
                                     </a>
                                 </div>
+                                @endif
+                                @if (data_get($site_visibility, 'global_wishlist_button', 1))
                                 @if (Auth::check())
                                     <div class="toolbar-item hidden-on-mobile"><a
                                             href="{{ route('user.wishlist.index') }}">
@@ -272,6 +281,8 @@ body_theme4 @endif
                                         </a>
                                     </div>
                                 @endif
+                                @endif
+                                @if (data_get($site_visibility, 'global_cart_button', 1))
                                 <div class="toolbar-item"><a href="{{ route('front.cart') }}">
                                         <div><span class="cart-icon"><i class="icon-shopping-cart"></i><span
                                                     class="count-label cart_count">{{ Session::has('cart') ? count(Session::get('cart')) : '0' }}
@@ -283,6 +294,7 @@ body_theme4 @endif
                                         @include('includes.header_cart')
                                     </div>
                                 </div>
+                                @endif
                             </div>
 
                             <!-- Mobile Menu-->
@@ -318,21 +330,21 @@ body_theme4 @endif
                                                         href="{{ route('front.index') }}"><i
                                                             class="icon-chevron-right"></i>{{ __('Home') }}</a>
                                                 </li>
-                                                @if ($setting->is_shop == 1)
+                                                @if ($setting->is_shop == 1 && data_get($site_visibility, 'shop_page', 1))
                                                     <li
                                                         class="{{ request()->routeIs('front.catalog*') ? 'active' : '' }}">
                                                         <a href="{{ route('front.catalog') }}"><i
                                                                 class="icon-chevron-right"></i>{{ __('Shop') }}</a>
                                                     </li>
                                                 @endif
-                                                @if ($setting->is_campaign == 1)
+                                                @if ($setting->is_campaign == 1 && data_get($site_visibility, 'campaign_page', 1))
                                                     <li
                                                         class="{{ request()->routeIs('front.campaign') ? 'active' : '' }}">
                                                         <a href="{{ route('front.campaign') }}"><i
                                                                 class="icon-chevron-right"></i>{{ __('Campaign') }}</a>
                                                     </li>
                                                 @endif
-                                                @if ($setting->is_brands == 1)
+                                                @if ($setting->is_brands == 1 && data_get($site_visibility, 'brands_page', 1))
                                                     <li
                                                         class="{{ request()->routeIs('front.brand') ? 'active' : '' }}">
                                                         <a href="{{ route('front.brand') }}"><i
@@ -340,7 +352,7 @@ body_theme4 @endif
                                                     </li>
                                                 @endif
 
-                                                @if ($setting->is_blog == 1)
+                                                @if ($setting->is_blog == 1 && data_get($site_visibility, 'blog_page', 1))
                                                     <li
                                                         class="{{ request()->routeIs('front.blog*') ? 'active' : '' }}">
                                                         <a href="{{ route('front.blog') }}"><i
@@ -352,7 +364,7 @@ body_theme4 @endif
                                                             class="icon-chevron-right"></i>{{ __('Pages') }} <i
                                                             class="icon-chevron-down"></i></a>
                                                     <div class="t-h-dropdown-menu">
-                                                        @if ($setting->is_faq == 1)
+                                                        @if ($setting->is_faq == 1 && data_get($site_visibility, 'faq_page', 1))
                                                             <a class="{{ request()->routeIs('front.faq*') ? 'active' : '' }}"
                                                                 href="{{ route('front.faq') }}"><i
                                                                     class="icon-chevron-right pr-2"></i>{{ __('Faq') }}</a>
@@ -365,7 +377,7 @@ body_theme4 @endif
                                                     </div>
                                                 </li>
 
-                                                @if ($setting->is_contact == 1)
+                                                @if ($setting->is_contact == 1 && data_get($site_visibility, 'contact_page', 1))
                                                     <li
                                                         class="{{ request()->routeIs('front.contact') ? 'active' : '' }}">
                                                         <a href="{{ route('front.contact') }}"><i
@@ -393,7 +405,7 @@ body_theme4 @endif
         <div class="navbar">
             <div class="container">
                 <div class="row g-3 w-100">
-                    @if ($setting->is_show_category == 1)
+                    @if ($setting->is_show_category == 1 && data_get($site_visibility, 'global_category_menu', 1))
                         <div class="col-lg-3">
                             @include('includes.categories')
                         </div>
@@ -419,6 +431,7 @@ body_theme4 @endif
     @yield('content')
 
     <!--    announcement banner section start   -->
+    @if (data_get($site_visibility, 'global_announcement_popup', 1))
     <a class="announcement-banner" href="#announcement-modal"></a>
     <div id="announcement-modal" class="mfp-hide white-popup">
         @if ($setting->announcement_type == 'newletter')
@@ -454,12 +467,15 @@ body_theme4 @endif
 
 
     </div>
+    @endif
     <!--    announcement banner section end   -->
 
     <!-- Site Footer-->
+    @if (data_get($site_visibility, 'global_footer', 1))
     <footer class="site-footer">
         <div class="container">
             <div class="row">
+                @if (data_get($site_visibility, 'global_footer_contact', 1))
                 <div class="col-lg-4 col-md-6">
                     <!-- Contact Info-->
                     <section class="widget widget-light-skin">
@@ -484,12 +500,14 @@ body_theme4 @endif
                         </div>
                     </section>
                 </div>
+                @endif
+                @if (data_get($site_visibility, 'global_footer_links', 1))
                 <div class="col-lg-4 col-sm-6">
                     <!-- Customer Info-->
                     <div class="widget widget-links widget-light-skin">
                         <h3 class="widget-title">{{ __('Usefull Links') }}</h3>
                         <ul>
-                            @if ($setting->is_faq == 1)
+                            @if ($setting->is_faq == 1 && data_get($site_visibility, 'faq_page', 1))
                                 <li>
                                     <a class="" href="{{ route('front.faq') }}">{{ __('Faq') }}</a>
                                 </li>
@@ -501,6 +519,8 @@ body_theme4 @endif
                         </ul>
                     </div>
                 </div>
+                @endif
+                @if (data_get($site_visibility, 'global_footer_newsletter', 1))
                 <div class="col-lg-4">
                     <!-- Subscription-->
                     <section class="widget">
@@ -536,11 +556,13 @@ body_theme4 @endif
                         </div>
                     </section>
                 </div>
+                @endif
             </div>
             <!-- Copyright-->
             <p class="footer-copyright"> {{ $setting->copy_right }}</p>
         </div>
     </footer>
+    @endif
 
     <!-- Back To Top Button-->
     <a class="scroll-to-top-btn" href="#">

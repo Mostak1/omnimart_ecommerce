@@ -131,6 +131,7 @@ class Setting extends Model
         "working_days_from_to",
         "is_show_category",
         "is_mail_verify",
+        "page_section_visibility",
     ];
 
     public $timestamps = false;

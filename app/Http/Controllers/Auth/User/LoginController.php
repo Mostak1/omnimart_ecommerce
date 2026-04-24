@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth\User;
 
 use App\{
+  Helpers\VisibilityHelper,
   Http\Controllers\Controller,
   Http\Requests\AuthRequest,
 };
@@ -31,6 +32,7 @@ class LoginController extends Controller
 
   public function showForm()
   {
+    abort_unless(VisibilityHelper::isEnabled('login_page'), 404);
 
     return view('user.auth.login');
   }

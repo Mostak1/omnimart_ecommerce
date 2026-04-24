@@ -4,6 +4,7 @@
 @endsection
 
 @section('content')
+@if (data_get($site_visibility, 'track_order_breadcrumb', 1))
 <div class="page-title">
     <div class="container">
       <div class="row">
@@ -17,6 +18,8 @@
       </div>
     </div>
   </div>
+@endif
+    @if (data_get($site_visibility, 'track_order_form', 1))
     <div class="container">
         <div class="row justify-content-center pt-5">
             <div class="col-lg-8">
@@ -41,5 +44,5 @@
             </div>
         </div>
     </div>
+    @endif
 @endsection
-

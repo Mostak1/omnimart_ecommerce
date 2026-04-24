@@ -4,6 +4,7 @@
 @endsection
 @section('content')
     <!-- Page Title-->
+    @if (data_get($site_visibility, 'checkout_breadcrumb', 1))
     <div class="page-title">
         <div class="container">
             <div class="column">
@@ -15,10 +16,12 @@
             </div>
         </div>
     </div>
+    @endif
     <!-- Page Content-->
     <div class="container padding-bottom-3x mb-1 checkut-page">
         <div class="row">
             <!-- Payment Methode-->
+            @if (data_get($site_visibility, 'checkout_billing_form', 1) || data_get($site_visibility, 'checkout_payment_methods', 1))
             <div class="col-xl-9 col-lg-8">
                 <div class="steps flex-sm-nowrap mb-5"> <a class="step" href="{{ route('front.checkout.billing') }}">
                         <h4 class="step-title"><i class="icon-check-circle"></i>1. {{ __('Invoice to') }}:</h4>
@@ -115,6 +118,7 @@
                             </div>
                             @endif
                         </div>
+                        @if (data_get($site_visibility, 'checkout_payment_methods', 1))
                         <h6 class="pb-2 widget-title2">{{ __('Pay With') }} :</h6>
                         <div class="row mt-4">
                             <div class="col-12">
@@ -151,16 +155,22 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </div>
 
+                @if (data_get($site_visibility, 'checkout_payment_methods', 1))
                 @include('includes.checkout_modal')
+                @endif
 
             </div>
+            @endif
             <!-- Sidebar  -->
+            @if (data_get($site_visibility, 'checkout_order_summary', 1))
             <div class="col-xl-3 col-lg-4">
                 @include('includes.checkout_sitebar',$cart)
             </div>
+            @endif
         </div>
     </div>
 @endsection

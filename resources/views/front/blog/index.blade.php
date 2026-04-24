@@ -6,6 +6,7 @@
 
 @section('content')
     <!-- Page Title-->
+    @if (data_get($site_visibility, 'blog_breadcrumb', 1))
     <div class="page-title">
         <div class="container">
             <div class="row">
@@ -19,10 +20,12 @@
             </div>
         </div>
     </div>
+    @endif
 
     <div class="container blog-page">
         <div class="row ">
             <!-- Content-->
+            @if (data_get($site_visibility, 'blog_posts', 1))
             <div class="col-xl-9 col-lg-8 order-lg-2">
                 <div class="row">
                     @forelse ($posts as $post)
@@ -65,7 +68,9 @@
                     </div>
                 </div>
             </div>
+            @endif
             <!-- Sidebar          -->
+            @if (data_get($site_visibility, 'blog_sidebar', 1))
             <div class="col-xl-3 col-lg-4 order-lg-1">
                 <div class="sidebar-toggle position-left"><i class="icon-filter"></i></div>
                 <aside class="sidebar sidebar-offcanvas position-left"><span class="sidebar-close"><i
@@ -119,6 +124,7 @@
                     </section>
                 </aside>
             </div>
+            @endif
 
         </div>
     </div>

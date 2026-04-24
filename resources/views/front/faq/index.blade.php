@@ -9,6 +9,7 @@
 
 @section('content')
     <!-- Page Title-->
+@if (data_get($site_visibility, 'faq_breadcrumb', 1))
 <div class="page-title">
     <div class="container">
         <div class="row">
@@ -22,7 +23,9 @@
         </div>
     </div>
   </div>
+@endif
   <!-- Page Content-->
+  @if (data_get($site_visibility, 'faq_categories', 1))
   <div class="container">
     <div class="row">
         @foreach ($fcategories as $category)
@@ -38,4 +41,5 @@
         @endforeach
     </div>
   </div>
+  @endif
 @endsection

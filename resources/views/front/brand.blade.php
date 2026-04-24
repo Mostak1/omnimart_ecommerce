@@ -9,6 +9,7 @@
 
 @section('content')
     <!-- Page Title-->
+@if (data_get($site_visibility, 'brands_breadcrumb', 1))
 <div class="page-title">
     <div class="container">
         <div class="row">
@@ -22,7 +23,9 @@
         </div>
     </div>
   </div>
+@endif
   <!-- Page Content-->
+  @if (data_get($site_visibility, 'brands_list', 1))
   <div class="container">
     <div class="row g-3">
         @foreach ($brands as $brand)
@@ -36,5 +39,6 @@
         @endforeach
     </div>
   </div>
+  @endif
 @endsection
 

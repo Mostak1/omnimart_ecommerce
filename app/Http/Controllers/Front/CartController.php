@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\{
+    Helpers\VisibilityHelper,
     Models\Item,
     Http\Controllers\Controller,
     Repositories\Front\CartRepository
@@ -30,6 +31,7 @@ class CartController extends Controller
 
     public function index()
     {
+        abort_unless(VisibilityHelper::isEnabled('cart_page'), 404);
         if (Session::has('cart')) {
             $cart = Session::get('cart');
         } else {

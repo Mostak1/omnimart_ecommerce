@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Helpers\VisibilityHelper;
+use App\Models\ExtraSetting;
+use App\Models\Setting;
 use Illuminate\{
     Support\ServiceProvider,
     Support\Facades\DB
@@ -14,8 +17,10 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrap();
         view()->composer('*', function ($settings) {
-            $settings->with('setting', DB::table('settings')->find(1));
-            $settings->with('extra_settings', DB::table('extra_settings')->find(1));
+            $setting = Setting::find(1);
+            $settings->with('setting', $setting);
+            $settings->with('site_visibility', VisibilityHelper::map($setting));
+            $settings->with('extra_settings', ExtraSetting::find(1));
             $settings->with('menus', DB::table('menus')->find(1));
 
             if (!session()->has('popup')) {

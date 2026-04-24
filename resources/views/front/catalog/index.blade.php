@@ -9,6 +9,7 @@
 
 @section('content')
     <!-- Page Title-->
+@if (data_get($site_visibility, 'shop_breadcrumb', 1))
 <div class="page-title">
     <div class="container">
       <div class="row">
@@ -22,8 +23,10 @@
       </div>
     </div>
   </div>
+@endif
   <!-- Page Content-->
   <div class="container padding-bottom-3x mb-1">
+        @if (data_get($site_visibility, 'shop_toolbar', 1))
         <div class="row">
             <div class="col-lg-12">
                 <div class="shop-top-filter-wrapper">
@@ -59,13 +62,17 @@
                 </div>
             </div>
         </div>
+        @endif
         <div class="row g-3">
 
+          @if (data_get($site_visibility, 'shop_products', 1))
           <div class="col-lg-9 order-lg-2" id="list_view_ajax">
             @include('front.catalog.catalog')
           </div>
+          @endif
 
           <!-- Sidebar          -->
+          @if (data_get($site_visibility, 'shop_sidebar', 1))
           <div class="col-lg-3 order-lg-1">
             <div class="sidebar-toggle position-left"><i class="icon-filter"></i></div>
             <aside class="sidebar sidebar-offcanvas position-left"><span class="sidebar-close"><i class="icon-x"></i></span>
@@ -158,11 +165,13 @@
 
             </aside>
           </div>
+          @endif
         </div>
       </div>
 
 
 
+      @if (data_get($site_visibility, 'shop_sidebar', 1) || data_get($site_visibility, 'shop_toolbar', 1))
       <form id="search_form" class="d-none" action="{{route('front.catalog')}}" method="GET">
 
         <input type="text" name="maxPrice" id="maxPrice" value="{{request()->input('maxPrice') ? request()->input('maxPrice') : ''}}">
@@ -182,5 +191,5 @@
 
         <button type="submit" id="search_button" class="d-none"></button>
     </form>
+    @endif
 @endsection
-

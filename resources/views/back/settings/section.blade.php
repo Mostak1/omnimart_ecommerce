@@ -456,6 +456,56 @@
                                         </div>
                                     <div>
 
+                                    <div class="row mt-4">
+                                        <div class="col-lg-12">
+                                            <div class="card border-0 shadow-none bg-light mb-4">
+                                                <div class="card-body">
+                                                    <h4 class="mb-3">{{ __('Page Visibility') }}</h4>
+                                                    <div class="row">
+                                                        @foreach ($pageVisibilityOptions as $groupTitle => $options)
+                                                            <div class="col-lg-4 col-md-6 mb-4">
+                                                                <h5 class="mb-3">{{ $groupTitle }}</h5>
+                                                                @foreach ($options as $option)
+                                                                    <div class="form-group">
+                                                                        <label class="switch-primary">
+                                                                            <input type="checkbox" class="switch switch-bootstrap" name="{{ $option['key'] }}" value="1" {{ data_get($site_visibility, $option['key'], 1) == 1 ? 'checked' : '' }}>
+                                                                            <span class="switch-body"></span>
+                                                                            <span class="switch-text">{{ $option['label'] }}</span>
+                                                                        </label>
+                                                                    </div>
+                                                                @endforeach
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <div class="card border-0 shadow-none bg-light mb-4">
+                                                <div class="card-body">
+                                                    <h4 class="mb-3">{{ __('Section Visibility') }}</h4>
+                                                    <div class="row">
+                                                        @foreach ($sectionVisibilityOptions as $groupTitle => $options)
+                                                            <div class="col-lg-4 col-md-6 mb-4">
+                                                                <h5 class="mb-3">{{ $groupTitle }}</h5>
+                                                                @foreach ($options as $option)
+                                                                    <div class="form-group">
+                                                                        <label class="switch-primary">
+                                                                            <input type="checkbox" class="switch switch-bootstrap" name="{{ $option['key'] }}" value="1" {{ data_get($site_visibility, $option['key'], 1) == 1 ? 'checked' : '' }}>
+                                                                            <span class="switch-body"></span>
+                                                                            <span class="switch-text">{{ $option['label'] }}</span>
+                                                                        </label>
+                                                                    </div>
+                                                                @endforeach
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="form-group d-flex justify-content-center">
                                         <button type="submit" class="btn btn-secondary">{{ __('Submit') }}</button>
                                     </div>

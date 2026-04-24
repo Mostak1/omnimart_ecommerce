@@ -8,6 +8,7 @@ use Illuminate\{
 };
 
 use App\{
+    Helpers\VisibilityHelper,
     Models\Item,
     Models\Setting,
     Models\Subscriber,
@@ -58,6 +59,7 @@ class FrontendController extends Controller
     {
 
         $setting = Setting::first();
+        abort_unless(VisibilityHelper::isEnabled('home_page', true, $setting), 404);
 
 
         $home_customize = HomeCutomize::first();
@@ -289,6 +291,7 @@ class FrontendController extends Controller
 
     public function product($slug)
     {
+        abort_unless(VisibilityHelper::isEnabled('product_details_page'), 404);
 
         $item = Item::with('category')->whereStatus(1)->whereSlug($slug)->firstOrFail();
         $video = explode('=', $item->video);
@@ -308,7 +311,8 @@ class FrontendController extends Controller
 
     public function brands()
     {
-        if (Setting::first()->is_brands == 0) {
+        $setting = Setting::first();
+        if ($setting->is_brands == 0 || ! VisibilityHelper::isEnabled('brands_page', true, $setting)) {
             return back();
         }
         return view('front.brand', [
@@ -328,7 +332,8 @@ class FrontendController extends Controller
         }
         $tags = array_unique(explode(',', $tagz));
 
-        if (Setting::first()->is_blog == 0) return back();
+        $setting = Setting::first();
+        if ($setting->is_blog == 0 || ! VisibilityHelper::isEnabled('blog_page', true, $setting)) return back();
 
         if ($request->ajax()) return view('front.blog.list', ['posts' => $this->repository->displayPosts($request)]);
 
@@ -342,6 +347,7 @@ class FrontendController extends Controller
 
     public function blogDetails($id)
     {
+        abort_unless(VisibilityHelper::isEnabled('blog_details_page'), 404);
         $items = $this->repository->displayPost($id);
 
         return view('front.blog.show', [
@@ -358,7 +364,8 @@ class FrontendController extends Controller
 
     public function faq()
     {
-        if (Setting::first()->is_faq == 0) {
+        $setting = Setting::first();
+        if ($setting->is_faq == 0 || ! VisibilityHelper::isEnabled('faq_page', true, $setting)) {
             return back();
         }
         $fcategories =  Fcategory::whereStatus(1)->withCount('faqs')->latest('id')->get();
@@ -367,7 +374,8 @@ class FrontendController extends Controller
 
     public function show($slug)
     {
-        if (Setting::first()->is_faq == 0) {
+        $setting = Setting::first();
+        if ($setting->is_faq == 0 || ! VisibilityHelper::isEnabled('faq_details_page', true, $setting)) {
             return back();
         }
         $category =  Fcategory::whereSlug($slug)->first();
@@ -380,7 +388,8 @@ class FrontendController extends Controller
 
     public function compaignProduct()
     {
-        if (Setting::first()->is_campaign == 0) {
+        $setting = Setting::first();
+        if ($setting->is_campaign == 0 || ! VisibilityHelper::isEnabled('campaign_page', true, $setting)) {
             return back();
         }
         $compaign_items =  CampaignItem::whereStatus(1)->orderby('id', 'desc')->get();
@@ -412,6 +421,7 @@ class FrontendController extends Controller
 
     public function page($slug)
     {
+        abort_unless(VisibilityHelper::isEnabled('custom_page'), 404);
         return view('front.page', [
             'page' => $this->repository->displayPage($slug)
         ]);
@@ -421,7 +431,8 @@ class FrontendController extends Controller
 
     public function contact()
     {
-        if (Setting::first()->is_contact == 0) {
+        $setting = Setting::first();
+        if ($setting->is_contact == 0 || ! VisibilityHelper::isEnabled('contact_page', true, $setting)) {
             return back();
         }
         return view('front.contact');
@@ -505,6 +516,7 @@ class FrontendController extends Controller
     // ---------------------------- TRACK ORDER ----------------------------------------//
     public function trackOrder()
     {
+        abort_unless(VisibilityHelper::isEnabled('track_order_page'), 404);
         return view('front.track_order');
     }
 

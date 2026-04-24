@@ -10,6 +10,7 @@
 @endsection
 
 @section('content')
+@if (data_get($site_visibility, 'campaign_breadcrumb', 1))
 <div class="page-title">
     <div class="container">
       <div class="row">
@@ -25,8 +26,10 @@
       </div>
     </div>
   </div>
+@endif
   <!-- Page Content-->
 
+    @if (data_get($site_visibility, 'campaign_products', 1))
     <div class="deal-of-day-section pb-5">
         <div class="container">
             <div class="row">
@@ -104,7 +107,7 @@
             </div>
         </div>
     </div>
-
+    @endif
 
 
 @endsection

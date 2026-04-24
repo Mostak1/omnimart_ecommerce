@@ -9,6 +9,7 @@
 
 @section('content')
     <!-- Page Title-->
+@if (data_get($site_visibility, 'faq_details_breadcrumb', 1))
 <div class="page-title">
     <div class="container">
         <div class="row">
@@ -26,7 +27,9 @@
         </div>
     </div>
   </div>
+@endif
   <!-- Page Content-->
+  @if (data_get($site_visibility, 'faq_details_content', 1))
   <div class="container padding-bottom-1x mb-3">
       @foreach ($category->faqs as $key => $faq)
       <div class="accordion" id="accordion1">
@@ -43,5 +46,6 @@
         </div>
         @endforeach
   </div>
+  @endif
 
 @endsection
