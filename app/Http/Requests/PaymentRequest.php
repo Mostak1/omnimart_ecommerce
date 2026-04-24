@@ -32,9 +32,9 @@ class PaymentRequest extends FormRequest
         if(PriceHelper::CheckDigital() == false){
             return [];
         }
-        $state = State::whereStatus(1)->count() != 0  ? 'required' : '';
+        $state = 'nullable';
         
-        $shipping = ShippingService::whereStatus(1)->count() == 0 || PriceHelper::CheckDigital() == true? 'required' : '';
+        $shipping = 'nullable';
 
         if($this->single_page_checkout == 1){
             return [

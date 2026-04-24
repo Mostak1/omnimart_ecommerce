@@ -138,7 +138,7 @@
                     </div>
                 @endif
 
-                <button id="single_checkout_payment" disabled="true"
+                <button id="single_checkout_payment" {{ $setting->is_privacy_trams == 1 ? 'disabled=true' : '' }}
                     class="btn btn-primary mt-4 single_checkout_payment" type="submit"><span>@lang('Pay now')</span></button>
             </div>
 
@@ -153,6 +153,10 @@
         // Show the modal on #single_checkout_payment change
         $(document).on("click", "#single_checkout_payment", function() {
             let keyword = $('.payment_gateway').val();
+            if (!keyword) {
+                DangerNotification('{{ __('Please select a payment method') }}');
+                return;
+            }
             let modalElement = document.getElementById(keyword);
 
             if (modalElement) {
@@ -160,22 +164,24 @@
                 let modal = new bootstrap.Modal(modalElement);
                 modal.show();
 
-                // Get all input fields from the #checkoutBilling form
-                let allinput = $("#checkoutBilling input");
+                let modalForm = $(modalElement).find('form').first();
+                modalForm.find('.single-checkout-hidden').remove();
 
-                // Clear the modal form before appending new hidden inputs
-                $(modalElement).find('form').html(); // Clear modal form content
+                // Copy checkout form inputs/selects/textareas into payment form
+                $("#checkoutBilling").find('input, select, textarea').each(function() {
+                    if (!$(this).attr('name')) {
+                        return;
+                    }
 
-                // Loop through each input and append a hidden input in the modal form
-                allinput.each(function() {
                     // Create a new hidden input field with the same name and value
                     let hiddenInput = $('<input>')
                         .attr('type', 'hidden') // Set the input type to hidden
                         .attr('name', $(this).attr('name')) // Use the same name attribute
+                        .addClass('single-checkout-hidden')
                         .val($(this).val()); // Set the value of the hidden input
 
                     // Append the hidden input to the modal form
-                    $(modalElement).find('form').append(hiddenInput);
+                    modalForm.append(hiddenInput);
                 });
             }
         });
