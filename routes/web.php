@@ -530,3 +530,21 @@ Route::get('/run-clear', function () {
         ], 500);
     }
 })->name('global.run.clear');
+
+Route::get('/run-storage-link', function () {
+    try {
+        Artisan::call('storage:link');
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Storage linked successfully.',
+            'output' => Artisan::output(),
+        ]);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Storage link failed.',
+            'error' => $th->getMessage(),
+        ], 500);
+    }
+})->name('global.run.storage.link');
