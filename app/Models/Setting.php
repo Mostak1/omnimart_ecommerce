@@ -132,6 +132,10 @@ class Setting extends Model
         "is_show_category",
         "is_mail_verify",
         "page_section_visibility",
+        "steadfast_api_key",
+        "steadfast_secret_key",
+        "steadfast_base_url",
+        "steadfast_webhook_token",
     ];
 
     public $timestamps = false;

@@ -18,6 +18,7 @@ class VerifyCsrfToken extends Middleware
         'flutterwave/notify',
         '/admin/summernote/image/upload',
         '/admin/menu/update',
-        '/paytab/callback'
+        '/paytab/callback',
+        '/steadfast/webhook',
     ];
 }

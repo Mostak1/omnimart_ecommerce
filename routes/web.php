@@ -473,9 +473,9 @@ Route::group(['middleware' => 'maintainance'], function () {
     });
 });
 Route::get('/website/maintainance', 'Front\FrontendController@maintainance')->name('front.maintainance');
+Route::post('/steadfast/webhook', 'Front\SteadfastWebhookController')->name('front.steadfast.webhook');
 // run queue word route after finish all task then stop
 Route::get('/run/queue', function () {
     Artisan::call('queue:work --stop-when-empty');
     return "Queue is running";
 });
-

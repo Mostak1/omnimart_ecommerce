@@ -56,6 +56,8 @@
                                         <a class="nav-link" data-toggle="pill"
                                             href="#shop">{{ __('Shop & Checkout Page') }}</a>
                                         <a class="nav-link" data-toggle="pill"
+                                            href="#steadfast">{{ __('Steadfast Courier') }}</a>
+                                        <a class="nav-link" data-toggle="pill"
                                             href="#footer">{{ __('Footer & Contact Page') }}</a>
                                     </div>
                                 </div>
@@ -1061,6 +1063,46 @@
 
                                                         </div>
 
+                                                    </div>
+                                                </div>
+
+                                                <div id="steadfast" class="tab-pane"><br>
+                                                    <div class="row justify-content-center">
+                                                        <div class="col-lg-8">
+                                                            <div class="form-group">
+                                                                <label for="steadfast_api_key">{{ __('Steadfast API Key') }}</label>
+                                                                <input type="text" name="steadfast_api_key" class="form-control"
+                                                                    id="steadfast_api_key"
+                                                                    placeholder="{{ __('Enter Steadfast API Key') }}"
+                                                                    value="{{ $setting->steadfast_api_key }}">
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="steadfast_secret_key">{{ __('Steadfast Secret Key') }}</label>
+                                                                <input type="text" name="steadfast_secret_key" class="form-control"
+                                                                    id="steadfast_secret_key"
+                                                                    placeholder="{{ __('Enter Steadfast Secret Key') }}"
+                                                                    value="{{ $setting->steadfast_secret_key }}">
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="steadfast_base_url">{{ __('Steadfast Base URL') }}</label>
+                                                                <input type="text" name="steadfast_base_url" class="form-control"
+                                                                    id="steadfast_base_url"
+                                                                    placeholder="https://portal.packzy.com/api/v1"
+                                                                    value="{{ $setting->steadfast_base_url ?: 'https://portal.packzy.com/api/v1' }}">
+                                                                <small class="text-muted">{{ __('Default endpoint: https://portal.packzy.com/api/v1') }}</small>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="steadfast_webhook_token">{{ __('Steadfast Webhook Token') }}</label>
+                                                                <input type="text" name="steadfast_webhook_token" class="form-control"
+                                                                    id="steadfast_webhook_token"
+                                                                    placeholder="{{ __('Optional token for webhook validation') }}"
+                                                                    value="{{ $setting->steadfast_webhook_token }}">
+                                                                <small class="text-muted">{{ __('Webhook URL') }}: {{ route('front.steadfast.webhook') }}</small>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
 

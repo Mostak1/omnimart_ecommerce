@@ -10,8 +10,10 @@ use App\{
 };
 use App\Helpers\SmsHelper;
 use App\Models\Notification;
+use App\Services\SteadfastService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -122,7 +124,6 @@ class OrderController extends Controller
      */
     public function status($id,$field,$value)
     {
-
         $order = Order::find($id);
         if($field == 'payment_status'){
             if($order['payment_status'] == 'Paid'){
@@ -134,11 +135,16 @@ class OrderController extends Controller
                 return redirect()->route('back.order.index')->withErrors(__('Order is already Delivered.'));
             }
         }
+        $previousStatus = $order->order_status;
         $order->update([$field => $value]);
         if($order->payment_status == 'Paid'){
             $this->setPromoCode($order);
         }
         $this->setTrackOrder($order);
+
+        if ($field === 'order_status' && $value === 'In Progress' && $previousStatus !== 'In Progress') {
+            $this->createSteadfastOrder($order->fresh());
+        }
         
         $sms = new SmsHelper();
         $user_number = $order->user->phone;
@@ -154,6 +160,12 @@ class OrderController extends Controller
      */
     public function setTrackOrder($order)
     {
+        if(!TrackOrder::whereOrderId($order->id)->whereTitle('Pending')->exists()){
+            TrackOrder::create([
+                'title' => 'Pending',
+                'order_id' => $order->id
+            ]);
+        }
 
         if($order->order_status == 'In Progress'){
             if(!TrackOrder::whereOrderId($order->id)->whereTitle('In Progress')->exists()){
@@ -206,6 +218,22 @@ class OrderController extends Controller
                 ]);
             }
         }
+
+        if($order->order_status == 'Returned'){
+            if(!TrackOrder::whereOrderId($order->id)->whereTitle('In Progress')->exists()){
+                TrackOrder::create([
+                    'title' => 'In Progress',
+                    'order_id' => $order->id
+                ]);
+            }
+
+            if(!TrackOrder::whereOrderId($order->id)->whereTitle('Returned')->exists()){
+                TrackOrder::create([
+                    'title' => 'Returned',
+                    'order_id' => $order->id
+                ]);
+            }
+        }
     }
 
 
@@ -235,6 +263,45 @@ class OrderController extends Controller
         }
         $order->delete();
         return redirect()->back()->withSuccess(__('Order Deleted Successfully.'));
+    }
+
+    private function createSteadfastOrder(Order $order): void
+    {
+        if (filled($order->steadfast_consignment_id)) {
+            return;
+        }
+
+        $service = app(SteadfastService::class);
+
+        if (! $service->isConfigured()) {
+            Log::warning('Steadfast skipped because credentials are not configured.', [
+                'order_id' => $order->id,
+            ]);
+
+            return;
+        }
+
+        try {
+            $response = $service->createOrder($order);
+
+            $consignmentId = data_get($response, 'consignment.consignment_id')
+                ?: data_get($response, 'consignment_id')
+                ?: data_get($response, 'data.consignment_id');
+
+            $deliveryStatus = data_get($response, 'delivery_status');
+
+            $order->update([
+                'steadfast_consignment_id' => $consignmentId,
+                'steadfast_delivery_status' => $deliveryStatus,
+                'steadfast_last_tracking_response' => json_encode($response),
+                'steadfast_order_created_at' => now(),
+            ]);
+        } catch (\Throwable $exception) {
+            Log::error('Steadfast order creation failed.', [
+                'order_id' => $order->id,
+                'message' => $exception->getMessage(),
+            ]);
+        }
     }
 
 }

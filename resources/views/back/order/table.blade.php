@@ -49,6 +49,8 @@
                         data-href="{{ route('back.order.status', [$data->id, 'order_status', 'Delivered']) }}">{{ __('Delivered') }}</a>
                     <a class="dropdown-item" data-toggle="modal" data-target="#statusModal" href="javascript:;"
                         data-href="{{ route('back.order.status', [$data->id, 'order_status', 'Canceled']) }}">{{ __('Canceled') }}</a>
+                    <a class="dropdown-item" data-toggle="modal" data-target="#statusModal" href="javascript:;"
+                        data-href="{{ route('back.order.status', [$data->id, 'order_status', 'Returned']) }}">{{ __('Returned') }}</a>
                 </div>
             </div>
         </td>

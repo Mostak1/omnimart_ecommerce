@@ -29,7 +29,9 @@ use App\Models\Post;
 use App\Models\Service;
 use App\Models\Slider;
 use App\Models\TrackOrder;
+use App\Services\SteadfastService;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 
 class FrontendController extends Controller
 {
@@ -525,9 +527,31 @@ class FrontendController extends Controller
         $order = Order::where('transaction_number', $request->order_number)->first();
 
         if ($order) {
+            $trackingData = null;
+            $trackOrders = TrackOrder::whereOrderId($order->id)->get()->toArray();
+
+            if (filled($order->steadfast_consignment_id)) {
+                try {
+                    $service = app(SteadfastService::class);
+                    if ($service->isConfigured()) {
+                        $trackingData = $service->trackByConsignmentId($order->steadfast_consignment_id);
+                        $order = $service->syncTrackingIntoOrder($order, $trackingData);
+                        $this->syncTrackOrderRows($order);
+                        $trackOrders = TrackOrder::whereOrderId($order->id)->get()->toArray();
+                    }
+                } catch (\Throwable $exception) {
+                    Log::warning('Steadfast tracking fetch failed.', [
+                        'order_id' => $order->id,
+                        'message' => $exception->getMessage(),
+                    ]);
+                }
+            }
+
             return view('user.order.track', [
                 'numbers' => 3,
-                'track_orders' => TrackOrder::whereOrderId($order->id)->get()->toArray()
+                'track_orders' => $trackOrders,
+                'order' => $order,
+                'steadfast_tracking' => $trackingData,
             ]);
         } else {
             return view('user.order.track', [
@@ -545,6 +569,45 @@ class FrontendController extends Controller
             return redirect(route('front.index'));
         }
         return view('front.maintainance');
+    }
+
+    private function syncTrackOrderRows(Order $order): void
+    {
+        if (! TrackOrder::whereOrderId($order->id)->whereTitle('Pending')->exists()) {
+            TrackOrder::create([
+                'title' => 'Pending',
+                'order_id' => $order->id,
+            ]);
+        }
+
+        if (in_array($order->order_status, ['In Progress', 'Delivered', 'Canceled', 'Returned'], true)
+            && ! TrackOrder::whereOrderId($order->id)->whereTitle('In Progress')->exists()) {
+            TrackOrder::create([
+                'title' => 'In Progress',
+                'order_id' => $order->id,
+            ]);
+        }
+
+        if ($order->order_status === 'Delivered' && ! TrackOrder::whereOrderId($order->id)->whereTitle('Delivered')->exists()) {
+            TrackOrder::create([
+                'title' => 'Delivered',
+                'order_id' => $order->id,
+            ]);
+        }
+
+        if ($order->order_status === 'Canceled' && ! TrackOrder::whereOrderId($order->id)->whereTitle('Canceled')->exists()) {
+            TrackOrder::create([
+                'title' => 'Canceled',
+                'order_id' => $order->id,
+            ]);
+        }
+
+        if ($order->order_status === 'Returned' && ! TrackOrder::whereOrderId($order->id)->whereTitle('Returned')->exists()) {
+            TrackOrder::create([
+                'title' => 'Returned',
+                'order_id' => $order->id,
+            ]);
+        }
     }
 
 }
