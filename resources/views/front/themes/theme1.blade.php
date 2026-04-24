@@ -165,13 +165,16 @@
                                             <div class="rating-stars">
                                                 {!! Helper::renderStarRating($compaign_item->item->reviews->avg('rating')) !!}
                                             </div>
-                                            <h4 class="product-price">
-                                                @if ($compaign_item->item->previous_price != 0)
-                                                    <del>{{ PriceHelper::setPreviousPrice($compaign_item->item->previous_price) }}</del>
-                                                @endif
+                                            <div class="product-price-row">
+                                                <h4 class="product-price">
+                                                    @if ($compaign_item->item->previous_price != 0)
+                                                        <del>{{ PriceHelper::setPreviousPrice($compaign_item->item->previous_price) }}</del>
+                                                    @endif
 
-                                                {{ PriceHelper::grandCurrencyPrice($compaign_item->item) }}
-                                            </h4>
+                                                    {{ PriceHelper::grandCurrencyPrice($compaign_item->item) }}
+                                                </h4>
+                                                @include('includes.item_buy_now_inline', ['sitem' => $compaign_item->item])
+                                            </div>
 
                                         </div>
 
@@ -304,12 +307,15 @@
                                             <div class="rating-stars">
                                                 {!! Helper::renderStarRating($popular_category_item->reviews->avg('rating')) !!}
                                             </div>
-                                            <h4 class="product-price">
-                                                @if ($popular_category_item->previous_price != 0)
-                                                    <del>{{ PriceHelper::setPreviousPrice($popular_category_item->previous_price) }}</del>
-                                                @endif
-                                                {{ PriceHelper::grandCurrencyPrice($popular_category_item) }}
-                                            </h4>
+                                            <div class="product-price-row">
+                                                <h4 class="product-price">
+                                                    @if ($popular_category_item->previous_price != 0)
+                                                        <del>{{ PriceHelper::setPreviousPrice($popular_category_item->previous_price) }}</del>
+                                                    @endif
+                                                    {{ PriceHelper::grandCurrencyPrice($popular_category_item) }}
+                                                </h4>
+                                                @include('includes.item_buy_now_inline', ['sitem' => $popular_category_item])
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

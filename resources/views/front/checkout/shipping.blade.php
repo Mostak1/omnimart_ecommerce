@@ -50,7 +50,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="checkout-email">{{ __('E-mail Address') }}*</label>
+                                        <label for="checkout-email">{{ __('E-mail Address') }}</label>
                                         <input class="form-control {{ $errors->has('ship_email') ? 'requireInput' : '' }}" name="ship_email" type="email" id="checkout-email"
                                             value="{{ isset($user) ? $user->email : '' }}">
                                     </div>
@@ -77,12 +77,12 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label for="checkout-country">{{ __('District') }}</label>
-                                        <select class="form-control" name="ship_country"  id="shipping-country" required>
+                                        <select class="form-control" name="ship_country"  id="shipping-country" required data-shipping-url="{{ route('front.shipping.setup') }}">
                                             <option value="" selected disabled>{{ __('Choose District') }}</option>
-                                            @foreach (config('bangladesh.districts', []) as $district)
-                                                <option value="{{ $district }}"
-                                                    {{ isset($user) && $user->ship_country == $district ? 'selected' : '' }}>
-                                                    {{ $district }}</option>
+                                            @foreach ($districts as $district)
+                                                <option value="{{ $district->name }}"
+                                                    {{ isset($user) && $user->ship_country == $district->name ? 'selected' : '' }}>
+                                                    {{ $district->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>

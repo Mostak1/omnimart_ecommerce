@@ -964,6 +964,9 @@ $(function ($) {
         $(document).on("click", ".add_to_single_cart", function () {
             getData(1, $(this).attr("data-target"));
         });
+        $(document).on("click", ".buy_now_single_cart", function () {
+            getData(1, $(this).attr("data-target"), 0, 0, 1);
+        });
 
         function cartSubmit(item_key, item_id, cartQty, newOptionArray) {
             getData(1, item_key, item_id, cartQty, 0, newOptionArray);
@@ -1120,6 +1123,77 @@ $(function ($) {
             });
         });
 
+        function getCheckoutStateId() {
+            return $('#state_id_select').val() || '';
+        }
+
+        function updateCheckoutCouponUi(data) {
+            if (data.discount_price !== undefined) {
+                $('.checkout_coupon_amount').text(data.discount_price);
+                if (data.discount_name) {
+                    $('.checkout_coupon_row').removeClass('d-none');
+                } else {
+                    $('.checkout_coupon_row').addClass('d-none');
+                }
+            }
+
+            if (data.discount_name !== undefined) {
+                if (data.discount_name) {
+                    $('.checkout_coupon_name').removeClass('d-none').text(data.discount_name);
+                } else {
+                    $('.checkout_coupon_name').addClass('d-none').text('');
+                }
+            }
+
+            if (data.shipping_price !== undefined) {
+                $('.set__shipping_price_tr').removeClass('d-none');
+                $('.set__shipping_price').text(data.shipping_price);
+            }
+
+            if (data.grand_total !== undefined) {
+                $('.grand_total_set').text(data.grand_total);
+            }
+        }
+
+        $(document).on("submit", "#checkout_coupon_form", function (e) {
+            e.preventDefault();
+
+            var form = $(this);
+            $.ajax({
+                type: "POST",
+                url: form.attr("action"),
+                data: form.serialize() + '&district=' + encodeURIComponent(getCheckoutDistrictValue()) + '&state_id=' + encodeURIComponent(getCheckoutStateId()),
+                success: function (data) {
+                    if (data.status == true) {
+                        successNotification(data.message);
+                        updateCheckoutCouponUi(data);
+                    } else {
+                        dangerNotification(data.message);
+                    }
+                },
+            });
+        });
+
+        $(document).on("click", ".remove-checkout-coupon", function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: "GET",
+                url: $(this).attr('href'),
+                data: {
+                    district: getCheckoutDistrictValue(),
+                    state_id: getCheckoutStateId()
+                },
+                success: function (data) {
+                    if (data.status == true) {
+                        successNotification(data.message);
+                        $('#checkout_coupon_form').trigger('reset');
+                        updateCheckoutCouponUi(data);
+                    }
+                }
+            });
+        });
+
         // user panel script start
         $(document).on("change", "#avater", function () {
             var file = event.target.files[0];
@@ -1258,4 +1332,3 @@ $(window).on('load', function (event) {
     }
 
 });
-

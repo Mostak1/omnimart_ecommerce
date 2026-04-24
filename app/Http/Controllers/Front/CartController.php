@@ -9,7 +9,9 @@ use App\{
 };
 use App\Helpers\PriceHelper;
 use App\Models\ShippingService;
+use App\Models\State;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
@@ -77,7 +79,13 @@ class CartController extends Controller
 
     public function promoStore(Request $request)
     {
-        return response()->json($this->repository->promoStore($request));
+        $response = $this->repository->promoStore($request);
+
+        if (! $response['status']) {
+            return response()->json($response);
+        }
+
+        return response()->json(array_merge($response, $this->checkoutSummaryResponse($request)));
     }
 
     public function shippingStore(Request $request)
@@ -143,7 +151,70 @@ class CartController extends Controller
     public function promoDelete()
     {
         Session::forget('coupon');
+
+        if (request()->ajax()) {
+            return response()->json([
+                'status' => true,
+                'message' => __('Promo code remove successfully'),
+            ] + $this->checkoutSummaryResponse(request()));
+        }
+
         Session::flash('success', __('Promo code remove successfully'));
         return back();
+    }
+
+    private function checkoutSummaryResponse(Request $request): array
+    {
+        $cart = Session::get('cart', []);
+        $cartTotal = 0;
+        $totalTax = 0;
+
+        foreach ($cart as $key => $items) {
+            $cartTotal += ($items['main_price'] + $items['attribute_price']) * $items['qty'];
+            $item = Item::find(PriceHelper::GetItemId($key));
+
+            if ($item && $item->tax) {
+                $totalTax += $item::taxCalculate($item) * $items['qty'];
+            }
+        }
+
+        $district = $request->input('district')
+            ?: Session::get('shipping_address.ship_country')
+            ?: Session::get('billing_address.bill_country')
+            ?: (Auth::check() ? (Auth::user()->ship_country ?: Auth::user()->bill_country) : null);
+
+        $shipping = PriceHelper::Digital() ? ShippingService::appliedService($district, $cart) : null;
+        $discount = Session::get('coupon');
+
+        $grandTotal = $cartTotal + ($shipping ? $shipping->price : 0) + $totalTax;
+        $grandTotal -= $discount['discount'] ?? 0;
+
+        $statePrice = 0;
+        $stateId = $request->input('state_id');
+
+        if ($stateId) {
+            $state = State::find($stateId);
+            if ($state) {
+                $statePrice = $state->type === 'fixed'
+                    ? $state->price
+                    : ($cartTotal * $state->price) / 100;
+            }
+        } elseif (Auth::check() && Auth::user()->state_id) {
+            $state = Auth::user()->state;
+            if ($state) {
+                $statePrice = $state->type === 'fixed'
+                    ? $state->price
+                    : ($cartTotal * $state->price) / 100;
+            }
+        }
+
+        $grandTotal += $statePrice;
+
+        return [
+            'discount_price' => PriceHelper::setCurrencyPrice($discount['discount'] ?? 0),
+            'discount_name' => $discount['code']['title'] ?? '',
+            'grand_total' => PriceHelper::setCurrencyPrice($grandTotal),
+            'shipping_price' => PriceHelper::setCurrencyPrice($shipping ? $shipping->price : 0),
+        ];
     }
 }

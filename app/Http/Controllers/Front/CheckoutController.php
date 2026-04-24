@@ -17,6 +17,7 @@ use App\{
 use App\Helpers\PriceHelper;
 use App\Helpers\SmsHelper;
 use App\Models\Currency;
+use App\Models\District;
 use App\Models\Item;
 use App\Models\Setting;
 use App\Models\ShippingService;
@@ -107,6 +108,7 @@ class CheckoutController extends Controller
         $data['shipping'] = $shipping;
         $data['tax'] = $total_tax;
         $data['payments'] = PaymentSetting::whereStatus(1)->get();
+        $data['districts'] = District::ordered()->get();
 
         return view('front.checkout.index', $data);
     }
@@ -171,6 +173,7 @@ class CheckoutController extends Controller
         $data['shipping'] = $shipping;
         $data['tax'] = $total_tax;
         $data['payments'] = PaymentSetting::whereStatus(1)->get();
+        $data['districts'] = District::ordered()->get();
 
         return view('front.checkout.billing', $data);
     }
@@ -182,7 +185,7 @@ class CheckoutController extends Controller
         // laravel validation
         $request->validate([
             'bill_first_name' => 'required',
-            'bill_email' => 'required|email',
+            'bill_email' => 'nullable|email',
             'bill_phone' => 'required',
             'bill_address1' => 'required',
             'bill_country' => 'required',
@@ -277,6 +280,7 @@ class CheckoutController extends Controller
         $data['shipping'] = $shipping;
         $data['tax'] = $total_tax;
         $data['payments'] = PaymentSetting::whereStatus(1)->get();
+        $data['districts'] = District::ordered()->get();
         return view('front.checkout.shipping', $data);
     }
 
@@ -286,7 +290,7 @@ class CheckoutController extends Controller
         // laravel validation
         $request->validate([
             'ship_first_name' => 'required',
-            'ship_email' => 'required|email',
+            'ship_email' => 'nullable|email',
             'ship_phone' => 'required',
             'ship_address1' => 'required',
             'ship_country' => 'required',

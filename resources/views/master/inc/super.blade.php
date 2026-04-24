@@ -142,7 +142,7 @@
                 </li>
                 <li>
                     <a class="sub-link" href="{{ route('back.state.index') }}">
-                        <span class="sub-item">{{ __('State Charge') }}</span>
+                        <span class="sub-item">{{ __('Shipping Charge') }}</span>
                     </a>
                 </li>
                 <li>

@@ -61,8 +61,8 @@
                          <label for="billing-country">{{__('District')}}</label>
                          <select class="form-control" name="bill_country" id="billing-country">
                           <option selected>{{__('Choose District')}}</option>
-                          @foreach (config('bangladesh.districts', []) as $district)
-                          <option value="{{$district}}" {{$user->bill_country == $district ? 'selected' :''}} >{{$district}}</option>
+                          @foreach ($districts as $district)
+                          <option value="{{$district->name}}" {{$user->bill_country == $district->name ? 'selected' :''}} >{{$district->name}}</option>
                           @endforeach
                          </select>
                      @error('bill_country')
@@ -130,8 +130,8 @@
                          <label for="shipping-country">{{__('District')}}</label>
                          <select class="form-control" name="ship_country" id="shipping-country">
                             <option>{{__('Choose District')}}</option>
-                            @foreach (config('bangladesh.districts', []) as $district)
-                            <option value="{{$district}}" {{$user->ship_country == $district ? 'selected' :''}} >{{$district}}</option>
+                            @foreach ($districts as $district)
+                            <option value="{{$district->name}}" {{$user->ship_country == $district->name ? 'selected' :''}} >{{$district->name}}</option>
                             @endforeach
                          </select>
                          @error('ship_country')

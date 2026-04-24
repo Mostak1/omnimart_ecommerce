@@ -8,7 +8,7 @@
     <div class="card mb-4">
         <div class="card-body">
             <div class="d-sm-flex align-items-center justify-content-between">
-                <h3 class=" mb-0 "><b>{{ __('Create Shipping') }}</b> </h3>
+                <h3 class=" mb-0 "><b>{{ __('Create Shipping Charge') }}</b> </h3>
                 <a class="btn btn-primary btn-sm" href="{{route('back.shipping.index')}}"><i class="fas fa-chevron-left"></i> {{ __('Back') }}</a>
                 </div>
         </div>
@@ -38,7 +38,7 @@
 									</div>
 
                                     <div class="form-group">
-                                        <label for="price">{{ __('Shipping Cost') }} *</label>
+                                        <label for="price">{{ __('Shipping Charge') }} *</label>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
                                                 <span
@@ -58,39 +58,28 @@
                                             <input type="checkbox" name="is_automated" {{ old('is_automated') ? 'checked' : '' }} class="my-2" id="is_automated">
                                             {{ __('Use Automated District Shipping') }}
                                         </label>
-                                        <small class="d-block text-info">{{ __('Dhaka = base rate, outside Dhaka = outside rate, every extra KG adds extra rate.') }}</small>
+                                        <small class="d-block text-info">{{ __('This shipping service can use district-based automation with a global default rate.') }}</small>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="dhaka_price">{{ __('Dhaka Shipping Cost') }}</label>
+                                        <label for="default_base_shipping_charge">{{ __('Default / All Base Shipping Charge') }}</label>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">{{ PriceHelper::adminCurrency() }}</span>
                                             </div>
-                                            <input type="text" id="dhaka_price" name="dhaka_price" class="form-control"
-                                                placeholder="{{ __('Enter Dhaka Shipping Cost') }}" value="{{ old('dhaka_price', 80) }}">
+                                            <input type="text" id="default_base_shipping_charge" name="default_base_shipping_charge" class="form-control"
+                                                placeholder="{{ __('Enter Default Base Shipping Charge') }}" value="{{ old('default_base_shipping_charge', 120) }}">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="outside_dhaka_price">{{ __('Outside Dhaka Shipping Cost') }}</label>
+                                        <label for="default_per_kg_extra_charge">{{ __('Default / All Per KG Extra Charge') }}</label>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">{{ PriceHelper::adminCurrency() }}</span>
                                             </div>
-                                            <input type="text" id="outside_dhaka_price" name="outside_dhaka_price" class="form-control"
-                                                placeholder="{{ __('Enter Outside Dhaka Shipping Cost') }}" value="{{ old('outside_dhaka_price', 130) }}">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="per_kg_price">{{ __('Extra Charge Per KG') }}</label>
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">{{ PriceHelper::adminCurrency() }}</span>
-                                            </div>
-                                            <input type="text" id="per_kg_price" name="per_kg_price" class="form-control"
-                                                placeholder="{{ __('Enter Extra Charge Per KG') }}" value="{{ old('per_kg_price', 30) }}">
+                                            <input type="text" id="default_per_kg_extra_charge" name="default_per_kg_extra_charge" class="form-control"
+                                                placeholder="{{ __('Enter Default Per KG Extra Charge') }}" value="{{ old('default_per_kg_extra_charge', 30) }}">
                                         </div>
                                     </div>
 								

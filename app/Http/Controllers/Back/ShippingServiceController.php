@@ -8,6 +8,7 @@ use App\{
     Http\Controllers\Controller
 };
 use App\Models\Currency;
+use App\Models\District;
 
 class ShippingServiceController extends Controller
 {
@@ -56,9 +57,11 @@ class ShippingServiceController extends Controller
         $curr = Currency::where('is_default',1)->first();
         $input['price'] = $request->price ? $request->price / $curr->value : 0;
         $input['minimum_price'] = $request->minimum_price ? $request->minimum_price / $curr->value : 0;
-        $input['dhaka_price'] = $request->dhaka_price ? $request->dhaka_price / $curr->value : 0;
-        $input['outside_dhaka_price'] = $request->outside_dhaka_price ? $request->outside_dhaka_price / $curr->value : 0;
-        $input['per_kg_price'] = $request->per_kg_price ? $request->per_kg_price / $curr->value : 0;
+        $input['dhaka_price'] = $request->default_base_shipping_charge ? $request->default_base_shipping_charge / $curr->value : 0;
+        $input['outside_dhaka_price'] = $request->default_base_shipping_charge ? $request->default_base_shipping_charge / $curr->value : 0;
+        $input['per_kg_price'] = $request->default_per_kg_extra_charge ? $request->default_per_kg_extra_charge / $curr->value : 0;
+        $input['default_base_shipping_charge'] = $request->default_base_shipping_charge ? $request->default_base_shipping_charge / $curr->value : 0;
+        $input['default_per_kg_extra_charge'] = $request->default_per_kg_extra_charge ? $request->default_per_kg_extra_charge / $curr->value : 0;
         $input['is_automated'] = $request->has('is_automated') ? 1 : 0;
 
         ShippingService::create($input);
@@ -74,7 +77,10 @@ class ShippingServiceController extends Controller
      */
     public function edit(ShippingService $shipping)
     {
-        return view('back.shipping.edit',compact('shipping'));
+        return view('back.shipping.edit', [
+            'shipping' => $shipping,
+            'districts' => District::ordered()->get(),
+        ]);
     }
 
 
@@ -115,11 +121,14 @@ class ShippingServiceController extends Controller
         }
         
         $input['price'] = $request->price ? $request->price / $curr->value : 0;
-        $input['dhaka_price'] = $request->dhaka_price ? $request->dhaka_price / $curr->value : 0;
-        $input['outside_dhaka_price'] = $request->outside_dhaka_price ? $request->outside_dhaka_price / $curr->value : 0;
-        $input['per_kg_price'] = $request->per_kg_price ? $request->per_kg_price / $curr->value : 0;
+        $input['dhaka_price'] = $request->default_base_shipping_charge ? $request->default_base_shipping_charge / $curr->value : 0;
+        $input['outside_dhaka_price'] = $request->default_base_shipping_charge ? $request->default_base_shipping_charge / $curr->value : 0;
+        $input['per_kg_price'] = $request->default_per_kg_extra_charge ? $request->default_per_kg_extra_charge / $curr->value : 0;
+        $input['default_base_shipping_charge'] = $request->default_base_shipping_charge ? $request->default_base_shipping_charge / $curr->value : 0;
+        $input['default_per_kg_extra_charge'] = $request->default_per_kg_extra_charge ? $request->default_per_kg_extra_charge / $curr->value : 0;
 
         $shipping->update($input);
+        $this->syncDistrictRates($request, $curr->value);
 
         return redirect()->route('back.shipping.index')->withSuccess(__('Shipping Service Updated Successfully.'));
     }
@@ -134,5 +143,28 @@ class ShippingServiceController extends Controller
     {
         $shipping->delete();
         return redirect()->route('back.shipping.index')->withSuccess(__('Shipping Service Deleted Successfully.'));
+    }
+
+    private function syncDistrictRates($request, float $currencyValue): void
+    {
+        $districtIds = $request->input('district_id', []);
+        $baseCharges = $request->input('district_base_shipping_charge', []);
+        $extraCharges = $request->input('district_per_kg_extra_charge', []);
+
+        foreach ($districtIds as $index => $districtId) {
+            $district = District::find($districtId);
+
+            if (! $district) {
+                continue;
+            }
+
+            $baseCharge = $baseCharges[$index] ?? null;
+            $extraCharge = $extraCharges[$index] ?? null;
+
+            $district->update([
+                'base_shipping_charge' => $baseCharge !== null && $baseCharge !== '' ? $baseCharge / $currencyValue : null,
+                'per_kg_extra_charge' => $extraCharge !== null && $extraCharge !== '' ? $extraCharge / $currencyValue : null,
+            ]);
+        }
     }
 }

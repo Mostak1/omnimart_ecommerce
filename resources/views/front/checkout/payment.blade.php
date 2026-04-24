@@ -90,11 +90,8 @@
                                     @enderror
                                 @endif
                             </div>
+                            @if (PriceHelper::CheckDigital() == true && DB::table('states')->whereStatus(1)->count() > 0)
                             <div class="col-sm-6  mb-4">
-                                @if (PriceHelper::CheckDigital() == true)
-                                    
-                                
-                                @if (DB::table('states')->whereStatus(1)->count() > 0)
                                     <select name="state_id" class="form-control" id="state_id_select" required>
                                         <option value="" selected disabled>{{ __('Select Shipping State') }}</option>
                                         @foreach (DB::table('states')->whereStatus(1)->get() as $state)
@@ -115,9 +112,8 @@
                                     @error('state_id')
                                         <p class="text-danger state_message">{{ $message }}</p>
                                     @enderror
-                                @endif
-                            @endif
                             </div>
+                            @endif
                         </div>
                         <h6 class="pb-2 widget-title2">{{ __('Pay With') }} :</h6>
                         <div class="row mt-4">

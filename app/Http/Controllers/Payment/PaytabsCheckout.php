@@ -33,7 +33,7 @@ class PaytabsCheckout
                 'state_id' => $state,
                 "shipping_id" => $shipping,
                 'bill_first_name' => 'required',
-                'bill_email' => 'required',
+                'bill_email' => 'nullable|email',
                 'bill_phone' => 'required',
                 'bill_address1' => 'required',
                 'bill_country' => 'required',
@@ -101,7 +101,7 @@ class PaytabsCheckout
 
 
         $customer_name = $user ? $user->name : Session::get('billing_address')['bill_first_name'];
-        $customer_email = $user ? $user->email : Session::get('billing_address')['bill_email'];
+        $customer_email = $user ? $user->email : (Session::get('billing_address')['bill_email'] ?? Setting::first()->email_from);
         $customer_phone = Session::get('billing_address')['bill_phone'];
         $customer_address = Session::get('billing_address')['bill_address1'];
         $customer_city = Session::get('billing_address')['bill_country'] ?? 'Dhaka';

@@ -8,6 +8,7 @@ use App\{
     Repositories\Front\UserRepository
 };
 use App\Helpers\ImageHelper;
+use App\Models\District;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\Subscriber;
@@ -71,7 +72,8 @@ class AccountController extends Controller
     {
         $user = Auth::user();
         return view('user.dashboard.address',[
-            'user' => $user
+            'user' => $user,
+            'districts' => District::ordered()->get(),
         ]);
     }
 

@@ -22,29 +22,15 @@
                 <td class="text-gray-dark">{{ PriceHelper::setCurrencyPrice($cart_total) }}</td>
             </tr>
 
-            @if ($tax != 0)
-                <tr>
-                    <td>{{ __('Estimated tax') }}:</td>
-                    <td class="text-gray-dark">{{ PriceHelper::setCurrencyPrice($tax) }}</td>
-                </tr>
-            @endif
-
-            @if (DB::table('states')->count() > 0)
-                <tr class="{{ Auth::check() && Auth::user()->state_id ? '' : 'd-none' }} set__state_price_tr">
-                    <td>{{ __('State tax') }}:</td>
-                    <td class="text-gray-dark set__state_price">
-                        {{ PriceHelper::setCurrencyPrice(Auth::check() && Auth::user()->state_id ? ($cart_total * Auth::user()->state->price) / 100 : 0) }}
-                    </td>
-                </tr>
-            @endif
-
-            @if ($discount)
-                <tr>
-                    <td>{{ __('Coupon discount') }}:</td>
-                    <td class="text-danger">-
-                        {{ PriceHelper::setCurrencyPrice($discount ? $discount['discount'] : 0) }}</td>
-                </tr>
-            @endif
+            <tr class="checkout_coupon_row {{ $discount ? '' : 'd-none' }}">
+                <td>{{ __('Coupon discount') }}:</td>
+                <td class="text-danger">-
+                    <span class="checkout_coupon_amount">{{ PriceHelper::setCurrencyPrice($discount ? $discount['discount'] : 0) }}</span>
+                    <a href="{{ route('front.promo.destroy') }}" class="btn btn-danger btn-sm ml-2 remove-checkout-coupon" title="{{ __('Remove coupon') }}">
+                        <i class="icon-x"></i>
+                    </a>
+                </td>
+            </tr>
 
             @if ($shipping || PriceHelper::CheckDigital())
                 <tr class="{{ $shipping ? '' : 'd-none' }} set__shipping_price_tr">
@@ -59,6 +45,21 @@
                 </td>
             </tr>
         </table>
+    </section>
+
+    <section class="card widget widget-featured-posts widget-order-summary p-4">
+        <h3 class="widget-title">{{ __('Coupon') }}</h3>
+        <form method="post" id="checkout_coupon_form" action="{{ route('front.promo.submit') }}">
+            @csrf
+            <div class="form-group mb-2">
+                <input class="form-control form-control-sm" name="code" type="text"
+                    placeholder="{{ __('Coupon code') }}" required>
+            </div>
+            <button class="btn btn-primary btn-sm" type="submit"><span>{{ __('Apply Coupon') }}</span></button>
+            <p class="small text-success mt-2 mb-0 checkout_coupon_name {{ $discount ? '' : 'd-none' }}">
+                {{ $discount ? $discount['code']['title'] : '' }}
+            </p>
+        </form>
     </section>
 
 

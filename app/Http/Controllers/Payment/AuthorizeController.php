@@ -39,7 +39,7 @@ class AuthorizeController extends Controller
                 'state_id' => $state,
                 "shipping_id" => $shipping,
                 'bill_first_name' => 'required',
-                'bill_email' => 'required',
+                'bill_email' => 'nullable|email',
                 'bill_phone' => 'required',
                 'bill_address1' => 'required',
                 'bill_country' => 'required',

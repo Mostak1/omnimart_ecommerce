@@ -37,7 +37,7 @@ class SslCommerzController extends Controller
                 'state_id' => $state,
                 "shipping_id" => $shipping,
                 'bill_first_name' => 'required',
-                'bill_email' => 'required',
+                'bill_email' => 'nullable|email',
                 'bill_phone' => 'required',
                 'bill_address1' => 'required',
                 'bill_country' => 'required',
@@ -139,7 +139,7 @@ class SslCommerzController extends Controller
         $bill_info = Session::get('billing_address');
         # CUSTOMER INFORMATION
         $post_data['cus_name'] = $bill_info['bill_first_name'];
-        $post_data['cus_email'] = $bill_info['bill_email'];
+        $post_data['cus_email'] = $bill_info['bill_email'] ?? Setting::first()->email_from;
         $post_data['cus_add1'] = '';
         $post_data['cus_city'] = '';
         $post_data['cus_postcode'] = '';

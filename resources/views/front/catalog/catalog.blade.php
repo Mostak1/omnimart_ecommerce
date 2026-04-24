@@ -45,12 +45,15 @@
                     <div class="rating-stars">
                         {!! Helper::renderStarRating($item->reviews->avg('rating'))!!}
                     </div>
-                    <h4 class="product-price">
-                        @if ($item->previous_price !=0)
-                        <del>{{PriceHelper::setPreviousPrice($item->previous_price)}}</del>
-                        @endif
-                        {{PriceHelper::grandCurrencyPrice($item)}}
-                    </h4>
+                    <div class="product-price-row">
+                        <h4 class="product-price">
+                            @if ($item->previous_price !=0)
+                            <del>{{PriceHelper::setPreviousPrice($item->previous_price)}}</del>
+                            @endif
+                            {{PriceHelper::grandCurrencyPrice($item)}}
+                        </h4>
+                        @include('includes.item_buy_now_inline',['sitem' => $item])
+                    </div>
                 </div>
 
                 </div>
@@ -101,12 +104,15 @@
                                     <div class="rating-stars">
                                         {!! Helper::renderStarRating($item->reviews->avg('rating')) !!}
                                     </div>
-                                    <h4 class="product-price">
-                                        @if ($item->previous_price !=0)
-                                        <del>{{PriceHelper::setPreviousPrice($item->previous_price)}}</del>
-                                        @endif
-                                        {{PriceHelper::grandCurrencyPrice($item)}}
-                                    </h4>
+                                    <div class="product-price-row">
+                                        <h4 class="product-price">
+                                            @if ($item->previous_price !=0)
+                                            <del>{{PriceHelper::setPreviousPrice($item->previous_price)}}</del>
+                                            @endif
+                                            {{PriceHelper::grandCurrencyPrice($item)}}
+                                        </h4>
+                                        @include('includes.item_buy_now_inline',['sitem' => $item])
+                                    </div>
                                     <p class="text-sm sort_details_show  text-muted hidden-xs-down my-1">
                                     {{ Str::limit(strip_tags($item->sort_details), 100) }}
                                     </p>

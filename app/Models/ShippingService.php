@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class ShippingService extends Model
 {
@@ -17,6 +18,8 @@ class ShippingService extends Model
         'dhaka_price',
         'outside_dhaka_price',
         'per_kg_price',
+        'default_base_shipping_charge',
+        'default_per_kg_extra_charge',
     ];
     public $timestamps = false;
 
@@ -38,18 +41,15 @@ class ShippingService extends Model
                 continue;
             }
 
-            $itemWeight = $item->shipping_weight && $item->shipping_weight > 0 ? (float) $item->shipping_weight : 1;
+            if (! $item->shipping_weight || $item->shipping_weight <= 0) {
+                continue;
+            }
+
+            $itemWeight = (float) $item->shipping_weight;
             $totalWeight += $itemWeight * (int) ($cartItem['qty'] ?? 1);
         }
 
-        return $totalWeight > 0 ? $totalWeight : 1;
-    }
-
-    public static function isDhakaDistrict($district): bool
-    {
-        $district = strtolower(trim((string) $district));
-
-        return in_array($district, ['dhaka', 'dhaka metro'], true);
+        return $totalWeight;
     }
 
     public function calculatedPrice($district, $cart): float
@@ -58,12 +58,25 @@ class ShippingService extends Model
             return (float) $this->price;
         }
 
-        $weight = (int) ceil(static::cartWeight($cart));
-        $basePrice = static::isDhakaDistrict($district)
-            ? (float) $this->dhaka_price
-            : (float) $this->outside_dhaka_price;
+        $districtRate = District::query()
+            ->whereRaw('LOWER(name) = ?', [Str::lower(trim((string) $district))])
+            ->first();
 
-        return $basePrice + max(0, $weight - 1) * (float) $this->per_kg_price;
+        $basePrice = $districtRate && $districtRate->base_shipping_charge !== null
+            ? (float) $districtRate->base_shipping_charge
+            : (float) ($this->default_base_shipping_charge ?? $this->outside_dhaka_price ?? $this->price);
+
+        $perKgPrice = $districtRate && $districtRate->per_kg_extra_charge !== null
+            ? (float) $districtRate->per_kg_extra_charge
+            : (float) ($this->default_per_kg_extra_charge ?? $this->per_kg_price ?? 0);
+
+        $weight = static::cartWeight($cart);
+
+        if ($weight <= 0 || $weight <= 1) {
+            return $basePrice;
+        }
+
+        return $basePrice + max(0, $weight - 1) * $perKgPrice;
     }
 
     public static function appliedService($district, $cart)

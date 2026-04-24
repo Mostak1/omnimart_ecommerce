@@ -5,9 +5,8 @@
         </td>
         <td>
             @if ($data->is_automated)
-            {{ __('Dhaka') }}: {{ PriceHelper::adminCurrencyPrice($data->dhaka_price) }}<br>
-            {{ __('Outside Dhaka') }}: {{ PriceHelper::adminCurrencyPrice($data->outside_dhaka_price) }}<br>
-            {{ __('Per KG') }}: {{ PriceHelper::adminCurrencyPrice($data->per_kg_price) }}
+            {{ __('Default / All Base') }}: {{ PriceHelper::adminCurrencyPrice($data->default_base_shipping_charge ?? $data->outside_dhaka_price) }}<br>
+            {{ __('Default / All Per KG') }}: {{ PriceHelper::adminCurrencyPrice($data->default_per_kg_extra_charge ?? $data->per_kg_price) }}
             @elseif ($data->id != 1)
             {{ $data->price == 0  ? __('Free') : PriceHelper::adminCurrencyPrice($data->price) }}
             @else

@@ -106,7 +106,7 @@
                                             {{ isset($bill['bill_address2']) ? $bill['bill_address2'] : '' }}<br>
                                         @endif
                                         @if (isset($bill['bill_country']))
-                                            <span class="text-muted">{{ __('Country') }}:
+                                            <span class="text-muted">{{ __('District') }}:
                                             </span>{{ $bill['bill_country'] }}<br>
                                         @endif
                                         @if (isset($bill['bill_city']))
@@ -145,7 +145,7 @@
                                             {{ isset($ship['ship_address2']) ? $ship['ship_address2'] : '' }}<br>
                                         @endif
                                         @if (isset($ship['ship_country']))
-                                            <span class="text-muted">{{ __('Country') }}:
+                                            <span class="text-muted">{{ __('District') }}:
                                             </span>{{ $ship['ship_country'] }}<br>
                                         @endif
                                         @if (isset($ship['ship_city']))

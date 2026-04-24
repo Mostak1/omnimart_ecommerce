@@ -96,27 +96,8 @@
 <div class="card border-0 mt-4">
     <div class="card-body">
         <div class="shopping-cart-footer">
-            <div class="column">
-                <form class="coupon-form" method="post" id="coupon_form" action="{{ route('front.promo.submit') }}">
-                    @csrf
-                    <input class="form-control form-control-sm" name="code" type="text"
-                        placeholder="{{ __('Coupon code') }}" required>
-                    <button class="btn btn-primary btn-sm"
-                        type="submit"><span>{{ __('Apply Coupon') }}</span></button>
-                </form>
-            </div>
-
-            <div class="text-right text-lg column {{ Session::has('coupon') ? '' : 'd-none' }}"><span
-                    class="text-muted">{{ __('Discount') }}
-                    ({{ Session::has('coupon') ? Session::get('coupon')['code']['title'] : '' }}) : </span><span
-                    class="text-gray-dark">{{ PriceHelper::setCurrencyPrice(Session::has('coupon') ? Session::get('coupon')['discount'] : 0) }}</span>
-                    <a class="remove-from-cart btn btn-danger btn-sm "
-                                    href="{{ route('front.promo.destroy') }}" data-toggle="tooltip"
-                                    title="Remove item"><i class="icon-x"></i></a>
-            </div>
-
             <div class="text-right column text-lg"><span class="text-muted">{{ __('Subtotal') }}: </span><span
-                    class="text-gray-dark">{{ PriceHelper::setCurrencyPrice($cartTotal - (Session::has('coupon') ? Session::get('coupon')['discount'] : 0)) }}</span>
+                    class="text-gray-dark">{{ PriceHelper::setCurrencyPrice($cartTotal) }}</span>
             </div>
 
 

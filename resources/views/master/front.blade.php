@@ -62,6 +62,24 @@
     @endif
     <style>
         {{ $setting->custom_css }}
+
+        .product-price-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .product-price-row .product-price {
+            margin-bottom: 0;
+        }
+
+        .product-buy-now-inline {
+            flex-shrink: 0;
+            border-radius: 999px;
+            line-height: 1.2;
+            padding: 6px 12px;
+        }
     </style>
     {{-- Google AdSense Start --}}
     @if ($setting->is_google_adsense == '1')

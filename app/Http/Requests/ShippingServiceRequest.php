@@ -27,9 +27,10 @@ class ShippingServiceRequest extends FormRequest
            'title' => 'required|max:255',
            'price'  => 'nullable|numeric|max:9999999999',
            'minimum_price' => 'nullable|numeric|max:9999999999',
-           'dhaka_price' => 'nullable|numeric|max:9999999999',
-           'outside_dhaka_price' => 'nullable|numeric|max:9999999999',
-           'per_kg_price' => 'nullable|numeric|max:9999999999',
+           'default_base_shipping_charge' => 'nullable|numeric|max:9999999999',
+           'default_per_kg_extra_charge' => 'nullable|numeric|max:9999999999',
+           'district_base_shipping_charge.*' => 'nullable|numeric|max:9999999999',
+           'district_per_kg_extra_charge.*' => 'nullable|numeric|max:9999999999',
         ];
     }
 

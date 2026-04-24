@@ -598,8 +598,7 @@
                      var cleanedString = currencyString.replace(/[^0-9.-]+/g, '');
                      total = parseInt(cleanedString).toFixed(2);
 
-                     let email = $('#checkout_email_billing').val();
-                     alert(email)
+                     let email = $('#checkout_email_billing').val() || '{{ \App\Models\Setting::first()->email_from }}';
                      var handler = PaystackPop.setup({
                          key: '{{ $paydata['key'] }}',
                          email: email,

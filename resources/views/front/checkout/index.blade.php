@@ -73,8 +73,8 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label for="checkout_email_billing">{{ __('E-mail Address') }}*</label>
-                                                <input class="form-control {{ $errors->has('bill_email') ? 'requireInput' : '' }}" name="bill_email" type="email" 
+                                                <label for="checkout_email_billing">{{ __('E-mail Address') }}</label>
+                                                <input class="form-control" name="bill_email" type="email" 
                                                     id="checkout_email_billing"
                                                     value="{{ isset($user) ? $user->email : '' }}">
                                             </div>
@@ -104,10 +104,10 @@
                                                     <select class="form-control"  name="bill_country"
                                                         id="billing-country" required data-shipping-url="{{ route('front.shipping.setup') }}">
                                                         <option value="" selected disabled>{{ __('Choose District') }}</option>
-                                                        @foreach (config('bangladesh.districts', []) as $district)
-                                                            <option value="{{ $district }}"
-                                                                {{ isset($user) && $user->bill_country == $district ? 'selected' : '' }}>
-                                                                {{ $district }}</option>
+                                                        @foreach ($districts as $district)
+                                                            <option value="{{ $district->name }}"
+                                                                {{ isset($user) && $user->bill_country == $district->name ? 'selected' : '' }}>
+                                                                {{ $district->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -128,4 +128,3 @@
         </div>
     </div>
 @endsection
-

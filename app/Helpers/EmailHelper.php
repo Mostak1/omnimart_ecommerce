@@ -97,7 +97,7 @@ class EmailHelper
         if (isset($user)) {
             $email = $user->email;
         } else {
-            $email = Session::get('billing_address')['bill_email'];
+            $email = Session::get('billing_address')['bill_email'] ?? Setting::first()->email_from;
         }
         return $email;
     }

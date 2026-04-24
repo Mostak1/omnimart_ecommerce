@@ -510,12 +510,15 @@
                                                 href="{{ route('front.product', $related->slug) }}">
                                                 {{ Str::limit($related->name, 35) }}
                                             </a></h3>
-                                        <h4 class="product-price">
-                                            @if ($related->previous_price != 0)
-                                                <del>{{ PriceHelper::setPreviousPrice($related->previous_price) }}</del>
-                                            @endif
-                                            {{ PriceHelper::grandCurrencyPrice($related) }}
-                                        </h4>
+                                        <div class="product-price-row">
+                                            <h4 class="product-price">
+                                                @if ($related->previous_price != 0)
+                                                    <del>{{ PriceHelper::setPreviousPrice($related->previous_price) }}</del>
+                                                @endif
+                                                {{ PriceHelper::grandCurrencyPrice($related) }}
+                                            </h4>
+                                            @include('includes.item_buy_now_inline', ['sitem' => $related])
+                                        </div>
                                     </div>
 
                                 </div>

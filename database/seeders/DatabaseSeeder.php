@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->seedInitialSnapshot();
+        $this->call(DistrictSeeder::class);
 
         if (EmailTemplate::where('type', 'New Order Admin')->count() == 0) {
             $emailTemplete = new EmailTemplate();
