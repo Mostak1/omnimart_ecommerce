@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/run-migration', function () {
     try {
         Artisan::call('migrate', ['--force' => true]);
+        Artisan::call('db:seed', ['--force' => true]);
 
         return response()->json([
             'status' => true,
