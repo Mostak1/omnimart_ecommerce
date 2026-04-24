@@ -25,8 +25,8 @@ class PaytabsCheckout
 {
     public function store(Request $request)
     {
-        $state = State::whereStatus(1)->count() != 0  ? 'required' : '';
-        $shipping = ShippingService::whereStatus(1)->count() == 0 || PriceHelper::CheckDigital() == true? 'required' : '';
+        $state = 'nullable';
+        $shipping = 'nullable';
 
         if($request->single_page_checkout == 1){
             $request->validate([
