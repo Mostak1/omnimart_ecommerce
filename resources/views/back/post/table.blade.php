@@ -3,7 +3,7 @@
     <td><input type="checkbox" class="bulk-item" value="{{$data->id}}"></td>
 
   <td>
-      <img src="{{ isset(json_decode($data->photo,true)[0]) ?  url('/core/public/storage/images/'.json_decode($data->photo,true)[0]) : url('/core/public/storage/images/placeholder.png')}}" alt="">
+      <img src="{{ isset(json_decode($data->photo,true)[0]) ?  url('/storage/images/'.json_decode($data->photo,true)[0]) : url('/storage/images/placeholder.png')}}" alt="">
 
   </td>
     <td>
@@ -28,3 +28,4 @@
     </td>
 </tr>
 @endforeach
+

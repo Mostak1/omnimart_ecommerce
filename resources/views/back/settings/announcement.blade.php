@@ -60,7 +60,7 @@
                                                         <label for="name">{{ __('Image') }}</label>
                                                         <div class="col-lg-12 pb-1">
                                                             <img class="admin-img lg"
-                                                                src="{{ $setting->announcement ? url('/core/public/storage/images/'.$setting->announcement) : url('/core/public/storage/images/placeholder.png') }}"
+                                                                src="{{ $setting->announcement ? url('/storage/images/'.$setting->announcement) : url('/storage/images/placeholder.png') }}"
                                                                 alt="No Image Found">
                                                         </div>
                                                         <span>{{ __('Image Size Should Be 520 x 529. For Announcement Popuop') }}</span> <br>
@@ -124,3 +124,4 @@
     </div>
 </div>
 @endsection
+

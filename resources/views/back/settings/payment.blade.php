@@ -90,7 +90,7 @@
                                                                                 for="name">{{ __('Current Image') }}</label>
                                                                             <div class="col-lg-12 pb-1">
                                                                                 <img class="admin-setting-img"
-                                                                                    src="{{ $cod->photo ? url('/core/public/storage/images/' . $cod->photo) : url('/core/public/storage/images/placeholder.png') }}"
+                                                                                    src="{{ $cod->photo ? url('/storage/images/' . $cod->photo) : url('/storage/images/placeholder.png') }}"
                                                                                     alt="No Image Found">
                                                                             </div>
                                                                             <span>{{ __('Image Size Should Be 52 x 35.') }}</span>
@@ -169,7 +169,7 @@
                                                                                 for="name">{{ __('Current Image') }}</label>
                                                                             <div class="col-lg-12 pb-1">
                                                                                 <img class="admin-setting-img"
-                                                                                    src="{{ $stripe->photo ? url('/core/public/storage/images/' . $stripe->photo) : url('/core/public/storage/images/placeholder.png') }}"
+                                                                                    src="{{ $stripe->photo ? url('/storage/images/' . $stripe->photo) : url('/storage/images/placeholder.png') }}"
                                                                                     stripe="No Image Found">
                                                                             </div>
                                                                             <span>{{ __('Image Size Should Be 52 x 35.') }}</span>
@@ -267,7 +267,7 @@
                                                                                 for="name">{{ __('Current Image') }}</label>
                                                                             <div class="col-lg-12 pb-1">
                                                                                 <img class="admin-setting-img"
-                                                                                    src="{{ $paypal->photo ? url('/core/public/storage/images/' . $paypal->photo) : url('/core/public/storage/images/placeholder.png') }}"
+                                                                                    src="{{ $paypal->photo ? url('/storage/images/' . $paypal->photo) : url('/storage/images/placeholder.png') }}"
                                                                                     alt="No Image Found">
                                                                             </div>
                                                                             <span>{{ __('Image Size Should Be 52 x 35.') }}</span>
@@ -385,7 +385,7 @@
                                                                                 for="name">{{ __('Current Image') }}</label>
                                                                             <div class="col-lg-12 pb-1">
                                                                                 <img class="admin-setting-img"
-                                                                                    src="{{ $molly->photo ? url('/core/public/storage/images/' . $molly->photo) : url('/core/public/storage/images/placeholder.png') }}"
+                                                                                    src="{{ $molly->photo ? url('/storage/images/' . $molly->photo) : url('/storage/images/placeholder.png') }}"
                                                                                     alt="No Image Found">
                                                                             </div>
                                                                             <span>{{ __('Image Size Should Be 52 x 35.') }}</span>
@@ -485,7 +485,7 @@
                                                                                 for="name">{{ __('Current Image') }}</label>
                                                                             <div class="col-lg-12 pb-1">
                                                                                 <img class="admin-setting-img"
-                                                                                    src="{{ $paytm->photo ? url('/core/public/storage/images/' . $paytm->photo) : url('/core/public/storage/images/placeholder.png') }}"
+                                                                                    src="{{ $paytm->photo ? url('/storage/images/' . $paytm->photo) : url('/storage/images/placeholder.png') }}"
                                                                                     stripe="No Image Found">
                                                                             </div>
                                                                             <span>{{ __('Image Size Should Be 52 x 35.') }}</span>
@@ -603,7 +603,7 @@
                                                                                 for="name">{{ __('Current Image') }}</label>
                                                                             <div class="col-lg-12 pb-1">
                                                                                 <img class="admin-setting-img"
-                                                                                    src="{{ $sslcommerz->photo ? url('/core/public/storage/images/' . $sslcommerz->photo) : url('/core/public/storage/images/placeholder.png') }}"
+                                                                                    src="{{ $sslcommerz->photo ? url('/storage/images/' . $sslcommerz->photo) : url('/storage/images/placeholder.png') }}"
                                                                                     stripe="No Image Found">
                                                                             </div>
                                                                             <span>{{ __('Image Size Should Be 52 x 35.') }}</span>
@@ -723,7 +723,7 @@
                                                                                 for="name">{{ __('Current Image') }}</label>
                                                                             <div class="col-lg-12 pb-1">
                                                                                 <img class="admin-setting-img"
-                                                                                    src="{{ $mercadopago->photo ? url('/core/public/storage/images/' . $mercadopago->photo) : url('/core/public/storage/images/placeholder.png') }}"
+                                                                                    src="{{ $mercadopago->photo ? url('/storage/images/' . $mercadopago->photo) : url('/storage/images/placeholder.png') }}"
                                                                                     stripe="No Image Found">
                                                                             </div>
                                                                             <span>{{ __('Image Size Should Be 52 x 35.') }}</span>
@@ -841,7 +841,7 @@
                                                                                 for="name">{{ __('Current Image') }}</label>
                                                                             <div class="col-lg-12 pb-1">
                                                                                 <img class="admin-setting-img"
-                                                                                    src="{{ $authorize->photo ? url('/core/public/storage/images/' . $authorize->photo) : url('/core/public/storage/images/placeholder.png') }}"
+                                                                                    src="{{ $authorize->photo ? url('/storage/images/' . $authorize->photo) : url('/storage/images/placeholder.png') }}"
                                                                                     stripe="No Image Found">
                                                                             </div>
                                                                             <span>{{ __('Image Size Should Be 52 x 35.') }}</span>
@@ -960,7 +960,7 @@
                                                                                 for="name">{{ __('Current Image') }}</label>
                                                                             <div class="col-lg-12 pb-1">
                                                                                 <img class="admin-setting-img"
-                                                                                    src="{{ $paystack->photo ? url('/core/public/storage/images/' . $paystack->photo) : url('/core/public/storage/images/placeholder.png') }}"
+                                                                                    src="{{ $paystack->photo ? url('/storage/images/' . $paystack->photo) : url('/storage/images/placeholder.png') }}"
                                                                                     stripe="No Image Found">
                                                                             </div>
                                                                             <span>{{ __('Image Size Should Be 52 x 35.') }}</span>
@@ -1071,7 +1071,7 @@
                                                                                 for="name">{{ __('Current Image') }}</label>
                                                                             <div class="col-lg-12 pb-1">
                                                                                 <img class="admin-setting-img"
-                                                                                    src="{{ $bank->photo ? url('/core/public/storage/images/' . $bank->photo) : url('/core/public/storage/images/placeholder.png') }}"
+                                                                                    src="{{ $bank->photo ? url('/storage/images/' . $bank->photo) : url('/storage/images/placeholder.png') }}"
                                                                                     stripe="No Image Found">
                                                                             </div>
                                                                             <span>{{ __('Image Size Should Be 52 x 35.') }}</span>
@@ -1154,7 +1154,7 @@
                                                                                 for="name">{{ __('Current Image') }}</label>
                                                                             <div class="col-lg-12 pb-1">
                                                                                 <img class="admin-setting-img"
-                                                                                    src="{{ $razorpay->photo ? url('/core/public/storage/images/' . $razorpay->photo) : url('/core/public/storage/images/placeholder.png') }}"
+                                                                                    src="{{ $razorpay->photo ? url('/storage/images/' . $razorpay->photo) : url('/storage/images/placeholder.png') }}"
                                                                                     stripe="No Image Found">
                                                                             </div>
                                                                             <span>{{ __('Image Size Should Be 52 x 35.') }}</span>
@@ -1259,7 +1259,7 @@
                                                                                 for="name">{{ __('Current Image') }}</label>
                                                                             <div class="col-lg-12 pb-1">
                                                                                 <img class="admin-setting-img"
-                                                                                    src="{{ $flutterwave->photo ? url('/core/public/storage/images/' . $flutterwave->photo) : url('/core/public/storage/images/placeholder.png') }}"
+                                                                                    src="{{ $flutterwave->photo ? url('/storage/images/' . $flutterwave->photo) : url('/storage/images/placeholder.png') }}"
                                                                                     stripe="No Image Found">
                                                                             </div>
                                                                             <span>{{ __('Image Size Should Be 52 x 35.') }}</span>
@@ -1365,7 +1365,7 @@
                                                                                 for="name">{{ __('Current Image') }}</label>
                                                                             <div class="col-lg-12 pb-1">
                                                                                 <img class="admin-setting-img"
-                                                                                    src="{{ $paytabs->photo ? url('/core/public/storage/images/' . $flutterwave->photo) : url('/core/public/storage/images/placeholder.png') }}"
+                                                                                    src="{{ $paytabs->photo ? url('/storage/images/' . $flutterwave->photo) : url('/storage/images/placeholder.png') }}"
                                                                                     stripe="No Image Found">
                                                                             </div>
                                                                             <span>{{ __('Image Size Should Be 52 x 35.') }}</span>
@@ -1457,3 +1457,4 @@
 
         </div>
     @endsection
+

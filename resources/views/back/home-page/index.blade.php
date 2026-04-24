@@ -45,7 +45,7 @@
                                             <label for="name">{{ __('Image 1') }} *</label>
                                             <br>
                                                 <img class="admin-img"
-                                                    src="{{isset($hero_banner['img1']) ? url('/core/public/storage/images/'.$hero_banner['img1']) : url('/core/public/storage/images/placeholder.png') }}"
+                                                    src="{{isset($hero_banner['img1']) ? url('/storage/images/'.$hero_banner['img1']) : url('/storage/images/placeholder.png') }}"
                                                     alt="No Image Found">
                                             <br>
                                             <span class="mt-1">{{ __('Image Size Should Be 496 x 204.') }}</span>
@@ -80,7 +80,7 @@
                                             <label for="name">{{ __('Image 2') }} *</label>
                                             <br>
                                                 <img class="admin-img"
-                                                    src="{{isset($hero_banner['img2']) ? url('/core/public/storage/images/'.$hero_banner['img2']) : url('/core/public/storage/images/placeholder.png') }}"
+                                                    src="{{isset($hero_banner['img2']) ? url('/storage/images/'.$hero_banner['img2']) : url('/storage/images/placeholder.png') }}"
                                                     alt="No Image Found">
                                             <br>
                                             <span class="mt-1">{{ __('Image Size Should Be 496 x 204.') }}</span>
@@ -122,7 +122,7 @@
                                             <label for="name">{{ __('Image 1') }} *</label>
                                             <br>
                                                 <img class="admin-img"
-                                                    src="{{  url('/core/public/storage/images/'.$first_banner['img1']) }}"
+                                                    src="{{  url('/storage/images/'.$first_banner['img1']) }}"
                                                     alt="No Image Found">
                                             <br>
                                             <span class="mt-1">{{ __('Image Size Should Be 496 x 204.') }}</span>
@@ -157,7 +157,7 @@
                                             <label for="name">{{ __('Image 2') }} *</label>
                                             <br>
                                                 <img class="admin-img"
-                                                    src="{{  url('/core/public/storage/images/'.$first_banner['img2']) }}"
+                                                    src="{{  url('/storage/images/'.$first_banner['img2']) }}"
                                                     alt="No Image Found">
                                             <br>
                                             <span class="mt-1">{{ __('Image Size Should Be 496 x 204.') }}</span>
@@ -192,7 +192,7 @@
                                             <label for="name">{{ __('Image 3') }} *</label>
                                             <br>
                                                 <img class="admin-img"
-                                                    src="{{  url('/core/public/storage/images/'.$first_banner['img3']) }}"
+                                                    src="{{  url('/storage/images/'.$first_banner['img3']) }}"
                                                     alt="No Image Found">
                                             <br>
                                             <span class="mt-1">{{ __('Image Size Should Be 496 x 204.') }}</span>
@@ -374,7 +374,7 @@
                                             <label for="name">{{ __('Image 1') }} *</label>
                                             <br>
                                                 <img class="admin-img"
-                                                    src="{{  url('/core/public/storage/images/'.$secend_banner['img1']) }}"
+                                                    src="{{  url('/storage/images/'.$secend_banner['img1']) }}"
                                                     alt="No Image Found">
                                             <br>
                                             <span class="mt-1">{{ __('Image Size Should Be 496 x 204.') }}</span>
@@ -409,7 +409,7 @@
                                             <label for="name">{{ __('Image 2') }} *</label>
                                             <br>
                                                 <img class="admin-img"
-                                                    src="{{  url('/core/public/storage/images/'.$secend_banner['img2']) }}"
+                                                    src="{{  url('/storage/images/'.$secend_banner['img2']) }}"
                                                     alt="No Image Found">
                                             <br>
                                             <span class="mt-1">{{ __('Image Size Should Be 496 x 204.') }}</span>
@@ -444,7 +444,7 @@
                                             <label for="name">{{ __('Image 3') }} *</label>
                                             <br>
                                                 <img class="admin-img"
-                                                    src="{{  url('/core/public/storage/images/'.$secend_banner['img3']) }}"
+                                                    src="{{  url('/storage/images/'.$secend_banner['img3']) }}"
                                                     alt="No Image Found">
                                             <br>
                                             <span class="mt-1">{{ __('Image Size Should Be 496 x 204.') }}</span>
@@ -747,7 +747,7 @@
                                             <label for="name">{{ __('Image 1') }} *</label>
                                             <br>
                                                 <img class="admin-img"
-                                                    src="{{  url('/core/public/storage/images/'.$third_banner['img1']) }}"
+                                                    src="{{  url('/storage/images/'.$third_banner['img1']) }}"
                                                     alt="No Image Found">
                                             <br>
                                             <span class="mt-1">{{ __('Image Size Should Be 496 x 204.') }}</span>
@@ -781,7 +781,7 @@
                                             <label for="name">{{ __('Image 2') }} *</label>
                                             <br>
                                                 <img class="admin-img"
-                                                    src="{{  url('/core/public/storage/images/'.$third_banner['img2']) }}"
+                                                    src="{{  url('/storage/images/'.$third_banner['img2']) }}"
                                                     alt="No Image Found">
                                             <br>
                                             <span class="mt-1">{{ __('Image Size Should Be 496 x 204.') }}</span>
@@ -825,7 +825,7 @@
                                             <label for="name">{{ __('Banner 1 Image') }} *</label>
                                             <br>
                                                 <img class="admin-img"
-                                                    src="{{ isset($home4_banner['img1']) ?  url('/core/public/storage/images/'.$home4_banner['img1']) : url('/core/public/storage/images/placeholder.png') }}"
+                                                    src="{{ isset($home4_banner['img1']) ?  url('/storage/images/'.$home4_banner['img1']) : url('/storage/images/placeholder.png') }}"
                                                     alt="No Image Found">
                                             <br>
                                             <span class="mt-1">{{ __('Image Size Should Be 496 x 204.') }}</span>
@@ -854,7 +854,7 @@
                                             <label for="name">{{ __('Banner 2 Image') }} *</label>
                                             <br>
                                                 <img class="admin-img"
-                                                    src="{{ isset($home4_banner['img2']) ?  url('/core/public/storage/images/'.$home4_banner['img2']) : url('/core/public/storage/images/placeholder.png') }}"
+                                                    src="{{ isset($home4_banner['img2']) ?  url('/storage/images/'.$home4_banner['img2']) : url('/storage/images/placeholder.png') }}"
                                                     alt="No Image Found">
                                             <br>
                                             <span class="mt-1">{{ __('Image Size Should Be 496 x 204.') }}</span>
@@ -885,7 +885,7 @@
                                             <label for="name">{{ __('Banner 3 Image') }} * <small>({{ __('Middle Big Image') }})</small></label>
                                             <br>
                                                 <img class="admin-img"
-                                                    src="{{ isset($home4_banner['img3']) ?  url('/core/public/storage/images/'.$home4_banner['img3']) : url('/core/public/storage/images/placeholder.png') }}"
+                                                    src="{{ isset($home4_banner['img3']) ?  url('/storage/images/'.$home4_banner['img3']) : url('/storage/images/placeholder.png') }}"
                                                     alt="No Image Found">
                                             <br>
                                             <span class="mt-1">{{ __('Image Size Should Be 496 x 204.') }}</span>
@@ -914,7 +914,7 @@
                                             <label for="name">{{ __('Banner 4 Image') }} *</label>
                                             <br>
                                                 <img class="admin-img"
-                                                    src="{{ isset($home4_banner['img4']) ?  url('/core/public/storage/images/'.$home4_banner['img4']) : url('/core/public/storage/images/placeholder.png') }}"
+                                                    src="{{ isset($home4_banner['img4']) ?  url('/storage/images/'.$home4_banner['img4']) : url('/storage/images/placeholder.png') }}"
                                                     alt="No Image Found">
                                             <br>
                                             <span class="mt-1">{{ __('Image Size Should Be 496 x 204.') }}</span>
@@ -943,7 +943,7 @@
                                             <label for="name">{{ __('Banner 5 Image') }} *</label>
                                             <br>
                                                 <img class="admin-img"
-                                                    src="{{ isset($home4_banner['img5']) ?  url('/core/public/storage/images/'.$home4_banner['img5']) : url('/core/public/storage/images/placeholder.png') }}"
+                                                    src="{{ isset($home4_banner['img5']) ?  url('/storage/images/'.$home4_banner['img5']) : url('/storage/images/placeholder.png') }}"
                                                     alt="No Image Found">
                                             <br>
                                             <span class="mt-1">{{ __('Image Size Should Be 496 x 204.') }}</span>

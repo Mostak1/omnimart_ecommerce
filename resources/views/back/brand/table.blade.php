@@ -4,7 +4,7 @@
         {{ $data->name }}
     </td>
     <td>
-        <img src="{{ $data->photo ? url('/core/public/storage/images/'.$data->photo) : url('/core/public/storage/images/placeholder.png') }}" alt="Image Not Found">
+        <img src="{{ $data->photo ? url('/storage/images/'.$data->photo) : url('/storage/images/placeholder.png') }}" alt="Image Not Found">
     </td>
     <td>
         {{ $data->slug }}
@@ -47,3 +47,4 @@
     </td>
 </tr>
 @endforeach
+

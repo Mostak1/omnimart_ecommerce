@@ -3,7 +3,7 @@
     @foreach ($items as $item)
     <div class="product-card p-col">
         <a class="product-thumb" href="{{route('front.product',$item->slug)}}">
-            <img class="lazy" alt="Product" src="{{url('/core/public/storage/images/'.$item->thumbnail)}}" style=""></a>
+            <img class="lazy" alt="Product" src="{{url('/storage/images/'.$item->thumbnail)}}" style=""></a>
         <div class="product-card-body">
             <h3 class="product-title"><a href="{{route('front.product',$item->slug)}}">
                 {{ Str::limit($item->name, 35) }}

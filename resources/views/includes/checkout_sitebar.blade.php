@@ -67,7 +67,7 @@
         @foreach ($cart as $key => $item)
             <div class="entry">
                 <div class="entry-thumb"><a href="{{ route('front.product', $item['slug']) }}"><img
-                            src="{{ url('/core/public/storage/images/' . $item['photo']) }}" alt="Product"></a>
+                            src="{{ url('/storage/images/' . $item['photo']) }}" alt="Product"></a>
                 </div>
                 <div class="entry-content">
                     <h4 class="entry-title"><a href="{{ route('front.product', $item['slug']) }}">
@@ -96,3 +96,4 @@
     </section>
 
 </aside>
+

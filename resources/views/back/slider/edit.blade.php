@@ -40,7 +40,7 @@
 										<label id="change_label" for="name">{{ $slider->home_page == 'theme3' || $slider->home_page == 'theme4' ? __('Feature Image') : __('Logo') }}</label>
 										<br>
 											<img class="admin-img"
-												src="{{ $slider->logo ? url('/core/public/storage/images/'.$slider->logo) : url('/core/public/storage/images/placeholder.png') }}"
+												src="{{ $slider->logo ? url('/storage/images/'.$slider->logo) : url('/storage/images/placeholder.png') }}"
 												alt="No Image Found">
 										<br>
 										<span id="change_message" class="mt-1">{{ $slider->home_page == 'theme3' || $slider->home_page == 'theme4' ? __('Image Size Should Be 435 x 530')  :  __('Image Size Should Be 130 x 40')}}</span>
@@ -77,7 +77,7 @@
 										<label id="slider_text" for="name">{{ $slider->home_page == 'theme3' || $slider->home_page == 'theme4' ? __('Set Background Image') :__('Current Slider Image') }} *</label>
 										<br>
 											<img class="admin-img"
-												src="{{ $slider->photo ? url('/core/public/storage/images/'.$slider->photo) : url('/core/public/storage/images/placeholder.png') }}"
+												src="{{ $slider->photo ? url('/storage/images/'.$slider->photo) : url('/storage/images/placeholder.png') }}"
 												alt="No Image Found">
 										<br>
 										<span id="chenge_label2" class="mt-1">{{$slider->home_page == 'theme3' || $slider->home_page == 'theme4' ? __('Image Size Should Be 1920 x 750') : __('Image Size Should Be 1000 x 530') }}</span>
@@ -106,7 +106,7 @@
 										<label id="slider_text" for="name">{{ $slider->home_page == 'theme3' || $slider->home_page == 'theme4' ? __('Set Background Image') :__('Current Slider Image') }} *</label>
 										<br>
 											<img class="admin-img"
-												src="{{ $slider->photo ? url('/core/public/storage/images/'.$slider->photo) : url('/core/public/storage/images/placeholder.png') }}"
+												src="{{ $slider->photo ? url('/storage/images/'.$slider->photo) : url('/storage/images/placeholder.png') }}"
 												alt="No Image Found">
 										<br>
 										<span id="chenge_label2" class="mt-1">{{$slider->home_page == 'theme3' || $slider->home_page == 'theme4' ? __('Image Size Should Be 1920 x 750') : __('Image Size Should Be 1000 x 530') }}</span>
@@ -142,3 +142,4 @@
 </div>
 
 @endsection
+

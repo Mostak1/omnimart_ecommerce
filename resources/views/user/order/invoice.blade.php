@@ -41,7 +41,7 @@
 
                     <!-- Logo -->
                     <img class="img-fluid mb-5 mh-70" alt="Logo"
-                        src="{{ url('/core/public/storage/images/' . $setting->logo) }}">
+                        src="{{ url('/storage/images/' . $setting->logo) }}">
 
                 </div>
             </div> <!-- / .row -->
@@ -326,3 +326,4 @@
     </div>
 
 @endsection
+

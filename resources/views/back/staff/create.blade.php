@@ -33,7 +33,7 @@
 										<label for="name">{{ __('Current Image') }}</label>
 										<br>
 											<img class="admin-img"
-												src="{{ url('/core/public/storage/images/placeholder.png') }}"
+												src="{{ url('/storage/images/placeholder.png') }}"
 												alt="No Image Found">
 										<br>
 										<span class="mt-1">{{ __('Image Size Should Be 70 x 70.') }}</span>
@@ -98,3 +98,4 @@
 
 
 @endsection
+

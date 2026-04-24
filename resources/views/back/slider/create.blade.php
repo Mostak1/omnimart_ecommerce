@@ -53,7 +53,7 @@
                                         <div class="form-group">
                                             <label id="change_label" for="name">{{ __('Brand Logo') }} </label>
                                             <br>
-                                                <img class="admin-img" src="{{  url('/core/public/storage/images/placeholder.png') }}"
+                                                <img class="admin-img" src="{{  url('/storage/images/placeholder.png') }}"
                                                     alt="No Image Found">
                                             <br>
                                             <span id="change_message" class="mt-1">{{ __('Image Size Should Be 130 x 40') }}</span>
@@ -89,7 +89,7 @@
                                         <div class="form-group">
                                             <label id="slider_text"  for="name">{{ __('Set Slider Image') }} *</label>
                                             <br>
-                                                <img class="admin-img" src="{{  url('/core/public/storage/images/placeholder.png') }}"
+                                                <img class="admin-img" src="{{  url('/storage/images/placeholder.png') }}"
                                                     alt="No Image Found">
                                             <br>
                                             <span id="chenge_label2" class="mt-1">{{ __('Image Size Should Be 968 x 530') }}</span>
@@ -120,7 +120,7 @@
                                         <div class="form-group">
                                             <label id="change_label" for="name">{{ __('Brand Logo') }} </label>
                                             <br>
-                                                <img class="admin-img" src="{{  url('/core/public/storage/images/placeholder.png') }}"
+                                                <img class="admin-img" src="{{  url('/storage/images/placeholder.png') }}"
                                                     alt="No Image Found">
                                             <br>
                                             <span id="change_message" class="mt-1">{{ __('Image Size Should Be 130 x 40') }}</span>
@@ -156,7 +156,7 @@
                                         <div class="form-group">
                                             <label id="slider_text"  for="name">{{ __('Set Slider Image') }} *</label>
                                             <br>
-                                                <img class="admin-img" src="{{  url('/core/public/storage/images/placeholder.png') }}"
+                                                <img class="admin-img" src="{{  url('/storage/images/placeholder.png') }}"
                                                     alt="No Image Found">
                                             <br>
                                             <span id="chenge_label2" class="mt-1">{{ __('Image Size Should Be 1296 x 530') }}</span>
@@ -187,7 +187,7 @@
                                         <div class="form-group">
                                             <label id="change_label" for="name">{{ __('Feature Image') }} </label>
                                             <br>
-                                                <img class="admin-img" src="{{  url('/core/public/storage/images/placeholder.png') }}"
+                                                <img class="admin-img" src="{{  url('/storage/images/placeholder.png') }}"
                                                     alt="No Image Found">
                                             <br>
                                             <span id="change_message" class="mt-1">{{ __('Image Size Should Be 320 x 320') }}</span>
@@ -223,7 +223,7 @@
                                         <div class="form-group">
                                             <label id="slider_text"  for="name">{{ __('Set Slider Image') }} *</label>
                                             <br>
-                                                <img class="admin-img" src="{{  url('/core/public/storage/images/placeholder.png') }}"
+                                                <img class="admin-img" src="{{  url('/storage/images/placeholder.png') }}"
                                                     alt="No Image Found">
                                             <br>
                                             <span id="chenge_label2" class="mt-1">{{ __('Image Size Should Be 1903 x 570') }}</span>
@@ -268,7 +268,7 @@
                                     <div class="form-group">
                                         <label id="slider_text"  for="name">{{ __('Set Slider Image') }} *</label>
                                         <br>
-                                            <img class="admin-img" src="{{  url('/core/public/storage/images/placeholder.png') }}"
+                                            <img class="admin-img" src="{{  url('/storage/images/placeholder.png') }}"
                                                 alt="No Image Found">
                                         <br>
                                         <span id="chenge_label2" class="mt-1">{{ __('Image Size Should Be 1000 x 530') }}</span>
@@ -301,3 +301,4 @@
 </div>
 
 @endsection
+

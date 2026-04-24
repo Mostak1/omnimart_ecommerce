@@ -34,7 +34,7 @@
 									<div class="form-group">
 										<label for="name">{{ __('Set Image') }} *</label>
                                         <br>
-										<img class="admin-img" src="{{  url('/core/public/storage/images/placeholder.png') }}"
+										<img class="admin-img" src="{{  url('/storage/images/placeholder.png') }}"
 												alt="No Image Found">
                                         <br>
 										<span class="mt-1">{{ __('Image Size Should Be 60 x 60.') }}</span>
@@ -104,3 +104,4 @@
 </div>
 
 @endsection
+

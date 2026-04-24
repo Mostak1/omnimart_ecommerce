@@ -15,12 +15,12 @@
         <meta name="distribution" content="web">
         <meta name="description" content="{{ $setting->meta_description }}">
         <meta name="keywords" content="{{ $setting->meta_keywords }}">
-        <meta name="image" content="{{ url('/core/public/storage/images/' . $setting->meta_image) }}">
+        <meta name="image" content="{{ url('/storage/images/' . $setting->meta_image) }}">
         <meta property="og:title" content="{{ $setting->title }}">
         <meta property="og:description" content="{{ $setting->meta_description }}">
-        <meta property="og:image" content="{{ url('/core/public/storage/images/' . $setting->meta_image) }}">
+        <meta property="og:image" content="{{ url('/storage/images/' . $setting->meta_image) }}">
         <meta property="og:image:secure_url"
-            content="{{ url('/core/public/storage/images/' . $setting->meta_image) }}" />
+            content="{{ url('/storage/images/' . $setting->meta_image) }}" />
         <meta property="og:image:type" content="image/jpeg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="627" />
@@ -35,11 +35,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Favicon Icons-->
-    <link rel="icon" type="image/png" href="{{ url('/core/public/storage/images/' . $setting->favicon) }}">
-    <link rel="apple-touch-icon" href="{{ url('/core/public/storage/images/' . $setting->favicon) }}">
-    <link rel="apple-touch-icon" sizes="152x152" href="{{ url('/core/public/storage/images/' . $setting->favicon) }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ url('/core/public/storage/images/' . $setting->favicon) }}">
-    <link rel="apple-touch-icon" sizes="167x167" href="{{ url('/core/public/storage/images/' . $setting->favicon) }}">
+    <link rel="icon" type="image/png" href="{{ url('/storage/images/' . $setting->favicon) }}">
+    <link rel="apple-touch-icon" href="{{ url('/storage/images/' . $setting->favicon) }}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{{ url('/storage/images/' . $setting->favicon) }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url('/storage/images/' . $setting->favicon) }}">
+    <link rel="apple-touch-icon" sizes="167x167" href="{{ url('/storage/images/' . $setting->favicon) }}">
 
     <!-- Vendor Styles including: Bootstrap, Font Icons, Plugins, etc.-->
     <link rel="stylesheet" media="screen" href="{{ asset('assets/front/css/plugins.min.css') }}">
@@ -98,7 +98,7 @@ body_theme4 @endif
         <!-- Preloader Start -->
         @if ($setting->is_loader == 1)
             <div id="preloader">
-                <img src="{{ url('/core/public/storage/images/' . $setting->loader) }}" alt="{{ __('Loading...') }}">
+                <img src="{{ url('/storage/images/' . $setting->loader) }}" alt="{{ __('Loading...') }}">
             </div>
         @endif
 
@@ -185,7 +185,7 @@ body_theme4 @endif
                             <!-- Logo-->
                             <div class="site-branding"><a class="site-logo align-self-center"
                                     href="{{ route('front.index') }}"><img
-                                        src="{{ url('/core/public/storage/images/' . $setting->logo) }}"
+                                        src="{{ url('/storage/images/' . $setting->logo) }}"
                                         alt="{{ $setting->title }}"></a></div>
                             <!-- Search / Categories-->
                             <div class="search-box-wrap d-none d-lg-block d-flex">
@@ -406,7 +406,7 @@ body_theme4 @endif
         @if ($setting->announcement_type == 'newletter')
             <div class="announcement-with-content">
                 <div class="left-area">
-                    <img src="{{ url('/core/public/storage/images/' . $setting->announcement) }}" alt="">
+                    <img src="{{ url('/storage/images/' . $setting->announcement) }}" alt="">
                 </div>
                 <div class="right-area">
                     <h3 class="">{{ $setting->announcement_title }}</h3>
@@ -430,7 +430,7 @@ body_theme4 @endif
             </div>
         @else
             <a href="{{ $setting->announcement_link }}">
-                <img src="{{ url('/core/public/storage/images/' . $setting->announcement) }}" alt="">
+                <img src="{{ url('/storage/images/' . $setting->announcement) }}" alt="">
             </a>
         @endif
 
@@ -514,7 +514,7 @@ body_theme4 @endif
                             </div>
                         </form>
                         <div class="pt-3"><img class="d-block gateway_image"
-                                src="{{ $setting->footer_gateway_img ? url('/core/public/storage/images/' . $setting->footer_gateway_img) : asset('system/resources/assets/images/placeholder.png') }}">
+                                src="{{ $setting->footer_gateway_img ? url('/storage/images/' . $setting->footer_gateway_img) : asset('system/resources/assets/images/placeholder.png') }}">
                         </div>
                     </section>
                 </div>
@@ -702,3 +702,4 @@ body_theme4 @endif
 </body>
 
 </html>
+

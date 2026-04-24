@@ -11,11 +11,11 @@
     <meta name="description" content="{{ $item->meta_description }}">
 
     <meta name="twitter:title" content="{{ $item->title }}">
-    <meta name="twitter:image" content="{{ url('/core/public/storage/images/' . $item->photo) }}">
+    <meta name="twitter:image" content="{{ url('/storage/images/' . $item->photo) }}">
     <meta name="twitter:description" content="{{ $item->meta_description }}">
 
     <meta name="og:title" content="{{ $item->title }}">
-    <meta name="og:image" content="{{ url('/core/public/storage/images/' . $item->photo) }}">
+    <meta name="og:image" content="{{ url('/storage/images/' . $item->photo) }}">
     <meta name="og:description" content="{{ $item->meta_description }}">
 @endsection
 
@@ -75,11 +75,11 @@
 
                     <div class="product-thumbnails insize">
                         <div class="product-details-slider owl-carousel">
-                            <div class="item"><img src="{{ url('/core/public/storage/images/' . $item->photo) }}"
+                            <div class="item"><img src="{{ url('/storage/images/' . $item->photo) }}"
                                     alt="zoom" />
                             </div>
                             @foreach ($galleries as $key => $gallery)
-                                <div class="item"><img src="{{ url('/core/public/storage/images/' . $gallery->photo) }}"
+                                <div class="item"><img src="{{ url('/storage/images/' . $gallery->photo) }}"
                                         alt="zoom" /></div>
                             @endforeach
                         </div>
@@ -331,7 +331,7 @@
                     <div class="single-review">
                         <div class="comment">
                             <div class="comment-author-ava"><img class="lazy"
-                                    data-src="{{ url('/core/public/storage/images/' . $review->user->photo) }}"
+                                    data-src="{{ url('/storage/images/' . $review->user->photo) }}"
                                     alt="Comment author">
                             </div>
                             <div class="comment-body">
@@ -490,7 +490,7 @@
                                     @endif
                                     <div class="product-thumb">
                                         <img class="lazy"
-                                            data-src="{{ url('/core/public/storage/images/' . $related->thumbnail) }}"
+                                            data-src="{{ url('/storage/images/' . $related->thumbnail) }}"
                                             alt="Product">
                                         <div class="product-button-group">
                                             <a class="product-button wishlist_store"
@@ -596,3 +596,4 @@
     @endauth
 
 @endsection
+

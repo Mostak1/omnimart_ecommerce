@@ -35,7 +35,7 @@
 										<label for="name">{{ __('Current Feature Image') }}</label>
 										<div class="col-lg-12 pb-1">
 											<img class="admin-img"
-												src="{{ $setting->feature_image ? url('/core/public/storage/images/'.$setting->feature_image) : url('/core/public/storage/images/placeholder.png') }}"
+												src="{{ $setting->feature_image ? url('/storage/images/'.$setting->feature_image) : url('/storage/images/placeholder.png') }}"
 												alt="No Image Found">
 										</div>
 										<span>{{ __('Image Size Should Be 570 x 855.') }}</span>
@@ -73,3 +73,4 @@
 
 
 @endsection
+

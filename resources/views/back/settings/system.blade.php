@@ -324,7 +324,7 @@
                                                                                     for="name">{{ __('Current Image') }}</label>
                                                                                 <div class="col-lg-12 pb-1">
                                                                                     <img class="admin-setting-img"
-                                                                                        src="{{ $setting->logo ? url('/core/public/storage/images/' . $setting->logo) : url('/core/public/storage/images/placeholder.png') }}"
+                                                                                        src="{{ $setting->logo ? url('/storage/images/' . $setting->logo) : url('/storage/images/placeholder.png') }}"
                                                                                         alt="No Image Found">
                                                                                 </div>
                                                                                 <span>{{ __('Image Size Should Be 140 x 40.') }}</span>
@@ -356,7 +356,7 @@
                                                                                     for="name">{{ __('Current Image') }}</label>
                                                                                 <div class="col-lg-12 pb-1">
                                                                                     <img class="admin-setting-img my-mw-100"
-                                                                                        src="{{ $setting->favicon ? url('/core/public/storage/images/' . $setting->favicon) : url('/core/public/storage/images/placeholder.png') }}"
+                                                                                        src="{{ $setting->favicon ? url('/storage/images/' . $setting->favicon) : url('/storage/images/placeholder.png') }}"
                                                                                         alt="No Image Found">
                                                                                 </div>
                                                                                 <span>{{ __('Image Size Should Be 16 x 16.') }}</span>
@@ -398,7 +398,7 @@
                                                                                     for="name">{{ __('Current Image') }}</label>
                                                                                 <div class="col-lg-12 pb-1">
                                                                                     <img class="admin-setting-img my-mw-100"
-                                                                                        src="{{ $setting->loader ? url('/core/public/storage/images/' . $setting->loader) : url('/core/public/storage/images/placeholder.png') }}"
+                                                                                        src="{{ $setting->loader ? url('/storage/images/' . $setting->loader) : url('/storage/images/placeholder.png') }}"
                                                                                         alt="No Image Found">
                                                                                 </div>
                                                                             </div>
@@ -437,7 +437,7 @@
                                                                     for="name">{{ __('Meta Image') }}</label>
                                                                 <div class="col-lg-12 pb-1">
                                                                     <img class="admin-setting-img"
-                                                                        src="{{ $setting->meta_image ? url('/core/public/storage/images/' . $setting->meta_image) : url('/core/public/storage/images/placeholder.png') }}"
+                                                                        src="{{ $setting->meta_image ? url('/storage/images/' . $setting->meta_image) : url('/storage/images/placeholder.png') }}"
                                                                         alt="No Image Found">
                                                                 </div>
                                                                 <span>{{ __('Image Size Should Be 1200 x 627.') }}</span>
@@ -923,7 +923,7 @@
                                                                                     for="footer_gateway_img">{{ __('Current Gateway Image') }}</label>
                                                                                 <div class="col-lg-12 pb-1">
                                                                                     <img class="admin-setting-img"
-                                                                                        src="{{ $setting->footer_gateway_img ? url('/core/public/storage/images/' . $setting->footer_gateway_img) : url('/core/public/storage/images/placeholder.png') }}"
+                                                                                        src="{{ $setting->footer_gateway_img ? url('/storage/images/' . $setting->footer_gateway_img) : url('/storage/images/placeholder.png') }}"
                                                                                         alt="No Image Found">
                                                                                 </div>
                                                                                 <span>{{ __('Image Size Should Be 324 x 31.') }}</span>
@@ -1097,3 +1097,4 @@
         });
     </script>
 @endsection
+

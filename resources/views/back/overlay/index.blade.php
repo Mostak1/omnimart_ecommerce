@@ -4,7 +4,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<title>{{ $setting->title }}</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
-    <link rel="icon"  type="image/x-icon" href="{{ url('/core/public/storage/images/'.$setting->favicon) }}"/>
+    <link rel="icon"  type="image/x-icon" href="{{ url('/storage/images/'.$setting->favicon) }}"/>
 
 	<!-- Fonts and icons -->
 	<script src="{{ asset('assets/back/js/plugin/webfont/webfont.min.js') }}"></script>
@@ -119,3 +119,4 @@
 
 </body>
 </html>
+

@@ -38,7 +38,7 @@
 										<label for="name">{{ __('Current Image') }} *</label>
 										<br>
 											<img class="admin-img"
-												src="{{ $banner->image ? url('/core/public/storage/images/'.$banner->image) : url('/core/public/storage/images/placeholder.png') }}"
+												src="{{ $banner->image ? url('/storage/images/'.$banner->image) : url('/storage/images/placeholder.png') }}"
 												alt="No Image Found">
 										<br>
 										<span class="mt-1">{{ __('Image Size Should Be 496 x 204.') }}</span>
@@ -91,3 +91,4 @@
 </div>
 
 @endsection
+

@@ -37,7 +37,7 @@
 										<label for="name">{{ __('Current Image') }} *</label>
 										<br>
 											<img class="admin-img"
-												src="{{ $service->photo ? url('/core/public/storage/images/'.$service->photo) : url('/core/public/storage/images/placeholder.png') }}"
+												src="{{ $service->photo ? url('/storage/images/'.$service->photo) : url('/storage/images/placeholder.png') }}"
 												alt="No Image Found">
 										<br>
 										<span class="mt-1">{{ __('Image Size Should Be 65 x 65.') }}</span>
@@ -82,3 +82,4 @@
 </div>
 
 @endsection
+

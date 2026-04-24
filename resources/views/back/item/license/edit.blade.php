@@ -57,7 +57,7 @@
                         <label class="d-block">{{ __('Featured Image') }} *</label>
                     </div>
                     <div class="form-group pb-0 pt-0 mt-0 mb-0">
-                    <img class="admin-img lg" src="{{ $item->photo ? url('/core/public/storage/images/'.$item->photo) : url('/core/public/storage/images/placeholder.png') }}" >
+                    <img class="admin-img lg" src="{{ $item->photo ? url('/storage/images/'.$item->photo) : url('/storage/images/placeholder.png') }}" >
                     </div>
                     <div class="form-group position-relative ">
                         <label class="file">
@@ -87,8 +87,8 @@
                                             data-href="{{ route('back.item.gallery.delete',$gallery->id) }}" class="remove-gallery-img">
                                                 <i class="fas fa-trash"></i>
                                             </span>
-                                            <a class="popup-link" href="{{ $gallery->photo ? url('/core/public/storage/images/'.$gallery->photo) : url('/core/public/storage/images/placeholder.png') }}">
-                                                <img class="admin-gallery-img" src="{{ $gallery->photo ? url('/core/public/storage/images/'.$gallery->photo) : url('/core/public/storage/images/placeholder.png') }}"
+                                            <a class="popup-link" href="{{ $gallery->photo ? url('/storage/images/'.$gallery->photo) : url('/storage/images/placeholder.png') }}">
+                                                <img class="admin-gallery-img" src="{{ $gallery->photo ? url('/storage/images/'.$gallery->photo) : url('/storage/images/placeholder.png') }}"
                                                     alt="No Image Found">
                                             </a>
                                     </div>

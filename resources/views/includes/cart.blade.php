@@ -33,7 +33,7 @@
                             <td>
                                 <div class="product-item"><a class="product-thumb"
                                         href="{{ route('front.product', $item['slug']) }}"><img
-                                            src="{{ url('/core/public/storage/images/' . $item['photo']) }}" alt="Product"></a>
+                                            src="{{ url('/storage/images/' . $item['photo']) }}" alt="Product"></a>
                                     <div class="product-info">
                                         <h4 class="product-title"><a href="{{ route('front.product', $item['slug']) }}">
                                                 {{ Str::limit($item['name'], 45) }}
@@ -130,3 +130,4 @@
     </div>
 </div>
 </div>
+

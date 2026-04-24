@@ -2,7 +2,7 @@
 <tr id="product-bulk-delete">
   <td><input type="checkbox" class="bulk-item" value="{{$data->id}}"></td>
     <td>
-        <img src="{{ $data->thumbnail ? url('/core/public/storage/images/'.$data->thumbnail) : url('/core/public/storage/images/placeholder.png') }}" alt="Image Not Found">
+        <img src="{{ $data->thumbnail ? url('/storage/images/'.$data->thumbnail) : url('/storage/images/placeholder.png') }}" alt="Image Not Found">
     </td>
     <td>
         {{ $data->name }}
@@ -71,3 +71,4 @@
     </td>
 </tr>
 @endforeach
+

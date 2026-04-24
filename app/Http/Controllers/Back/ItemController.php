@@ -42,7 +42,7 @@ class ItemController extends Controller
 
         return response()->json([
             'success' => true,
-            'image' => url('/core/public/storage/images/summernote/' . $name)
+            'image' => url('/storage/images/summernote/' . $name)
         ]);
     }
 
@@ -329,3 +329,4 @@ class ItemController extends Controller
         return view('back.item.stockout', compact('datas'));
     }
 }
+

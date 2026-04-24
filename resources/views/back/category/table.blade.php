@@ -1,7 +1,7 @@
 @foreach($datas as $data)
 <tr>
     <td>
-        <img src="{{ $data->photo ? url('/core/public/storage/images/'.$data->photo) : url('/core/public/storage/images/placeholder.png') }}" alt="Image Not Found">
+        <img src="{{ $data->photo ? url('/storage/images/'.$data->photo) : url('/storage/images/placeholder.png') }}" alt="Image Not Found">
     </td>
     <td>
         {{ $data->name }}
@@ -37,3 +37,4 @@
     </td>
 </tr>
 @endforeach
+

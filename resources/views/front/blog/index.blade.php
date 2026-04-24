@@ -30,7 +30,7 @@
                             <a href="{{ route('front.blog.details', $post->slug) }}" class="blog-post">
                                 <div class="post-thumb">
                                     <img class="lazy"
-                                        data-src="{{ url('/core/public/storage/images/' . json_decode($post->photo, true)[array_key_first(json_decode($post->photo, true))]) }}"
+                                        data-src="{{ url('/storage/images/' . json_decode($post->photo, true)[array_key_first(json_decode($post->photo, true))]) }}"
                                         alt="Blog Post">
                                 </div>
                                 <div class="post-body">
@@ -97,7 +97,7 @@
                         @foreach ($recent_posts as $recent)
                             <div class="entry">
                                 <div class="entry-thumb"><a href="{{ route('front.blog.details', $recent->slug) }}"><img
-                                            src="{{ url('/core/public/storage/images/' . json_decode($recent->photo, true)[array_key_first(json_decode($recent->photo, true))]) }}"
+                                            src="{{ url('/storage/images/' . json_decode($recent->photo, true)[array_key_first(json_decode($recent->photo, true))]) }}"
                                             alt="Post"></a></div>
                                 <div class="entry-content">
                                     <h4 class="entry-title"><a href="{{ route('front.blog.details', $recent->slug) }}">
@@ -123,3 +123,4 @@
         </div>
     </div>
 @endsection
+

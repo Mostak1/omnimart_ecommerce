@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>{{ $setting->title }}</title>
     <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
-    <link rel="icon" type="image/x-icon" href="{{ url('/core/public/storage/images/' . $setting->favicon) }}" />
+    <link rel="icon" type="image/x-icon" href="{{ url('/storage/images/' . $setting->favicon) }}" />
 
     <!-- Fonts and icons -->
     <script src="{{ asset('assets/back/js/plugin/webfont/webfont.min.js') }}"></script>
@@ -40,7 +40,7 @@
             <div class="logo-header">
 
                 <a href="{{ route('back.dashboard') }}" class="logo">
-                    <img src="{{ $setting->logo ? url('/core/public/storage/images/' . $setting->logo) : url('/core/public/storage/images/placeholder.png') }}"
+                    <img src="{{ $setting->logo ? url('/storage/images/' . $setting->logo) : url('/storage/images/placeholder.png') }}"
                         alt="navbar brand" class="navbar-brand">
                 </a>
                 <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
@@ -89,7 +89,7 @@
                             <a class="dropdown-toggle profile-pic" data-toggle="dropdown"
                                 href="{{ route('back.dashboard') }}" aria-expanded="false">
                                 <div class="avatar-sm avatar avatar-sm">
-                                    <img src="{{ Auth::guard('admin')->user()->photo ? url('/core/public/storage/images/' . Auth::guard('admin')->user()->photo) : url('/core/public/storage/images/noimage.png') }}"
+                                    <img src="{{ Auth::guard('admin')->user()->photo ? url('/storage/images/' . Auth::guard('admin')->user()->photo) : url('/storage/images/noimage.png') }}"
                                         alt="..." class="avatar-img rounded-circle">
                                 </div>
                             </a>
@@ -97,7 +97,7 @@
                                 <li>
                                     <div class="user-box">
                                         <div class="avatar-lg"><img
-                                                src="{{ Auth::guard('admin')->user()->photo ? url('/core/public/storage/images/' . Auth::guard('admin')->user()->photo) : url('/core/public/storage/images/noimage.png') }}"
+                                                src="{{ Auth::guard('admin')->user()->photo ? url('/storage/images/' . Auth::guard('admin')->user()->photo) : url('/storage/images/noimage.png') }}"
                                                 alt="image profile" class="avatar-img rounded"></div>
 
                                         <div class="u-text">
@@ -134,7 +134,7 @@
                 <div class="sidebar-content">
                     <div class="user">
                         <div class="avatar-sm float-left mr-2">
-                            <img src="{{ Auth::guard('admin')->user()->photo ? url('/core/public/storage/images/' . Auth::guard('admin')->user()->photo) : url('/core/public/storage/images/noimage.png') }}"
+                            <img src="{{ Auth::guard('admin')->user()->photo ? url('/storage/images/' . Auth::guard('admin')->user()->photo) : url('/storage/images/noimage.png') }}"
                                 alt="..." class="avatar-img rounded-circle">
                         </div>
                         <div class="info">
@@ -244,3 +244,4 @@
 </body>
 
 </html>
+

@@ -106,7 +106,7 @@
                     @if ($items->count() > 0)
                       @foreach ($items as $data)
                           <tr>
-                              <td><img src="{{url('/core/public/storage/images/'.$data->item->photo)}}" alt=""></td>
+                              <td><img src="{{url('/storage/images/'.$data->item->photo)}}" alt=""></td>
                               <td>{{$data->item->name}}</td>
                               <td> {{ PriceHelper::adminCurrencyPrice($data->item->discount_price) }}</td>
                               <td>

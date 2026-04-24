@@ -6,7 +6,7 @@
       <div class="user-info">
         <div class="user-avatar">
 
-          <img id="avater_photo_view" src="{{$user->photo ? url('/core/public/storage/images/'.$user->photo) : url('/core/public/storage/images/placeholder.png')}}" alt="User">
+          <img id="avater_photo_view" src="{{$user->photo ? url('/storage/images/'.$user->photo) : url('/storage/images/placeholder.png')}}" alt="User">
         </div>
 
         <div class="user-data">
@@ -45,3 +45,4 @@
     </div>
 
   </div>
+

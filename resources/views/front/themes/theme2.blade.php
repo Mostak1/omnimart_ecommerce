@@ -16,7 +16,7 @@
                         <div class="item
                             @if (DB::table('languages')->where('is_default', 1)->first()->rtl == 1) d-flex justify-content-end @endif
                             "
-                            style="background: url('{{ url('/core/public/storage/images/' . $slider->photo) }}')">
+                            style="background: url('{{ url('/storage/images/' . $slider->photo) }}')">
                             <div class="container">
                                 <div class="row">
                                     <div class="col-lg-8">
@@ -24,7 +24,7 @@
                                             <div class="from-bottom">
                                                 @if ($slider->logo)
                                                     <img class="d-inline-block brand-logo"
-                                                        src="{{ url('/core/public/storage/images/' . $slider->logo) }}" alt="logo">
+                                                        src="{{ url('/storage/images/' . $slider->logo) }}" alt="logo">
                                                 @endif
 
                                                 <div class="title text-body">{{ $slider->title }}</div>
@@ -53,7 +53,7 @@
                     @foreach ($services as $service)
                         <div class="col-lg-3 col-sm-6 text-center mb-30">
                             <div class="single-service single-service2">
-                                <img src="{{ url('/core/public/storage/images/' . $service->photo) }}" alt="Shipping">
+                                <img src="{{ url('/storage/images/' . $service->photo) }}" alt="Shipping">
                                 <div class="content">
                                     <h6 class="mb-2">{{ $service->title }}</h6>
                                     <p class="text-sm text-muted mb-0">{{ $service->details }}</p>
@@ -72,7 +72,7 @@
                 <div class="row gx-3">
                     <div class="col-md-4">
                         <a href="{{ $banner_first['firsturl1'] }}" class="genius-banner">
-                            <img src="{{ url('/core/public/storage/images/' . $banner_first['img1']) }}" alt="">
+                            <img src="{{ url('/storage/images/' . $banner_first['img1']) }}" alt="">
                             <div class="inner-content">
                                 @if (isset($banner_first['subtitle1']))
                                     <p>{{ $banner_first['subtitle1'] }}</p>
@@ -85,7 +85,7 @@
                     </div>
                     <div class="col-md-4">
                         <a href="{{ $banner_first['firsturl2'] }}" class="genius-banner">
-                            <img src="{{ url('/core/public/storage/images/' . $banner_first['img2']) }}" alt="">
+                            <img src="{{ url('/storage/images/' . $banner_first['img2']) }}" alt="">
                             <div class="inner-content">
                                 @if (isset($banner_first['subtitle2']))
                                     <p>{{ $banner_first['subtitle2'] }}</p>
@@ -98,7 +98,7 @@
                     </div>
                     <div class="col-md-4">
                         <a href="{{ $banner_first['firsturl3'] }}" class="genius-banner">
-                            <img src="{{ url('/core/public/storage/images/' . $banner_first['img3']) }}" alt="">
+                            <img src="{{ url('/storage/images/' . $banner_first['img3']) }}" alt="">
                             <div class="inner-content">
                                 @if (isset($banner_first['subtitle3']))
                                     <p>{{ $banner_first['subtitle3'] }} </p>
@@ -145,7 +145,7 @@
                                                             -{{ PriceHelper::DiscountPercentage($item) }}</div>
                                                     @endif
                                                     <img class="lazy"
-                                                        data-src="{{ url('/core/public/storage/images/' . $item->thumbnail) }}"
+                                                        data-src="{{ url('/storage/images/' . $item->thumbnail) }}"
                                                         alt="Product">
                                                     <div class="product-button-group"><a
                                                             class="product-button wishlist_store"
@@ -231,7 +231,7 @@
                                                         -{{ PriceHelper::DiscountPercentage($item) }}</div>
                                                 @endif
                                                 <img class="lazy"
-                                                    data-src="{{ url('/core/public/storage/images/' . $item->thumbnail) }}"
+                                                    data-src="{{ url('/storage/images/' . $item->thumbnail) }}"
                                                     alt="Product">
                                                 <div class="product-button-group"><a class="product-button wishlist_store"
                                                         href="{{ route('user.wishlist.store', $item->id) }}"
@@ -282,7 +282,7 @@
             <div class="row gx-3">
                 <div class="col-md-4">
                     <a href="{{ $banner_secend['url1'] }}" class="genius-banner">
-                        <img class="lazy" data-src="{{ url('/core/public/storage/images/' . $banner_secend['img1']) }}"
+                        <img class="lazy" data-src="{{ url('/storage/images/' . $banner_secend['img1']) }}"
                             alt="">
                         <div class="inner-content">
                             @if (isset($banner_secend['subtitle1']))
@@ -297,7 +297,7 @@
                 </div>
                 <div class="col-md-4">
                     <a href="{{ $banner_secend['url2'] }}" class="genius-banner">
-                        <img class="lazy" data-src="{{ url('/core/public/storage/images/' . $banner_secend['img2']) }}"
+                        <img class="lazy" data-src="{{ url('/storage/images/' . $banner_secend['img2']) }}"
                             alt="">
                         <div class="inner-content">
                             @if (isset($banner_secend['subtitle2']))
@@ -312,7 +312,7 @@
                 </div>
                 <div class="col-md-4">
                     <a href="{{ $banner_secend['url3'] }}" class="genius-banner">
-                        <img class="lazy" data-src="{{ url('/core/public/storage/images/' . $banner_secend['img3']) }}"
+                        <img class="lazy" data-src="{{ url('/storage/images/' . $banner_secend['img3']) }}"
                             alt="">
                         <div class="inner-content">
                             @if (isset($banner_secend['subtitle3']))
@@ -361,7 +361,7 @@
                                                     -{{ PriceHelper::DiscountPercentage($item) }}</div>
                                             @endif
                                             <img class="lazy"
-                                                data-src="{{ url('/core/public/storage/images/' . $item->thumbnail) }}"
+                                                data-src="{{ url('/storage/images/' . $item->thumbnail) }}"
                                                 alt="Product">
                                             <div class="product-button-group"><a class="product-button wishlist_store"
                                                     href="{{ route('user.wishlist.store', $item->id) }}"
@@ -434,7 +434,7 @@
                                                     -{{ PriceHelper::DiscountPercentage($item) }}</div>
                                             @endif
                                             <img class="lazy"
-                                                data-src="{{ url('/core/public/storage/images/' . $item->thumbnail) }}"
+                                                data-src="{{ url('/storage/images/' . $item->thumbnail) }}"
                                                 alt="Product">
                                             <div class="product-button-group"><a class="product-button wishlist_store"
                                                     href="{{ route('user.wishlist.store', $item->id) }}"
@@ -508,7 +508,7 @@
                                                     -{{ PriceHelper::DiscountPercentage($item) }}</div>
                                             @endif
                                             <img class="lazy"
-                                                data-src="{{ url('/core/public/storage/images/' . $item->thumbnail) }}"
+                                                data-src="{{ url('/storage/images/' . $item->thumbnail) }}"
                                                 alt="Product">
                                             <div class="product-button-group"><a class="product-button wishlist_store"
                                                     href="{{ route('user.wishlist.store', $item->id) }}"
@@ -557,7 +557,7 @@
             <div class="row gx-3">
                 <div class="col-md-6">
                     <a href="{{ $banner_third['url1'] }}" class="genius-banner">
-                        <img class="lazy" data-src="{{ url('/core/public/storage/images/' . $banner_third['img1']) }}"
+                        <img class="lazy" data-src="{{ url('/storage/images/' . $banner_third['img1']) }}"
                             alt="">
                         <div class="inner-content">
                             @if (isset($banner_third['subtitle1']))
@@ -571,7 +571,7 @@
                 </div>
                 <div class="col-md-6">
                     <a href="{{ $banner_third['url2'] }}" class="genius-banner">
-                        <img class="lazy" data-src="{{ url('/core/public/storage/images/' . $banner_third['img2']) }}"
+                        <img class="lazy" data-src="{{ url('/storage/images/' . $banner_third['img2']) }}"
                             alt="">
                         <div class="inner-content">
                             @if (isset($banner_third['subtitle2']))
@@ -613,7 +613,7 @@
                                                     @endif
 
                                                     <img class="lazy"
-                                                        data-src="{{ url('/core/public/storage/images/' . $two_column_category_item->thumbnail) }}"
+                                                        data-src="{{ url('/storage/images/' . $two_column_category_item->thumbnail) }}"
                                                         alt="Product">
                                                 </a>
                                                 <div class="product-card-body">
@@ -665,7 +665,7 @@
                                 <a href="{{ route('front.blog.details', $post->slug) }}" class="blog-post">
                                     <div class="post-thumb">
                                         <img class="lazy"
-                                            data-src="{{ url('/core/public/storage/images/' . json_decode($post->photo, true)[array_key_first(json_decode($post->photo, true))]) }}"
+                                            data-src="{{ url('/storage/images/' . json_decode($post->photo, true)[array_key_first(json_decode($post->photo, true))]) }}"
                                             alt="Blog Post">
                                     </div>
                                     <div class="post-body">
@@ -710,7 +710,7 @@
                                 <a class="text-center"
                                     href="{{ route('front.catalog') . '?brand=' . $brand->slug }}">
                                     <img class="d-block hi-50 lazy"
-                                        data-src="{{ url('/core/public/storage/images/' . $brand->photo) }}"
+                                        data-src="{{ url('/storage/images/' . $brand->photo) }}"
                                         alt="{{ $brand->name }}" title="{{ $brand->name }}">
                                 </a>
                             </div>
@@ -723,3 +723,4 @@
 @endif
 
 @endsection
+

@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="icon" type="image/x-icon" href="{{ url('/core/public/storage/images/' . $setting->favicon) }}" />
+    <link rel="icon" type="image/x-icon" href="{{ url('/storage/images/' . $setting->favicon) }}" />
 
     <title>{{ $setting->title }}</title>
     <link rel="stylesheet" media="screen" href="{{ asset('assets/front/css/vendor.min.css') }}">
@@ -46,7 +46,7 @@
 
                     <!-- Logo -->
                     <img class="img-fluid mb-5 mh-70" alt="Logo"
-                        src="{{ url('/core/public/storage/images/' . $setting->logo) }}">
+                        src="{{ url('/storage/images/' . $setting->logo) }}">
 
                 </div>
             </div> <!-- / .row -->
@@ -305,3 +305,4 @@
 </body>
 
 </html>
+

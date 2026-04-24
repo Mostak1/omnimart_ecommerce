@@ -51,7 +51,7 @@
                                                         <label for="name">{{ __('Current Image') }}</label>
                                                         <div class="col-lg-12 pb-1">
                                                             <img class="admin-img lg"
-                                                                src="{{ $setting->maintainance_image ? url('/core/public/storage/images/'.$setting->maintainance_image) : url('/core/public/storage/images/placeholder.png') }}"
+                                                                src="{{ $setting->maintainance_image ? url('/storage/images/'.$setting->maintainance_image) : url('/storage/images/placeholder.png') }}"
                                                                 alt="No Image Found">
                                                         </div>
                                                         <span>{{ __('Image Size Should Be 520 x 529.') }}</span>
@@ -97,3 +97,4 @@
     </div>
 
 @endsection
+

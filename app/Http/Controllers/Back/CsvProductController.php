@@ -36,7 +36,7 @@ class CsvProductController extends Controller
         $lists = Item::where('item_type', '!=', 'affilite')->get();
         $new_list = [];
         foreach ($lists->toArray() as $list) {
-            $list['photo'] = url('/core/public/storage/images/' . $list['photo']);
+            $list['photo'] = url('/storage/images/' . $list['photo']);
             $list['slug'] = Str::random(3) . $list['slug'] . Str::random(2);
             $list['category'] = Category::findOrFail($list['category_id'])->name;
             $list['subcategory'] = $list['subcategory_id'] ? Subcategory::findOrFail($list['subcategory_id'])->name : '';
@@ -231,3 +231,4 @@ class CsvProductController extends Controller
         }
     }
 }
+
