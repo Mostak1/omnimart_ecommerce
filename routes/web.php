@@ -479,3 +479,72 @@ Route::get('/run/queue', function () {
     Artisan::call('queue:work --stop-when-empty');
     return "Queue is running";
 });
+
+Route::get('/run-migration', function () {
+    try {
+        Artisan::call('migrate', ['--force' => true]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Migration completed successfully.',
+            'output' => Artisan::output(),
+        ]);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Migration failed.',
+            'error' => $th->getMessage(),
+        ], 500);
+    }
+})->name('global.run.migration');
+
+Route::get('/run-clear', function () {
+    try {
+        Artisan::call('cache:clear');
+        $cacheOutput = Artisan::output();
+
+        Artisan::call('config:clear');
+        $configOutput = Artisan::output();
+
+        Artisan::call('route:clear');
+        $routeOutput = Artisan::output();
+
+        Artisan::call('view:clear');
+        $viewOutput = Artisan::output();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Cache, config, route and view cleared successfully.',
+            'output' => [
+                'cache' => $cacheOutput,
+                'config' => $configOutput,
+                'route' => $routeOutput,
+                'view' => $viewOutput,
+            ],
+        ]);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Clear command failed.',
+            'error' => $th->getMessage(),
+        ], 500);
+    }
+})->name('global.run.clear');
+
+Route::get('/run-storage-link', function () {
+    try {
+        Artisan::call('storage:link');
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Storage linked successfully.',
+            'output' => Artisan::output(),
+        ]);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Storage link failed.',
+            'error' => $th->getMessage(),
+        ], 500);
+    }
+})->name('global.run.storage.link');
