@@ -6,8 +6,7 @@
             {{ $data->transaction_number }}
         </td>
         <td>
-        
-            {{ json_decode(@$data->billing_info, true)['bill_first_name'] }}
+            {{ $data->customer_name ?: __('N/A') }}
         </td>
 
         <td>

@@ -70,14 +70,13 @@
                             <div class="col-12 col-md-6">
                                 <h5>{{ __('Billing Address :') }}</h5>
                                 @php
-                                    $bill = json_decode($order->billing_info, true);
-
+                                    $bill = $order->billing_data;
+                                    $billingName = trim(($bill['bill_first_name'] ?? '') . ' ' . ($bill['bill_last_name'] ?? ''));
                                 @endphp
 
-                                <span class="text-muted">{{ __('Name') }}: </span>{{ $bill['bill_first_name'] }}
-                                {{ $bill['bill_last_name'] }}<br>
-                                <span class="text-muted">{{ __('Email') }}: </span>{{ $bill['bill_email'] }}<br>
-                                <span class="text-muted">{{ __('Phone') }}: </span>{{ $bill['bill_phone'] }}<br>
+                                <span class="text-muted">{{ __('Name') }}: </span>{{ $billingName ?: __('N/A') }}<br>
+                                <span class="text-muted">{{ __('Email') }}: </span>{{ $bill['bill_email'] ?? __('N/A') }}<br>
+                                <span class="text-muted">{{ __('Phone') }}: </span>{{ $bill['bill_phone'] ?? __('N/A') }}<br>
                                 @if (isset($bill['bill_address1']))
                                     <span class="text-muted">{{ __('Address') }}: </span>{{ $bill['bill_address1'] }},
                                     {{ isset($bill['bill_address2']) ? $bill['bill_address2'] : '' }}<br>
@@ -103,12 +102,12 @@
                             <div class="col-12 col-md-6">
                                 <h5>{{ __('Shipping Address :') }}</h5>
                                 @php
-                                    $ship = json_decode($order->shipping_info, true);
+                                    $ship = $order->shipping_data;
+                                    $shippingName = trim(($ship['ship_first_name'] ?? '') . ' ' . ($ship['ship_last_name'] ?? ''));
                                 @endphp
-                                <span class="text-muted">{{ __('Name') }}: </span>{{ $ship['ship_first_name'] }}
-                                {{ $ship['ship_last_name'] }} <br>
-                                <span class="text-muted">{{ __('Email') }}: </span>{{ $ship['ship_email'] }}<br>
-                                <span class="text-muted">{{ __('Phone') }}: </span>{{ $ship['ship_phone'] }}<br>
+                                <span class="text-muted">{{ __('Name') }}: </span>{{ $shippingName ?: __('N/A') }}<br>
+                                <span class="text-muted">{{ __('Email') }}: </span>{{ $ship['ship_email'] ?? __('N/A') }}<br>
+                                <span class="text-muted">{{ __('Phone') }}: </span>{{ $ship['ship_phone'] ?? __('N/A') }}<br>
                                 @if (isset($ship['ship_address1']))
                                     <span class="text-muted">{{ __('Address') }}: </span>{{ $ship['ship_address1'] }},
                                     {{ isset($ship['ship_address2']) ? $ship['ship_address2'] : '' }}<br>
@@ -307,4 +306,3 @@
     </div>
 
 @endsection
-
