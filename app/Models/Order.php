@@ -80,9 +80,10 @@ class Order extends Model
 
     public function getCustomerNameAttribute(): string
     {
-        return (string) ($this->shipping_data['ship_first_name']
-            ?? $this->billing_data['bill_first_name']
-            ?? $this->user->displayName());
+        $shippingName = trim(($this->shipping_data['ship_first_name'] ?? '') . ' ' . ($this->shipping_data['ship_last_name'] ?? ''));
+        $billingName = trim(($this->billing_data['bill_first_name'] ?? '') . ' ' . ($this->billing_data['bill_last_name'] ?? ''));
+
+        return (string) ($shippingName ?: ($billingName ?: $this->user->displayName()));
     }
 
     public function getTotalAmountAttribute(): float
