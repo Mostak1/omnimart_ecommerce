@@ -20,7 +20,7 @@ jobs:
                   username: techseba_ecom@ecom.techseba.com
                   password: techseba_ecom
                   port: 21
-                  server-dir: sathyfashion.techseba.com/
+                  server-dir: ecom.techseba.com/
                   exclude: |
                       **/.git*
                       **/.git*/**
