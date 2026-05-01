@@ -77,16 +77,28 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-12">
+                                <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="checkout-country">{{ __('District') }}</label>
-                                        <select class="form-control" name="ship_country"  id="shipping-country" required data-shipping-url="{{ route('front.shipping.setup') }}">
+                                        <label for="shipping-country">{{ __('District') }} *</label>
+                                        <select class="form-control {{ $errors->has('ship_country') ? 'requireInput' : '' }}" name="ship_country"  id="shipping-country" required data-shipping-url="{{ route('front.shipping.setup') }}"
+                                            data-police-stations-url="{{ url('/get-police-stations') }}">
                                             <option value="" selected disabled>{{ __('Choose District') }}</option>
                                             @foreach ($districts as $district)
                                                 <option value="{{ $district->name }}"
                                                     {{ isset($user) && $user->ship_country == $district->name ? 'selected' : '' }}>
                                                     {{ $district->name }}</option>
                                             @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="shipping-thana">{{ __('Police Station') }} *</label>
+                                        <select class="form-control {{ $errors->has('ship_thana') ? 'requireInput' : '' }}" name="ship_thana" id="shipping-thana" required>
+                                            <option value="" selected disabled>{{ __('Select Police Station') }}</option>
+                                            @if(isset($user) && $user->ship_thana)
+                                                <option value="{{ $user->ship_thana }}" selected>{{ $user->ship_thana }}</option>
+                                            @endif
                                         </select>
                                     </div>
                                 </div>

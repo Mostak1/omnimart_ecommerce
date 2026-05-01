@@ -85,6 +85,7 @@ class SteadfastService
 
     public function buildCreateOrderPayload(Order $order): array
     {
+        $setting = Setting::find(1);
         $billing = $order->billing_data;
         $shipping = $order->shipping_data;
         $recipientName = trim((string) ($shipping['ship_first_name'] ?? $billing['bill_first_name'] ?? 'Customer'));
@@ -93,13 +94,16 @@ class SteadfastService
         $addressParts = array_filter([
             $shipping['ship_address1'] ?? $billing['bill_address1'] ?? null,
             $shipping['ship_address2'] ?? $billing['bill_address2'] ?? null,
+            $shipping['ship_thana'] ?? $billing['bill_thana'] ?? null,
             $shipping['ship_country'] ?? $billing['bill_country'] ?? null,
         ]);
 
         $paymentStatus = strtolower((string) $order->payment_status);
         $codAmount = $paymentStatus === 'paid' ? 0 : (float) $order->total_amount;
+        $pickupAddress = trim((string) ($setting->steadfast_pickup_address ?? env('STEADFAST_PICKUP_ADDRESS', '')));
+        $pickupPhone = $this->normalizePhone((string) ($setting->steadfast_pickup_phone ?? env('STEADFAST_PICKUP_PHONE', '')));
 
-        return [
+        $payload = [
             'invoice' => $order->transaction_number,
             'recipient_name' => $recipientName,
             'recipient_phone' => $recipientPhone,
@@ -107,6 +111,16 @@ class SteadfastService
             'cod_amount' => $codAmount,
             'note' => 'Order #' . $order->transaction_number . ' | Payment: ' . $order->payment_status,
         ];
+
+        if (filled($pickupAddress)) {
+            $payload['pickup_address'] = $pickupAddress;
+        }
+
+        if (filled($pickupPhone)) {
+            $payload['pickup_phone'] = $pickupPhone;
+        }
+
+        return $payload;
     }
 
     private function request(): PendingRequest
