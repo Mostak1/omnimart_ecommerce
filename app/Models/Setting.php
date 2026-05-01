@@ -135,6 +135,8 @@ class Setting extends Model
         "steadfast_api_key",
         "steadfast_secret_key",
         "steadfast_base_url",
+        "steadfast_pickup_address",
+        "steadfast_pickup_phone",
         "steadfast_webhook_token",
     ];
 

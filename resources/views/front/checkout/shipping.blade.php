@@ -80,7 +80,8 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="shipping-country">{{ __('District') }} *</label>
-                                        <select class="form-control {{ $errors->has('ship_country') ? 'requireInput' : '' }}" name="ship_country"  id="shipping-country" required data-shipping-url="{{ route('front.shipping.setup') }}">
+                                        <select class="form-control {{ $errors->has('ship_country') ? 'requireInput' : '' }}" name="ship_country"  id="shipping-country" required data-shipping-url="{{ route('front.shipping.setup') }}"
+                                            data-police-stations-url="{{ url('/get-police-stations') }}">
                                             <option value="" selected disabled>{{ __('Choose District') }}</option>
                                             @foreach ($districts as $district)
                                                 <option value="{{ $district->name }}"
@@ -125,35 +126,4 @@
             @endif
         </div>
     </div>
-@endsection
-
-@section('script')
-<script>
-    $(document).ready(function() {
-        $('#shipping-country').on('change', function() {
-            var district = $(this).val();
-            var $thanaSelect = $('#shipping-thana');
-            $thanaSelect.empty();
-            $thanaSelect.append('<option value="" selected disabled>{{ __("Loading...") }}</option>');
-            
-            if(district) {
-                $.ajax({
-                    url: '{{ url("/get-police-stations") }}/' + encodeURIComponent(district),
-                    type: "GET",
-                    dataType: "json",
-                    success:function(data) {
-                        $thanaSelect.empty();
-                        $thanaSelect.append('<option value="" selected disabled>{{ __("Select Police Station") }}</option>');
-                        $.each(data, function(key, value) {
-                            $thanaSelect.append('<option value="'+ value.name +'">'+ value.name +'</option>');
-                        });
-                    }
-                });
-            } else {
-                $thanaSelect.empty();
-                $thanaSelect.append('<option value="" selected disabled>{{ __("Select Police Station") }}</option>');
-            }
-        });
-    });
-</script>
 @endsection

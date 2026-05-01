@@ -93,7 +93,7 @@
                                     </div>
                                     @if (PriceHelper::CheckDigital())
                                         <div class="row">
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <label for="checkout-address1">{{ __('Address') }}*</label>
                                                     <input class="form-control {{ $errors->has('bill_address1') ? 'requireInput' : '' }}" name="bill_address1" 
@@ -101,17 +101,31 @@
                                                         value="{{ isset($user) ? $user->bill_address1 : '' }}">
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="checkout-country">{{ __('District') }}</label>
-                                                    <select class="form-control"  name="bill_country"
-                                                        id="billing-country" required data-shipping-url="{{ route('front.shipping.setup') }}">
+                                                    <label for="billing-country">{{ __('District') }}*</label>
+                                                    <select class="form-control {{ $errors->has('bill_country') ? 'requireInput' : '' }}"  name="bill_country"
+                                                        id="billing-country" required data-shipping-url="{{ route('front.shipping.setup') }}"
+                                                        data-police-stations-url="{{ url('/get-police-stations') }}">
                                                         <option value="" selected disabled>{{ __('Choose District') }}</option>
                                                         @foreach ($districts as $district)
                                                             <option value="{{ $district->name }}"
                                                                 {{ isset($user) && $user->bill_country == $district->name ? 'selected' : '' }}>
                                                                 {{ $district->name }}</option>
                                                         @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="checkout-thana">{{ __('Police Station') }}*</label>
+                                                    <select class="form-control {{ $errors->has('bill_thana') ? 'requireInput' : '' }}" name="bill_thana" id="checkout-thana" required>
+                                                        <option value="" selected disabled>{{ __('Select Police Station') }}</option>
+                                                        @if(isset($user) && $user->bill_thana)
+                                                            <option value="{{ $user->bill_thana }}" selected>{{ $user->bill_thana }}</option>
+                                                        @endif
                                                     </select>
                                                 </div>
                                             </div>
