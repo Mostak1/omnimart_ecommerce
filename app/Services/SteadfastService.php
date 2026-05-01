@@ -93,6 +93,7 @@ class SteadfastService
         $addressParts = array_filter([
             $shipping['ship_address1'] ?? $billing['bill_address1'] ?? null,
             $shipping['ship_address2'] ?? $billing['bill_address2'] ?? null,
+            $shipping['ship_thana'] ?? $billing['bill_thana'] ?? null,
             $shipping['ship_country'] ?? $billing['bill_country'] ?? null,
         ]);
 

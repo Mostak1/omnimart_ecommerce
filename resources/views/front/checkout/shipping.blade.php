@@ -77,16 +77,27 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-12">
+                                <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="checkout-country">{{ __('District') }}</label>
-                                        <select class="form-control" name="ship_country"  id="shipping-country" required data-shipping-url="{{ route('front.shipping.setup') }}">
+                                        <label for="shipping-country">{{ __('District') }} *</label>
+                                        <select class="form-control {{ $errors->has('ship_country') ? 'requireInput' : '' }}" name="ship_country"  id="shipping-country" required data-shipping-url="{{ route('front.shipping.setup') }}">
                                             <option value="" selected disabled>{{ __('Choose District') }}</option>
                                             @foreach ($districts as $district)
                                                 <option value="{{ $district->name }}"
                                                     {{ isset($user) && $user->ship_country == $district->name ? 'selected' : '' }}>
                                                     {{ $district->name }}</option>
                                             @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="shipping-thana">{{ __('Police Station') }} *</label>
+                                        <select class="form-control {{ $errors->has('ship_thana') ? 'requireInput' : '' }}" name="ship_thana" id="shipping-thana" required>
+                                            <option value="" selected disabled>{{ __('Select Police Station') }}</option>
+                                            @if(isset($user) && $user->ship_thana)
+                                                <option value="{{ $user->ship_thana }}" selected>{{ $user->ship_thana }}</option>
+                                            @endif
                                         </select>
                                     </div>
                                 </div>
@@ -114,4 +125,35 @@
             @endif
         </div>
     </div>
+@endsection
+
+@section('script')
+<script>
+    $(document).ready(function() {
+        $('#shipping-country').on('change', function() {
+            var district = $(this).val();
+            var $thanaSelect = $('#shipping-thana');
+            $thanaSelect.empty();
+            $thanaSelect.append('<option value="" selected disabled>{{ __("Loading...") }}</option>');
+            
+            if(district) {
+                $.ajax({
+                    url: '{{ url("/get-police-stations") }}/' + encodeURIComponent(district),
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data) {
+                        $thanaSelect.empty();
+                        $thanaSelect.append('<option value="" selected disabled>{{ __("Select Police Station") }}</option>');
+                        $.each(data, function(key, value) {
+                            $thanaSelect.append('<option value="'+ value.name +'">'+ value.name +'</option>');
+                        });
+                    }
+                });
+            } else {
+                $thanaSelect.empty();
+                $thanaSelect.append('<option value="" selected disabled>{{ __("Select Police Station") }}</option>');
+            }
+        });
+    });
+</script>
 @endsection

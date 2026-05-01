@@ -146,6 +146,11 @@
                     </a>
                 </li>
                 <li>
+                    <a class="sub-link" href="{{ route('back.police_station.index') }}">
+                        <span class="sub-item">{{ __('Police Stations') }}</span>
+                    </a>
+                </li>
+                <li>
                     <a class="sub-link" href="{{ route('back.tax.index') }}">
                         <span class="sub-item">{{ __('Tax') }}</span>
                     </a>

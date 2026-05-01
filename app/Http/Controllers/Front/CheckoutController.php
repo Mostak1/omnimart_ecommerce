@@ -182,6 +182,16 @@ class CheckoutController extends Controller
 
 
 
+    public function getPoliceStations($district_name)
+    {
+        $district = \App\Models\District::where('name', $district_name)->first();
+        if ($district) {
+            $police_stations = \App\Models\PoliceStation::where('district_id', $district->id)->where('status', 1)->get();
+            return response()->json($police_stations);
+        }
+        return response()->json([]);
+    }
+
     public function billingStore(Request $request)
     {
         // laravel validation
@@ -191,6 +201,7 @@ class CheckoutController extends Controller
             'bill_phone' => 'required',
             'bill_address1' => 'required',
             'bill_country' => 'required',
+            'bill_thana' => 'required',
         ]);
 
         if ($request->same_ship_address) {
@@ -208,6 +219,7 @@ class CheckoutController extends Controller
                     "ship_zip" => $request->bill_zip,
                     "ship_city" => $request->bill_city,
                     "ship_country" => $request->bill_country,
+                    "ship_thana" => $request->bill_thana,
                 ];
             } else {
                 $shipping = [
@@ -296,6 +308,7 @@ class CheckoutController extends Controller
             'ship_phone' => 'required',
             'ship_address1' => 'required',
             'ship_country' => 'required',
+            'ship_thana' => 'required',
         ]);
 
         Session::put('shipping_address', $request->all());
