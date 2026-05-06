@@ -146,7 +146,7 @@
                             @if ($setting->is_privacy_trams == 1)
                                 <div class="form-group">
                                     <div class="custom-control custom-checkbox">
-                                        <input class="custom-control-input" type="checkbox" id="trams__condition">
+                                        <input class="custom-control-input" type="checkbox" id="trams__condition" checked>
                                         <label class="custom-control-label" for="trams__condition">This site is protected
                                             by reCAPTCHA and the <a href="{{ $setting->policy_link }}"
                                                 target="_blank">Privacy Policy</a> and <a
@@ -161,8 +161,8 @@
                                         class="hidden-xs-down"><i
                                             class="icon-arrow-left"></i>{{ __('Back To Cart') }}</span></a>
                                 @if ($setting->is_privacy_trams == 1)
-                                    <button disabled id="continue__button" class="btn btn-primary  btn-sm"
-                                        type="button"><span class="hidden-xs-down">{{ __('Continue') }}</span><i
+                                    <button id="continue__button" class="btn btn-primary  btn-sm"
+                                        type="submit"><span class="hidden-xs-down">{{ __('Continue') }}</span><i
                                             class="icon-arrow-right"></i></button>
                                 @else
                                     <button class="btn btn-primary btn-sm" type="submit"><span
