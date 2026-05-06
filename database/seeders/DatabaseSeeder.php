@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->seedInitialSnapshot();
         $this->call(DistrictSeeder::class);
+        $this->call(PoliceStationSeeder::class);
 
         if (EmailTemplate::where('type', 'New Order Admin')->count() == 0) {
             $emailTemplete = new EmailTemplate();
@@ -39,7 +40,7 @@ class DatabaseSeeder extends Seeder
 
         $snapshotPath = public_path('installer/database.sql');
 
-        if (! is_file($snapshotPath)) {
+        if (!is_file($snapshotPath)) {
             throw new RuntimeException("Initial database snapshot not found at [{$snapshotPath}].");
         }
 
@@ -78,7 +79,7 @@ class DatabaseSeeder extends Seeder
         $key = 'Tables_in_' . $database;
 
         return array_map(
-            static fn ($table) => $table->$key,
+            static fn($table) => $table->$key,
             $tables
         );
     }
