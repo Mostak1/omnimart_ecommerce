@@ -8,6 +8,7 @@ use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class SteadfastService
 {
@@ -102,6 +103,18 @@ class SteadfastService
         $codAmount = $paymentStatus === 'paid' ? 0 : (float) $order->total_amount;
         $pickupAddress = trim((string) ($setting->steadfast_pickup_address ?? env('STEADFAST_PICKUP_ADDRESS', '')));
         $pickupPhone = $this->normalizePhone((string) ($setting->steadfast_pickup_phone ?? env('STEADFAST_PICKUP_PHONE', '')));
+        $noteParts = [
+            'Order #' . $order->transaction_number,
+            'Payment: ' . $order->payment_status,
+        ];
+
+        if (filled($pickupAddress)) {
+            $noteParts[] = 'Pickup Address: ' . $pickupAddress;
+        }
+
+        if (filled($pickupPhone)) {
+            $noteParts[] = 'Agent Mobile: ' . $pickupPhone;
+        }
 
         $payload = [
             'invoice' => $order->transaction_number,
@@ -109,18 +122,46 @@ class SteadfastService
             'recipient_phone' => $recipientPhone,
             'recipient_address' => implode(', ', $addressParts),
             'cod_amount' => $codAmount,
-            'note' => 'Order #' . $order->transaction_number . ' | Payment: ' . $order->payment_status,
+            'note' => Str::limit(implode(' | ', $noteParts), 480, ''),
         ];
 
-        if (filled($pickupAddress)) {
-            $payload['pickup_address'] = $pickupAddress;
+        if (filled($order->customer_email)) {
+            $payload['recipient_email'] = $order->customer_email;
         }
 
-        if (filled($pickupPhone)) {
-            $payload['pickup_phone'] = $pickupPhone;
+        $alternativePhone = $this->normalizePhone((string) ($billing['bill_phone'] ?? ''));
+        if (filled($alternativePhone) && $alternativePhone !== $recipientPhone) {
+            $payload['alternative_phone'] = $alternativePhone;
+        }
+
+        $itemDescription = $this->itemDescription($order);
+        if (filled($itemDescription)) {
+            $payload['item_description'] = $itemDescription;
         }
 
         return $payload;
+    }
+
+    private function itemDescription(Order $order): string
+    {
+        $cart = json_decode($order->cart ?? '[]', true) ?: [];
+
+        $items = collect($cart)
+            ->map(function ($item) {
+                $name = trim((string) ($item['name'] ?? ''));
+                $qty = $item['qty'] ?? null;
+
+                if (! $name) {
+                    return null;
+                }
+
+                return $qty ? "{$name} x {$qty}" : $name;
+            })
+            ->filter()
+            ->values()
+            ->all();
+
+        return Str::limit(implode(', ', $items), 480, '');
     }
 
     private function request(): PendingRequest
