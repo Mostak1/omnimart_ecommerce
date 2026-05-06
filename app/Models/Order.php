@@ -88,7 +88,7 @@ class Order extends Model
 
     public function getTotalAmountAttribute(): float
     {
-        return (float) \App\Helpers\PriceHelper::OrderTotal($this);
+        return (float) \App\Helpers\PriceHelper::OrderTotal($this, true);
     }
 
 }
