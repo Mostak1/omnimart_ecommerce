@@ -296,9 +296,22 @@ class FrontendController extends Controller
         abort_unless(VisibilityHelper::isEnabled('product_details_page'), 404);
 
         $item = Item::with('category')->whereStatus(1)->whereSlug($slug)->firstOrFail();
+        
+        // Facebook CAPI ViewContent
+        $fb_event_id = 'view_content_' . $item->id . '_' . time();
+        \App\Helpers\FacebookCapiHelper::sendEvent('ViewContent', [], [
+            'content_name' => $item->name,
+            'content_category' => $item->category->name,
+            'content_ids' => [(string)$item->id],
+            'content_type' => 'product',
+            'value' => (float)$item->discount_price,
+            'currency' => \App\Helpers\PriceHelper::getCurrencyCode(),
+        ], $fb_event_id);
+
         $video = explode('=', $item->video);
         return view('front.catalog.product', [
             'item'          => $item,
+            'fb_event_id'   => $fb_event_id,
             'reviews'       => $item->reviews()->where('status', 1)->paginate(3),
             'galleries'     => $item->galleries,
             'video'         => $item->video ? end($video) : '',

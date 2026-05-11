@@ -369,7 +369,22 @@ class CheckoutController extends Controller
 
         $total_amount = $grand_total;
 
+        // Facebook CAPI InitiateCheckout
+        $fb_event_id = 'initiate_checkout_' . time();
+        $content_ids = [];
+        foreach ($cart as $key => $items) {
+            $content_ids[] = (string)PriceHelper::GetItemId($key);
+        }
+        \App\Helpers\FacebookCapiHelper::sendEvent('InitiateCheckout', [], [
+            'content_ids' => $content_ids,
+            'content_type' => 'product',
+            'value' => (float)$total_amount,
+            'currency' => PriceHelper::getCurrencyCode(),
+            'num_items' => count($cart),
+        ], $fb_event_id);
+
         $data['cart'] = $cart;
+        $data['fb_event_id'] = $fb_event_id;
         $data['cart_total'] = $cart_total;
         $data['grand_total'] = $total_amount;
         $data['discount'] = $discount;
@@ -684,7 +699,31 @@ class CheckoutController extends Controller
                     $sms->SendSms($user_number, "'purchase'");
                 }
             }
-            return view('front.checkout.success', compact('order', 'cart'));
+
+            // Facebook CAPI Purchase
+            $fb_event_id = 'purchase_' . $order->transaction_number;
+            $content_ids = [];
+            foreach ($cart as $key => $items) {
+                $content_ids[] = (string)PriceHelper::GetItemId($key);
+            }
+            \App\Helpers\FacebookCapiHelper::sendEvent('Purchase', [
+                'em' => $order->user_email,
+                'ph' => $order->user_phone,
+                'fn' => $order->user_first_name,
+                'ln' => $order->user_last_name,
+                'ct' => $order->user_city,
+                'zp' => $order->user_zip,
+                'country' => $order->user_country,
+            ], [
+                'content_ids' => $content_ids,
+                'content_type' => 'product',
+                'value' => (float)$order->grand_total,
+                'currency' => PriceHelper::getCurrencyCode(),
+                'num_items' => count($cart),
+                'order_id' => $order->transaction_number,
+            ], $fb_event_id);
+
+            return view('front.checkout.success', compact('order', 'cart', 'fb_event_id'));
         }
         return redirect()->route('front.index');
     }

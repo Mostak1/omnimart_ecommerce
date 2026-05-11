@@ -137,6 +137,16 @@ class PriceHelper
         return $curr->name;
     }
 
+    public static function getCurrencyCode()
+    {
+        if (Session::has('currency')) {
+            $curr = Currency::findOrFail(Session::get('currency'));
+        } else {
+            $curr = Currency::where('is_default', 1)->first();
+        }
+        return $curr->name;
+    }
+
     public static function grandCurrencyPrice($item)
     {
         $option_price = 0;

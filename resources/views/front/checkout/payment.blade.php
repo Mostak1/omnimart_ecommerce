@@ -175,3 +175,25 @@
     </div>
 @endsection
 
+@section('script')
+    @if (isset($fb_event_id))
+        <script>
+            if (typeof fbq === 'function') {
+                fbq('track', 'InitiateCheckout', {
+                    content_ids: [
+                        @foreach ($cart as $key => $items)
+                            '{{ PriceHelper::GetItemId($key) }}',
+                        @endforeach
+                    ],
+                    content_type: 'product',
+                    value: {{ (float)$grand_total }},
+                    currency: '{{ PriceHelper::getCurrencyCode() }}',
+                    num_items: {{ count($cart) }}
+                }, {
+                    eventID: '{{ $fb_event_id }}'
+                });
+            }
+        </script>
+    @endif
+@endsection
+

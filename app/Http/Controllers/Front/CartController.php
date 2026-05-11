@@ -48,9 +48,40 @@ class CartController extends Controller
 
         $msg = $this->repository->store($request);
 
+        // Facebook CAPI AddToCart
+        $fb_event = null;
+        $item = Item::find($request->item_id);
+        if ($item) {
+            $fb_event_id = 'add_to_cart_' . $item->id . '_' . time();
+            \App\Helpers\FacebookCapiHelper::sendEvent('AddToCart', [], [
+                'content_name' => $item->name,
+                'content_category' => $item->category->name,
+                'content_ids' => [(string)$item->id],
+                'content_type' => 'product',
+                'value' => (float)$item->discount_price,
+                'currency' => \App\Helpers\PriceHelper::getCurrencyCode(),
+            ], $fb_event_id);
+
+            $fb_event = [
+                'eventName' => 'AddToCart',
+                'data' => [
+                    'content_name' => $item->name,
+                    'content_category' => $item->category->name,
+                    'content_ids' => [(string)$item->id],
+                    'content_type' => 'product',
+                    'value' => (float)$item->discount_price,
+                    'currency' => \App\Helpers\PriceHelper::getCurrencyCode(),
+                ],
+                'options' => ['eventID' => $fb_event_id]
+            ];
+        }
 
         if ($request->ajax()) {
-            return $msg;
+            if (is_array($msg)) {
+                $msg['fb_event'] = $fb_event;
+                return response()->json($msg);
+            }
+            return response()->json(['message' => $msg, 'fb_event' => $fb_event]);
         }
     }
 
@@ -58,6 +89,43 @@ class CartController extends Controller
     {
 
         $msg = $this->repository->store($request);
+
+        // Facebook CAPI AddToCart
+        $fb_event = null;
+        $item = Item::find($request->item_id);
+        if ($item) {
+            $fb_event_id = 'add_to_cart_' . $item->id . '_' . time();
+            \App\Helpers\FacebookCapiHelper::sendEvent('AddToCart', [], [
+                'content_name' => $item->name,
+                'content_category' => $item->category->name,
+                'content_ids' => [(string)$item->id],
+                'content_type' => 'product',
+                'value' => (float)$item->discount_price,
+                'currency' => \App\Helpers\PriceHelper::getCurrencyCode(),
+            ], $fb_event_id);
+
+            $fb_event = [
+                'eventName' => 'AddToCart',
+                'data' => [
+                    'content_name' => $item->name,
+                    'content_category' => $item->category->name,
+                    'content_ids' => [(string)$item->id],
+                    'content_type' => 'product',
+                    'value' => (float)$item->discount_price,
+                    'currency' => \App\Helpers\PriceHelper::getCurrencyCode(),
+                ],
+                'options' => ['eventID' => $fb_event_id]
+            ];
+        }
+
+        if ($request->ajax()) {
+            if (is_array($msg)) {
+                $msg['fb_event'] = $fb_event;
+                return response()->json($msg);
+            }
+            return response()->json(['message' => $msg, 'fb_event' => $fb_event]);
+        }
+
         if (isset($request->addtocart)) {
             Session::flash('success_message', __('Cart Added Successfully'));
             return back();

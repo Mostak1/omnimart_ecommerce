@@ -610,3 +610,22 @@
 
 @endsection
 
+@section('script')
+    @if (isset($fb_event_id))
+        <script>
+            if (typeof fbq === 'function') {
+                fbq('track', 'ViewContent', {
+                    content_name: '{{ $item->name }}',
+                    content_category: '{{ $item->category->name }}',
+                    content_ids: ['{{ $item->id }}'],
+                    content_type: 'product',
+                    value: {{ (float)$item->discount_price }},
+                    currency: '{{ PriceHelper::getCurrencyCode() }}'
+                }, {
+                    eventID: '{{ $fb_event_id }}'
+                });
+            }
+        </script>
+    @endif
+@endsection
+

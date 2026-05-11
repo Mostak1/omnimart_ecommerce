@@ -679,6 +679,43 @@
                                                                 <textarea name="facebook_pixel" class="form-control" id="" placeholder="{{ __('Facebook Pixel') }}">{{ $setting->facebook_pixel }}</textarea>
                                                             </div>
 
+                                                            <hr>
+
+                                                            <div class="form-group">
+                                                                <label class="switch-primary">
+                                                                    <input type="checkbox"
+                                                                        class="switch switch-bootstrap status"
+                                                                        name="is_facebook_capi" value="1"
+                                                                        {{ $setting->is_facebook_capi == 1 ? 'checked' : '' }}>
+                                                                    <span class="switch-body"></span>
+                                                                    <span
+                                                                        class="switch-text">{{ __('Enable Facebook Conversion API (CAPI)') }}</span>
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="facebook_pixel_id">{{ __('Facebook Pixel ID') }}</label>
+                                                                <input type="text" name="facebook_pixel_id"
+                                                                    class="form-control" id="facebook_pixel_id"
+                                                                    placeholder="{{ __('Facebook Pixel ID') }}"
+                                                                    value="{{ $setting->facebook_pixel_id }}">
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="facebook_access_token">{{ __('Facebook Access Token') }}</label>
+                                                                <textarea name="facebook_access_token" class="form-control" id="facebook_access_token"
+                                                                    placeholder="{{ __('Facebook Access Token') }}">{{ $setting->facebook_access_token }}</textarea>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="facebook_test_code">{{ __('Facebook Test Event Code (Optional)') }}</label>
+                                                                <input type="text" name="facebook_test_code"
+                                                                    class="form-control" id="facebook_test_code"
+                                                                    placeholder="{{ __('Facebook Test Event Code') }}"
+                                                                    value="{{ $setting->facebook_test_code }}">
+                                                                <small class="text-info">{{ __('Use this code only for testing events in Events Manager.') }}</small>
+                                                            </div>
+
 
                                                             <hr>
 

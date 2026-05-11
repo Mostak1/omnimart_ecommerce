@@ -138,6 +138,10 @@ class Setting extends Model
         "steadfast_pickup_address",
         "steadfast_pickup_phone",
         "steadfast_webhook_token",
+        'facebook_access_token',
+        'facebook_pixel_id',
+        'facebook_test_code',
+        'is_facebook_capi',
     ];
 
     public $timestamps = false;

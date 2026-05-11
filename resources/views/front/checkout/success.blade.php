@@ -42,3 +42,26 @@
     </div>
     @endif
 @endsection
+
+@section('script')
+    @if (isset($fb_event_id))
+        <script>
+            if (typeof fbq === 'function') {
+                fbq('track', 'Purchase', {
+                    content_ids: [
+                        @foreach ($cart as $key => $items)
+                            '{{ PriceHelper::GetItemId($key) }}',
+                        @endforeach
+                    ],
+                    content_type: 'product',
+                    value: {{ (float)$order->grand_total }},
+                    currency: '{{ PriceHelper::getCurrencyCode() }}',
+                    num_items: {{ count($cart) }},
+                    order_id: '{{ $order->transaction_number }}'
+                }, {
+                    eventID: '{{ $fb_event_id }}'
+                });
+            }
+        </script>
+    @endif
+@endsection
