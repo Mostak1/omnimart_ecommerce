@@ -6,12 +6,12 @@ on:
             - sathi_ecom
 
 jobs:
-    deploy:
-        runs-on: ubuntu-latest
+  deploy:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
             - name: Upload to cPanel via FTP
               uses: SamKirkland/FTP-Deploy-Action@v4.3.5

@@ -45,6 +45,7 @@ class PaymentRequest extends FormRequest
                 'bill_phone' => 'required',
                 'bill_address1' => 'required',
                 'bill_country' => 'required',
+                'bill_thana' => 'required',
             ];
         }else{
             return [

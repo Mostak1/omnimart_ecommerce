@@ -1095,6 +1095,22 @@
                                                             </div>
 
                                                             <div class="form-group">
+                                                                <label for="steadfast_pickup_address">{{ __('Steadfast Pickup Address') }}</label>
+                                                                <textarea name="steadfast_pickup_address" class="form-control"
+                                                                    id="steadfast_pickup_address"
+                                                                    placeholder="{{ __('Enter Steadfast Pickup Address') }}"
+                                                                    rows="3">{{ $setting->steadfast_pickup_address }}</textarea>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="steadfast_pickup_phone">{{ __('Steadfast Pickup Phone') }}</label>
+                                                                <input type="text" name="steadfast_pickup_phone" class="form-control"
+                                                                    id="steadfast_pickup_phone"
+                                                                    placeholder="{{ __('Enter Steadfast Pickup Phone') }}"
+                                                                    value="{{ $setting->steadfast_pickup_phone }}">
+                                                            </div>
+
+                                                            <div class="form-group">
                                                                 <label for="steadfast_webhook_token">{{ __('Steadfast Webhook Token') }}</label>
                                                                 <input type="text" name="steadfast_webhook_token" class="form-control"
                                                                     id="steadfast_webhook_token"
@@ -1139,4 +1155,3 @@
         });
     </script>
 @endsection
-

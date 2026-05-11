@@ -514,6 +514,7 @@ class PriceHelper
                     "ship_zip" => $request->bill_zip,
                     "ship_city" => $request->bill_city,
                     "ship_country" => $request->bill_country,
+                    "ship_thana" => $request->bill_thana,
                 ];
             } else {
                 $shipping = [

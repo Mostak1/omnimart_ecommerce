@@ -1253,6 +1253,59 @@ function updateAutomatedShipping(url, district, stateId) {
     })
 }
 
+function getPoliceStationSelect($districtSelect) {
+    if ($districtSelect.attr('id') === 'billing-country') {
+        return $('#checkout-thana');
+    }
+
+    if ($districtSelect.attr('id') === 'shipping-country') {
+        return $('#shipping-thana');
+    }
+
+    return $();
+}
+
+function resetPoliceStationSelect($select, label) {
+    $select.empty();
+    $select.append('<option value="" selected disabled>' + label + '</option>');
+}
+
+function updatePoliceStations($districtSelect) {
+    var $thanaSelect = getPoliceStationSelect($districtSelect);
+    if (!$thanaSelect.length) {
+        return;
+    }
+
+    var district = $districtSelect.val();
+    var selectedThana = $thanaSelect.val();
+    resetPoliceStationSelect($thanaSelect, 'Loading...');
+
+    if (!district) {
+        resetPoliceStationSelect($thanaSelect, 'Select Police Station');
+        return;
+    }
+
+    var url = $districtSelect.data('police-stations-url') || '/get-police-stations';
+    $.ajax({
+        url: url + '/' + encodeURIComponent(district),
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            resetPoliceStationSelect($thanaSelect, 'Select Police Station');
+            $.each(data, function (key, value) {
+                var $option = $('<option>').val(value.name).text(value.name);
+                if (selectedThana && selectedThana === value.name) {
+                    $option.prop('selected', true);
+                }
+                $thanaSelect.append($option);
+            });
+        },
+        error: function () {
+            resetPoliceStationSelect($thanaSelect, 'Select Police Station');
+        }
+    });
+}
+
 $(document).on('change', '#state_id_select', function () {
     var url = $('option:selected', this).attr('data-href');
     var state_id = $(this).val();
@@ -1295,6 +1348,7 @@ $(document).on('change', '#billing-country[data-shipping-url], #shipping-country
     var district = $(this).val();
     var stateId = $('#state_id_select option:selected').val();
     updateAutomatedShipping(url, district, stateId);
+    updatePoliceStations($(this));
 })
 
 
@@ -1313,10 +1367,11 @@ $(document).on('click', '#trams__condition', function () {
 
 
 $(window).on('load', function (event) {
-    var billingDistrict = $('#billing-country[data-shipping-url]');
-    if (billingDistrict.length && billingDistrict.val()) {
-        billingDistrict.trigger('change');
-    }
+    $('#billing-country[data-shipping-url], #shipping-country[data-shipping-url]').each(function () {
+        if ($(this).val()) {
+            $(this).trigger('change');
+        }
+    });
 
     // Preloader
     $('#preloader').fadeOut(500);

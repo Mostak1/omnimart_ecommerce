@@ -105,17 +105,29 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="checkout-country">{{ __('District') }}</label>
+                                            <label for="checkout-country">{{ __('District') }} *</label>
                                             <select class="form-control {{ $errors->has('bill_country') ? 'requireInput' : '' }}"  name="bill_country"
-                                                id="billing-country" required data-shipping-url="{{ route('front.shipping.setup') }}">
+                                                id="billing-country" required data-shipping-url="{{ route('front.shipping.setup') }}"
+                                                data-police-stations-url="{{ url('/get-police-stations') }}">
                                                 <option value="" selected disabled>{{ __('Choose District') }}</option>
                                                 @foreach ($districts as $district)
                                                     <option value="{{ $district->name }}"
                                                         {{ isset($user) && $user->bill_country == $district->name ? 'selected' : '' }}>
                                                         {{ $district->name }}</option>
                                                 @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="checkout-thana">{{ __('Police Station') }} *</label>
+                                            <select class="form-control {{ $errors->has('bill_thana') ? 'requireInput' : '' }}" name="bill_thana" id="checkout-thana" required>
+                                                <option value="" selected disabled>{{ __('Select Police Station') }}</option>
+                                                @if(isset($user) && $user->bill_thana)
+                                                    <option value="{{ $user->bill_thana }}" selected>{{ $user->bill_thana }}</option>
+                                                @endif
                                             </select>
                                         </div>
                                     </div>
@@ -134,7 +146,7 @@
                             @if ($setting->is_privacy_trams == 1)
                                 <div class="form-group">
                                     <div class="custom-control custom-checkbox">
-                                        <input class="custom-control-input" type="checkbox" id="trams__condition">
+                                        <input class="custom-control-input" type="checkbox" id="trams__condition" checked>
                                         <label class="custom-control-label" for="trams__condition">This site is protected
                                             by reCAPTCHA and the <a href="{{ $setting->policy_link }}"
                                                 target="_blank">Privacy Policy</a> and <a
@@ -149,8 +161,8 @@
                                         class="hidden-xs-down"><i
                                             class="icon-arrow-left"></i>{{ __('Back To Cart') }}</span></a>
                                 @if ($setting->is_privacy_trams == 1)
-                                    <button disabled id="continue__button" class="btn btn-primary  btn-sm"
-                                        type="button"><span class="hidden-xs-down">{{ __('Continue') }}</span><i
+                                    <button id="continue__button" class="btn btn-primary  btn-sm"
+                                        type="submit"><span class="hidden-xs-down">{{ __('Continue') }}</span><i
                                             class="icon-arrow-right"></i></button>
                                 @else
                                     <button class="btn btn-primary btn-sm" type="submit"><span

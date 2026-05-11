@@ -16,4 +16,9 @@ class District extends Model
     {
         return $query->orderBy('name');
     }
+
+    public function policeStations()
+    {
+        return $this->hasMany(PoliceStation::class, 'district_id');
+    }
 }
