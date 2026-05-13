@@ -23,41 +23,41 @@
 
 @section('content')
     @if (data_get($site_visibility, 'product_breadcrumb', 1))
-    <div class="page-title">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <ul class="breadcrumbs">
-                        <li><a href="{{ route('front.index') }}">{{ __('Home') }}</a>
-                        </li>
-                        <li class="separator"></li>
-                        <li><a href="{{ route('front.catalog') }}">{{ __('Shop') }}</a>
-                        </li>
-                        <li class="separator"></li>
-                        <li>{{ $item->name }}</li>
-                    </ul>
+        <div class="page-title">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="breadcrumbs">
+                            <li><a href="{{ route('front.index') }}">{{ __('Home') }}</a>
+                            </li>
+                            <li class="separator"></li>
+                            <li><a href="{{ route('front.catalog') }}">{{ __('Shop') }}</a>
+                            </li>
+                            <li class="separator"></li>
+                            <li>{{ $item->name }}</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     @endif
     <!-- Page Content-->
     <div class="container padding-bottom-1x mb-1">
         <div class="row">
             <!-- Poduct Gallery-->
             @if (data_get($site_visibility, 'product_gallery', 1))
-            <div class="col-xxl-5 col-lg-6 col-md-6">
-                <div class="product-gallery">
-                    @if ($item->video)
-                        <div class="gallery-wrapper">
-                            <div class="gallery-item video-btn text-center">
-                                <a href="{{ $item->video }}" title="Watch video"></a>
+                <div class="col-xxl-5 col-lg-6 col-md-6">
+                    <div class="product-gallery">
+                        @if ($item->video)
+                            <div class="gallery-wrapper">
+                                <div class="gallery-item video-btn text-center">
+                                    <a href="{{ $item->video }}" title="Watch video"></a>
+                                </div>
                             </div>
-                        </div>
-                    @endif
-                    @if ($item->is_stock())
-                        <span
-                            class="product-badge
+                        @endif
+                        @if ($item->is_stock())
+                            <span
+                                class="product-badge
                         @if ($item->is_type == 'feature') bg-warning
                         @elseif($item->is_type == 'new')
                         bg-success
@@ -68,257 +68,262 @@
                         @elseif($item->is_type == 'flash_deal')
                             bg-success @endif
                         ">{{ __($item->is_type != 'undefine' ? ucfirst(str_replace('_', ' ', $item->is_type)) : '') }}</span>
-                    @else
-                        <span class="product-badge bg-secondary border-default text-body">{{ __('out of stock') }}</span>
-                    @endif
+                        @else
+                            <span
+                                class="product-badge bg-secondary border-default text-body">{{ __('out of stock') }}</span>
+                        @endif
 
-                    @if ($item->previous_price && $item->previous_price != 0)
-                        <div class="product-badge bg-goldenrod  ppp-t"> -{{ PriceHelper::DiscountPercentage($item) }}</div>
-                    @endif
-
-                    <div class="product-thumbnails insize">
-                        <div class="product-details-slider owl-carousel">
-                            <div class="item"><img src="{{ url('/storage/images/' . $item->photo) }}"
-                                    alt="zoom" />
+                        @if ($item->previous_price && $item->previous_price != 0)
+                            <div class="product-badge bg-goldenrod  ppp-t"> -{{ PriceHelper::DiscountPercentage($item) }}
                             </div>
-                            @foreach ($galleries as $key => $gallery)
-                                <div class="item"><img src="{{ url('/storage/images/' . $gallery->photo) }}"
-                                        alt="zoom" /></div>
-                            @endforeach
+                        @endif
+
+                        <div class="product-thumbnails insize">
+                            <div class="product-details-slider owl-carousel">
+                                <div class="item"><img src="{{ url('/storage/images/' . $item->photo) }}"
+                                        alt="zoom" />
+                                </div>
+                                @foreach ($galleries as $key => $gallery)
+                                    <div class="item"><img src="{{ url('/storage/images/' . $gallery->photo) }}"
+                                            alt="zoom" /></div>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             @endif
             <!-- Product Info-->
             @if (data_get($site_visibility, 'product_summary', 1))
-            <div class="col-xxl-7 col-lg-6 col-md-6">
-                <div class="details-page-top-right-content d-flex align-items-center">
-                    <div class="div w-100">
-                        <input type="hidden" id="item_id" value="{{ $item->id }}">
-                        <input type="hidden" id="demo_price"
-                            value="{{ PriceHelper::setConvertPrice($item->discount_price) }}">
-                        <input type="hidden" value="{{ PriceHelper::setCurrencySign() }}" id="set_currency">
-                        <input type="hidden" value="{{ PriceHelper::setCurrencyValue() }}" id="set_currency_val">
-                        <input type="hidden" value="{{ $setting->currency_direction }}" id="currency_direction">
-                        <h4 class="mb-2 p-title-main">{{ $item->name }}</h4>
-                        <div class="mb-3">
-                            <div class="rating-stars d-inline-block gmr-3">
-                                {!! Helper::renderStarRating($item->reviews->avg('rating')) !!}
-                            </div>
-                            @if ($item->is_stock())
-                                <span class="text-success  d-inline-block">{{ __('In Stock') }} <b>({{ $item->stock }}
-                                        @lang('items'))</b></span>
-                            @else
-                                <span class="text-danger  d-inline-block">{{ __('Out of stock') }}</span>
-                            @endif
-                        </div>
-
-
-                        @if ($item->is_type == 'flash_deal')
-                            @if (date('d-m-y') != \Carbon\Carbon::parse($item->date)->format('d-m-y'))
-                                <div class="countdown countdown-alt mb-3" data-date-time="{{ $item->date }}">
+                <div class="col-xxl-7 col-lg-6 col-md-6">
+                    <div class="details-page-top-right-content d-flex align-items-center">
+                        <div class="div w-100">
+                            <input type="hidden" id="item_id" value="{{ $item->id }}">
+                            <input type="hidden" id="demo_price"
+                                value="{{ PriceHelper::setConvertPrice($item->discount_price) }}">
+                            <input type="hidden" value="{{ PriceHelper::setCurrencySign() }}" id="set_currency">
+                            <input type="hidden" value="{{ PriceHelper::setCurrencyValue() }}" id="set_currency_val">
+                            <input type="hidden" value="{{ $setting->currency_direction }}" id="currency_direction">
+                            <h4 class="mb-2 p-title-main">{{ $item->name }}</h4>
+                            <div class="mb-3">
+                                <div class="rating-stars d-inline-block gmr-3">
+                                    {!! Helper::renderStarRating($item->reviews->avg('rating')) !!}
                                 </div>
+                                @if ($item->is_stock())
+                                    <span class="text-success  d-inline-block">{{ __('In Stock') }}
+                                        <b>({{ $item->stock }}
+                                            @lang('items'))</b></span>
+                                @else
+                                    <span class="text-danger  d-inline-block">{{ __('Out of stock') }}</span>
+                                @endif
+                            </div>
+
+
+                            @if ($item->is_type == 'flash_deal')
+                                @if (date('d-m-y') != \Carbon\Carbon::parse($item->date)->format('d-m-y'))
+                                    <div class="countdown countdown-alt mb-3" data-date-time="{{ $item->date }}">
+                                    </div>
+                                @endif
                             @endif
-                        @endif
 
-                        <span class="h3 d-block price-area">
-                            @if ($item->previous_price != 0)
-                                <small
-                                    class="d-inline-block"><del>{{ PriceHelper::setPreviousPrice($item->previous_price) }}</del></small>
-                            @endif
-                            <span id="main_price" class="main-price">{{ PriceHelper::grandCurrencyPrice($item) }}</span>
-                        </span>
+                            <span class="h3 d-block price-area">
+                                @if ($item->previous_price != 0)
+                                    <small
+                                        class="d-inline-block"><del>{{ PriceHelper::setPreviousPrice($item->previous_price) }}</del></small>
+                                @endif
+                                <span id="main_price"
+                                    class="main-price">{{ PriceHelper::grandCurrencyPrice($item) }}</span>
+                            </span>
 
-                        <p class="text-muted">{{ $item->sort_details }} <a href="#details"
-                                class="scroll-to">{{ __('Read more') }}</a></p>
 
-                        <div class="row margin-top-1x">
-                            @foreach ($attributes as $attribute)
-                                @if ($attribute->options->count() != 0)
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="{{ $attribute->name }}">{{ $attribute->name }}</label>
-                                            <select class="form-control attribute_option" id="{{ $attribute->name }}">
-                                                @foreach ($attribute->options->where('stock', '!=', '0') as $option)
-                                                    <option value="{{ $option->name }}" data-type="{{ $attribute->id }}"
-                                                        data-href="{{ $option->id }}"
-                                                        data-target="{{ PriceHelper::setConvertPrice($option->price) }}">
-                                                        {{ $option->name }}</option>
-                                                @endforeach
-                                            </select>
+
+                            <div class="row margin-top-1x">
+                                @foreach ($attributes as $attribute)
+                                    @if ($attribute->options->count() != 0)
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="{{ $attribute->name }}">{{ $attribute->name }}</label>
+                                                <select class="form-control attribute_option" id="{{ $attribute->name }}">
+                                                    @foreach ($attribute->options->where('stock', '!=', '0') as $option)
+                                                        <option value="{{ $option->name }}"
+                                                            data-type="{{ $attribute->id }}"
+                                                            data-href="{{ $option->id }}"
+                                                            data-target="{{ PriceHelper::setConvertPrice($option->price) }}">
+                                                            {{ $option->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
-                                @endif
-                            @endforeach
-                        </div>
-                        <div class="row align-items-end pb-4">
-                            <div class="col-sm-12">
-                                @if ($item->item_type == 'normal')
-                                    <div class="qtySelector product-quantity">
-                                        <span class="decreaseQty subclick"><i class="fas fa-minus "></i></span>
-                                        <input type="text" class="qtyValue cart-amount" value="1">
-                                        <span class="increaseQty addclick"><i class="fas fa-plus"></i></span>
-                                        <input type="hidden" value="3333" id="current_stock">
-                                    </div>
-                                @endif
-                                <div class="p-action-button">
-                                    @if ($item->item_type != 'affiliate')
-                                        @if ($item->is_stock())
-                                            <button class="btn btn-primary m-0 a-t-c-mr" id="add_to_cart"><i
-                                                    class="icon-bag"></i><span>{{ __('Add to Cart') }}</span></button>
-                                            <button class="btn btn-primary m-0" id="but_to_cart"><i
-                                                    class="icon-bag"></i><span>{{ __('Buy Now') }}</span></button>
-                                        @else
-                                            <button class="btn btn-primary m-0"><i
-                                                    class="icon-bag"></i><span>{{ __('Out of stock') }}</span></button>
-                                        @endif
-                                    @else
-                                        <a href="{{ $item->affiliate_link }}" target="_blank"
-                                            class="btn btn-primary m-0"><span><i
-                                                    class="icon-bag"></i>{{ __('Buy Now') }}</span></a>
                                     @endif
-
-                                </div>
-
+                                @endforeach
                             </div>
-                        </div>
-
-                        <div class="div">
-                            <div class="t-c-b-area">
-                                @if ($item->brand_id)
-                                    <div class="pt-1 mb-1"><span class="text-medium">{{ __('Brand') }}:</span>
-                                        <a
-                                            href="{{ route('front.catalog') . '?brand=' . $item->brand->slug }}">{{ $item->brand->name }}</a>
-                                    </div>
-                                @endif
-
-                                <div class="pt-1 mb-1"><span class="text-medium">{{ __('Categories') }}:</span>
-                                    <a
-                                        href="{{ route('front.catalog') . '?category=' . $item->category->slug }}">{{ $item->category->name }}</a>
-                                    @if ($item->subcategory->name)
-                                        /
+                            <div class="row align-items-end pb-4">
+                                <div class="col-sm-12">
+                                    @if ($item->item_type == 'normal')
+                                        <div class="qtySelector product-quantity">
+                                            <span class="decreaseQty subclick"><i class="fas fa-minus "></i></span>
+                                            <input type="text" class="qtyValue cart-amount" value="1">
+                                            <span class="increaseQty addclick"><i class="fas fa-plus"></i></span>
+                                            <input type="hidden" value="3333" id="current_stock">
+                                        </div>
                                     @endif
-                                    <a
-                                        href="{{ route('front.catalog') . '?subcategory=' . $item->subcategory->slug }}">{{ $item->subcategory->name }}</a>
-                                    @if ($item->childcategory->name)
-                                        /
-                                    @endif
-                                    <a
-                                        href="{{ route('front.catalog') . '?childcategory=' . $item->childcategory->slug }}">{{ $item->childcategory->name }}</a>
-                                </div>
-                                <div class="pt-1 mb-1"><span class="text-medium">{{ __('Tags') }}:</span>
-                                    @if ($item->tags)
-                                        @foreach (explode(',', $item->tags) as $tag)
-                                            @if ($loop->last)
-                                                <a
-                                                    href="{{ route('front.catalog') . '?tag=' . $tag }}">{{ $tag }}</a>
+                                    <div class="p-action-button">
+                                        @if ($item->item_type != 'affiliate')
+                                            @if ($item->is_stock())
+                                                <button class="btn btn-primary m-0 a-t-c-mr" id="add_to_cart"><i
+                                                        class="icon-bag"></i><span>{{ __('Add to Cart') }}</span></button>
+                                                <button class="btn btn-primary m-0" id="but_to_cart"><i
+                                                        class="icon-bag"></i><span>{{ __('Buy Now') }}</span></button>
                                             @else
-                                                <a
-                                                    href="{{ route('front.catalog') . '?tag=' . $tag }}">{{ $tag }}</a>,
+                                                <button class="btn btn-primary m-0"><i
+                                                        class="icon-bag"></i><span>{{ __('Out of stock') }}</span></button>
                                             @endif
-                                        @endforeach
+                                        @else
+                                            <a href="{{ $item->affiliate_link }}" target="_blank"
+                                                class="btn btn-primary m-0"><span><i
+                                                        class="icon-bag"></i>{{ __('Buy Now') }}</span></a>
+                                        @endif
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <p class="text-muted">{{ $item->sort_details }} <a href="#details"
+                                    class="scroll-to">{{ __('Read more') }}</a></p>
+                            <div class="div">
+                                <div class="t-c-b-area">
+                                    @if ($item->brand_id)
+                                        <div class="pt-1 mb-1"><span class="text-medium">{{ __('Brand') }}:</span>
+                                            <a
+                                                href="{{ route('front.catalog') . '?brand=' . $item->brand->slug }}">{{ $item->brand->name }}</a>
+                                        </div>
+                                    @endif
+
+                                    <div class="pt-1 mb-1"><span class="text-medium">{{ __('Categories') }}:</span>
+                                        <a
+                                            href="{{ route('front.catalog') . '?category=' . $item->category->slug }}">{{ $item->category->name }}</a>
+                                        @if ($item->subcategory->name)
+                                            /
+                                        @endif
+                                        <a
+                                            href="{{ route('front.catalog') . '?subcategory=' . $item->subcategory->slug }}">{{ $item->subcategory->name }}</a>
+                                        @if ($item->childcategory->name)
+                                            /
+                                        @endif
+                                        <a
+                                            href="{{ route('front.catalog') . '?childcategory=' . $item->childcategory->slug }}">{{ $item->childcategory->name }}</a>
+                                    </div>
+                                    <div class="pt-1 mb-1"><span class="text-medium">{{ __('Tags') }}:</span>
+                                        @if ($item->tags)
+                                            @foreach (explode(',', $item->tags) as $tag)
+                                                @if ($loop->last)
+                                                    <a
+                                                        href="{{ route('front.catalog') . '?tag=' . $tag }}">{{ $tag }}</a>
+                                                @else
+                                                    <a
+                                                        href="{{ route('front.catalog') . '?tag=' . $tag }}">{{ $tag }}</a>,
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </div>
+                                    @if ($item->item_type == 'normal')
+                                        <div class="pt-1 mb-4"><span class="text-medium">{{ __('SKU') }}:</span>
+                                            #{{ $item->sku }}</div>
                                     @endif
                                 </div>
-                                @if ($item->item_type == 'normal')
-                                    <div class="pt-1 mb-4"><span class="text-medium">{{ __('SKU') }}:</span>
-                                        #{{ $item->sku }}</div>
-                                @endif
-                            </div>
 
-                            <div class="mt-4 p-d-f-area">
-                                <div class="left">
-                                    <a class="btn btn-primary btn-sm wishlist_store wishlist_text"
-                                        href="{{ route('user.wishlist.store', $item->id) }}"><span><i
-                                                class="icon-heart"></i></span>
-                                        @if (Auth::check() &&
-                                                App\Models\Wishlist::where('user_id', Auth::user()->id)->where('item_id', $item->id)->exists())
-                                            <span>{{ __('Added To Wishlist') }}</span>
-                                        @else
-                                            <span class="wishlist1">{{ __('Wishlist') }}</span>
-                                            <span class="wishlist2 d-none">{{ __('Added To Wishlist') }}</span>
-                                        @endif
-                                    </a>
-                                    <button class="btn btn-primary btn-sm  product_compare"
-                                        data-target="{{ route('fornt.compare.product', $item->id) }}"><span><i
-                                                class="icon-repeat"></i>{{ __('Compare') }}</span></button>
-                                </div>
-
-                                <div class="d-flex align-items-center">
-                                    <span class="text-muted mr-1">{{ __('Share') }}: </span>
-                                    <div class="d-inline-block a2a_kit">
-                                        <a class="facebook  a2a_button_facebook" href="">
-                                            <span><i class="fab fa-facebook-f"></i></span>
+                                <div class="mt-4 p-d-f-area">
+                                    <div class="left">
+                                        <a class="btn btn-primary btn-sm wishlist_store wishlist_text"
+                                            href="{{ route('user.wishlist.store', $item->id) }}"><span><i
+                                                    class="icon-heart"></i></span>
+                                            @if (Auth::check() &&
+                                                    App\Models\Wishlist::where('user_id', Auth::user()->id)->where('item_id', $item->id)->exists())
+                                                <span>{{ __('Added To Wishlist') }}</span>
+                                            @else
+                                                <span class="wishlist1">{{ __('Wishlist') }}</span>
+                                                <span class="wishlist2 d-none">{{ __('Added To Wishlist') }}</span>
+                                            @endif
                                         </a>
-                                        <a class="twitter  a2a_button_twitter" href="">
-                                            <span><i class="fab fa-twitter"></i></span>
-                                        </a>
-                                        <a class="linkedin  a2a_button_linkedin" href="">
-                                            <span><i class="fab fa-linkedin-in"></i></span>
-                                        </a>
-                                        <a class="pinterest   a2a_button_pinterest" href="">
-                                            <span><i class="fab fa-pinterest"></i></span>
-                                        </a>
+                                        <button class="btn btn-primary btn-sm  product_compare"
+                                            data-target="{{ route('fornt.compare.product', $item->id) }}"><span><i
+                                                    class="icon-repeat"></i>{{ __('Compare') }}</span></button>
                                     </div>
-                                    <script async src="https://static.addtoany.com/menu/page.js"></script>
-                                </div>
 
+                                    <div class="d-flex align-items-center">
+                                        <span class="text-muted mr-1">{{ __('Share') }}: </span>
+                                        <div class="d-inline-block a2a_kit">
+                                            <a class="facebook  a2a_button_facebook" href="">
+                                                <span><i class="fab fa-facebook-f"></i></span>
+                                            </a>
+                                            <a class="twitter  a2a_button_twitter" href="">
+                                                <span><i class="fab fa-twitter"></i></span>
+                                            </a>
+                                            <a class="linkedin  a2a_button_linkedin" href="">
+                                                <span><i class="fab fa-linkedin-in"></i></span>
+                                            </a>
+                                            <a class="pinterest   a2a_button_pinterest" href="">
+                                                <span><i class="fab fa-pinterest"></i></span>
+                                            </a>
+                                        </div>
+                                        <script async src="https://static.addtoany.com/menu/page.js"></script>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
             @endif
             @if (data_get($site_visibility, 'product_description', 1))
-            <div class=" padding-top-3x mb-3" id="details">
-                <div class="col-lg-12">
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link active" id="description-tab" data-bs-toggle="tab"
-                                data-bs-target="#description" type="button" role="tab" aria-controls="description"
-                                aria-selected="true">{{ __('Descriptions') }}</a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="specification-tab" data-bs-toggle="tab"
-                                data-bs-target="#specification" type="button" role="tab"
-                                aria-controls="specification" aria-selected="false">{{ __('Specifications') }}</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content card">
-                        <div class="tab-pane fade show active" id="description" role="tabpanel"
-                            aria-labelledby="description-tab"">
-                            {!! $item->details !!}
-                        </div>
-                        <div class="tab-pane fade show" id="specification" role="tabpanel"
-                            aria-labelledby="specification-tab">
-                            <div class="comparison-table">
-                                <table class="table table-bordered">
-                                    <thead class="bg-secondary">
-                                    </thead>
-                                    <tbody>
-                                        <tr class="bg-secondary">
-                                            <th class="text-uppercase">{{ __('Specifications') }}</th>
-                                            <td><span class="text-medium">{{ __('Descriptions') }}</span></td>
-                                        </tr>
-                                        @if ($sec_name)
-                                            @foreach (array_combine($sec_name, $sec_details) as $sname => $sdetail)
-                                                <tr>
-                                                    <th>{{ $sname }}</th>
-                                                    <td>{{ $sdetail }}</td>
-                                                </tr>
-                                            @endforeach
-                                        @else
-                                            <tr class="text-center">
-                                                <td colspan="2">{{ __('No Specifications') }}</td>
+                <div class=" padding-top-3x mb-3" id="details">
+                    <div class="col-lg-12">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="description-tab" data-bs-toggle="tab"
+                                    data-bs-target="#description" type="button" role="tab"
+                                    aria-controls="description" aria-selected="true">{{ __('Descriptions') }}</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="specification-tab" data-bs-toggle="tab"
+                                    data-bs-target="#specification" type="button" role="tab"
+                                    aria-controls="specification" aria-selected="false">{{ __('Specifications') }}</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content card">
+                            <div class="tab-pane fade show active" id="description" role="tabpanel"
+                                aria-labelledby="description-tab"">
+                                {!! $item->details !!}
+                            </div>
+                            <div class="tab-pane fade show" id="specification" role="tabpanel"
+                                aria-labelledby="specification-tab">
+                                <div class="comparison-table">
+                                    <table class="table table-bordered">
+                                        <thead class="bg-secondary">
+                                        </thead>
+                                        <tbody>
+                                            <tr class="bg-secondary">
+                                                <th class="text-uppercase">{{ __('Specifications') }}</th>
+                                                <td><span class="text-medium">{{ __('Descriptions') }}</span></td>
                                             </tr>
-                                        @endif
-                                    </tbody>
-                                </table>
+                                            @if ($sec_name)
+                                                @foreach (array_combine($sec_name, $sec_details) as $sname => $sdetail)
+                                                    <tr>
+                                                        <th>{{ $sname }}</th>
+                                                        <td>{{ $sdetail }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            @else
+                                                <tr class="text-center">
+                                                    <td colspan="2">{{ __('No Specifications') }}</td>
+                                                </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
             @endif
         </div>
     </div>
@@ -326,126 +331,126 @@
 
     <!-- Reviews-->
     @if (data_get($site_visibility, 'product_reviews', 1))
-    <div class="container  review-area">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="section-title">
-                    <h2 class="h3">{{ __('Latest Reviews') }}</h2>
+        <div class="container  review-area">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <h2 class="h3">{{ __('Latest Reviews') }}</h2>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-8">
-                @forelse ($reviews as $review)
-                    <div class="single-review">
-                        <div class="comment">
-                            <div class="comment-author-ava"><img class="lazy"
-                                    data-src="{{ url('/storage/images/' . $review->user->photo) }}"
-                                    alt="Comment author">
-                            </div>
-                            <div class="comment-body">
-                                <div class="comment-header d-flex flex-wrap justify-content-between">
-                                    <div>
-                                        <h4 class="comment-title mb-1">{{ $review->subject }}</h4>
-                                        <span>{{ $review->user->first_name }}</span>
-                                        <span class="ml-3">{{ $review->created_at->format('M d, Y') }}</span>
-                                    </div>
-                                    <div class="mb-2">
-                                        <div class="rating-stars">
-                                            @php
-                                                for ($i = 0; $i < $review->rating; $i++) {
-                                                    echo "<i class = 'far fa-star filled'></i>";
-                                                }
-                                            @endphp
+            <div class="row">
+                <div class="col-md-8">
+                    @forelse ($reviews as $review)
+                        <div class="single-review">
+                            <div class="comment">
+                                <div class="comment-author-ava"><img class="lazy"
+                                        data-src="{{ url('/storage/images/' . $review->user->photo) }}"
+                                        alt="Comment author">
+                                </div>
+                                <div class="comment-body">
+                                    <div class="comment-header d-flex flex-wrap justify-content-between">
+                                        <div>
+                                            <h4 class="comment-title mb-1">{{ $review->subject }}</h4>
+                                            <span>{{ $review->user->first_name }}</span>
+                                            <span class="ml-3">{{ $review->created_at->format('M d, Y') }}</span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <div class="rating-stars">
+                                                @php
+                                                    for ($i = 0; $i < $review->rating; $i++) {
+                                                        echo "<i class = 'far fa-star filled'></i>";
+                                                    }
+                                                @endphp
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <p class="comment-text  mt-2">{{ $review->review }}</p>
+                                    <p class="comment-text  mt-2">{{ $review->review }}</p>
 
+                                </div>
                             </div>
                         </div>
+                    @empty
+                        <div class="card p-5">
+                            {{ __('No Review') }}
+                        </div>
+                    @endforelse
+                    <div class="row mt-15">
+                        <div class="col-lg-12 text-center">
+                            {{ $reviews->links() }}
+                        </div>
                     </div>
-                @empty
-                    <div class="card p-5">
-                        {{ __('No Review') }}
-                    </div>
-                @endforelse
-                <div class="row mt-15">
-                    <div class="col-lg-12 text-center">
-                        {{ $reviews->links() }}
-                    </div>
+
                 </div>
-
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="text-center">
-                            <div class="d-inline align-baseline display-3 mr-1">
-                                {{ round($item->reviews->avg('rating'), 2) }}</div>
-                            <div class="d-inline align-baseline text-sm text-warning mr-1">
-                                <div class="rating-stars">
-                                    {!! Helper::renderStarRating($item->reviews->avg('rating')) !!}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="text-center">
+                                <div class="d-inline align-baseline display-3 mr-1">
+                                    {{ round($item->reviews->avg('rating'), 2) }}</div>
+                                <div class="d-inline align-baseline text-sm text-warning mr-1">
+                                    <div class="rating-stars">
+                                        {!! Helper::renderStarRating($item->reviews->avg('rating')) !!}
+                                    </div>
                                 </div>
                             </div>
+                            <div class="pt-3">
+                                <label class="text-medium text-sm">5 {{ __('stars') }} <span class="text-muted">-
+                                        {{ $item->reviews->where('status', 1)->where('rating', 5)->count() }}</span></label>
+                                <div class="progress margin-bottom-1x">
+                                    <div class="progress-bar bg-warning" role="progressbar"
+                                        style="width: {{ $item->reviews->where('status', 1)->where('rating', 5)->sum('rating') * 20 }}%; height: 2px;"
+                                        aria-valuenow="100"
+                                        aria-valuemin="{{ $item->reviews->where('rating', 5)->sum('rating') * 20 }}"
+                                        aria-valuemax="100"></div>
+                                </div>
+                                <label class="text-medium text-sm">4 {{ __('stars') }} <span class="text-muted">-
+                                        {{ $item->reviews->where('status', 1)->where('rating', 4)->count() }}</span></label>
+                                <div class="progress margin-bottom-1x">
+                                    <div class="progress-bar bg-warning" role="progressbar"
+                                        style="width: {{ $item->reviews->where('status', 1)->where('rating', 4)->sum('rating') * 20 }}%; height: 2px;"
+                                        aria-valuenow="{{ $item->reviews->where('rating', 4)->sum('rating') * 20 }}"
+                                        aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <label class="text-medium text-sm">3 {{ __('stars') }} <span class="text-muted">-
+                                        {{ $item->reviews->where('status', 1)->where('rating', 3)->count() }}</span></label>
+                                <div class="progress margin-bottom-1x">
+                                    <div class="progress-bar bg-warning" role="progressbar"
+                                        style="width: {{ $item->reviews->where('rating', 3)->sum('rating') * 20 }}%; height: 2px;"
+                                        aria-valuenow="{{ $item->reviews->where('rating', 3)->sum('rating') * 20 }}"
+                                        aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <label class="text-medium text-sm">2 {{ __('stars') }} <span class="text-muted">-
+                                        {{ $item->reviews->where('status', 1)->where('rating', 2)->count() }}</span></label>
+                                <div class="progress margin-bottom-1x">
+                                    <div class="progress-bar bg-warning" role="progressbar"
+                                        style="width: {{ $item->reviews->where('status', 1)->where('rating', 2)->sum('rating') * 20 }}%; height: 2px;"
+                                        aria-valuenow="{{ $item->reviews->where('rating', 2)->sum('rating') * 20 }}"
+                                        aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <label class="text-medium text-sm">1 {{ __('star') }} <span class="text-muted">-
+                                        {{ $item->reviews->where('status', 1)->where('rating', 1)->count() }}</span></label>
+                                <div class="progress mb-2">
+                                    <div class="progress-bar bg-warning" role="progressbar"
+                                        style="width: {{ $item->reviews->where('status', 1)->where('rating', 1)->sum('rating') * 20 }}; height: 2px;"
+                                        aria-valuenow="0"
+                                        aria-valuemin="{{ $item->reviews->where('rating', 1)->sum('rating') * 20 }}"
+                                        aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                            @if (Auth::user())
+                                <div class="pb-2"><a class="btn btn-primary btn-block" href="#"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#leaveReview"><span>{{ __('Leave a Review') }}</span></a></div>
+                            @else
+                                <div class="pb-2"><a class="btn btn-primary btn-block"
+                                        href="{{ route('user.login') }}"><span>{{ __('Login') }}</span></a></div>
+                            @endif
                         </div>
-                        <div class="pt-3">
-                            <label class="text-medium text-sm">5 {{ __('stars') }} <span class="text-muted">-
-                                    {{ $item->reviews->where('status', 1)->where('rating', 5)->count() }}</span></label>
-                            <div class="progress margin-bottom-1x">
-                                <div class="progress-bar bg-warning" role="progressbar"
-                                    style="width: {{ $item->reviews->where('status', 1)->where('rating', 5)->sum('rating') * 20 }}%; height: 2px;"
-                                    aria-valuenow="100"
-                                    aria-valuemin="{{ $item->reviews->where('rating', 5)->sum('rating') * 20 }}"
-                                    aria-valuemax="100"></div>
-                            </div>
-                            <label class="text-medium text-sm">4 {{ __('stars') }} <span class="text-muted">-
-                                    {{ $item->reviews->where('status', 1)->where('rating', 4)->count() }}</span></label>
-                            <div class="progress margin-bottom-1x">
-                                <div class="progress-bar bg-warning" role="progressbar"
-                                    style="width: {{ $item->reviews->where('status', 1)->where('rating', 4)->sum('rating') * 20 }}%; height: 2px;"
-                                    aria-valuenow="{{ $item->reviews->where('rating', 4)->sum('rating') * 20 }}"
-                                    aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <label class="text-medium text-sm">3 {{ __('stars') }} <span class="text-muted">-
-                                    {{ $item->reviews->where('status', 1)->where('rating', 3)->count() }}</span></label>
-                            <div class="progress margin-bottom-1x">
-                                <div class="progress-bar bg-warning" role="progressbar"
-                                    style="width: {{ $item->reviews->where('rating', 3)->sum('rating') * 20 }}%; height: 2px;"
-                                    aria-valuenow="{{ $item->reviews->where('rating', 3)->sum('rating') * 20 }}"
-                                    aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <label class="text-medium text-sm">2 {{ __('stars') }} <span class="text-muted">-
-                                    {{ $item->reviews->where('status', 1)->where('rating', 2)->count() }}</span></label>
-                            <div class="progress margin-bottom-1x">
-                                <div class="progress-bar bg-warning" role="progressbar"
-                                    style="width: {{ $item->reviews->where('status', 1)->where('rating', 2)->sum('rating') * 20 }}%; height: 2px;"
-                                    aria-valuenow="{{ $item->reviews->where('rating', 2)->sum('rating') * 20 }}"
-                                    aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <label class="text-medium text-sm">1 {{ __('star') }} <span class="text-muted">-
-                                    {{ $item->reviews->where('status', 1)->where('rating', 1)->count() }}</span></label>
-                            <div class="progress mb-2">
-                                <div class="progress-bar bg-warning" role="progressbar"
-                                    style="width: {{ $item->reviews->where('status', 1)->where('rating', 1)->sum('rating') * 20 }}; height: 2px;"
-                                    aria-valuenow="0"
-                                    aria-valuemin="{{ $item->reviews->where('rating', 1)->sum('rating') * 20 }}"
-                                    aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                        @if (Auth::user())
-                            <div class="pb-2"><a class="btn btn-primary btn-block" href="#"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#leaveReview"><span>{{ __('Leave a Review') }}</span></a></div>
-                        @else
-                            <div class="pb-2"><a class="btn btn-primary btn-block"
-                                    href="{{ route('user.login') }}"><span>{{ __('Login') }}</span></a></div>
-                        @endif
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     @endif
 
     @if (data_get($site_visibility, 'product_related_products', 1) && count($related_items) > 0)
@@ -619,7 +624,7 @@
                     content_category: '{{ $item->category->name }}',
                     content_ids: ['{{ $item->id }}'],
                     content_type: 'product',
-                    value: {{ (float)$item->discount_price }},
+                    value: {{ (float) $item->discount_price }},
                     currency: '{{ PriceHelper::getCurrencyCode() }}'
                 }, {
                     eventID: '{{ $fb_event_id }}'
@@ -628,4 +633,3 @@
         </script>
     @endif
 @endsection
-
