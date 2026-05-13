@@ -26,6 +26,24 @@ Route::get('/run-migration', function () {
     }
 })->name('global.run.migration');
 
+Route::get('/run-prp-demo', function () {
+    try {
+        Artisan::call('db:seed', ['--class' => 'PrpDemoSeeder', '--force' => true]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'PrpDemoSeeder completed successfully.',
+            'output' => Artisan::output(),
+        ]);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => 'PrpDemoSeeder failed.',
+            'error' => $th->getMessage(),
+        ], 500);
+    }
+})->name('global.run.prp.demo');
+
 Route::get('/run-clear', function () {
     try {
         Artisan::call('cache:clear');
