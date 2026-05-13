@@ -51,14 +51,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="checkout-email">{{ __('E-mail Address') }}</label>
-                                        <input class="form-control {{ $errors->has('ship_email') ? 'requireInput' : '' }}" name="ship_email" type="email" id="checkout-email"
-                                            value="{{ isset($user) ? $user->email : '' }}">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-12">
                                     <div class="form-group">
                                         <label for="checkout-phone">{{ __('Phone Number') }}*</label>
                                         <input class="form-control {{ $errors->has('ship_phone') ? 'requireInput' : '' }}" name="ship_phone" type="text" id="checkout-phone"
@@ -66,6 +59,7 @@
                                     </div>
                                 </div>
                             </div>
+
 
                             <div class="row">
                                 <div class="col-sm-12">
@@ -107,6 +101,17 @@
                                 @endif
                             </div>
                             @endif
+
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="checkout-email">{{ __('E-mail Address') }}</label>
+                                        <input class="form-control {{ $errors->has('ship_email') ? 'requireInput' : '' }}" name="ship_email" type="email" id="checkout-email"
+                                            value="{{ isset($user) ? $user->email : '' }}">
+                                    </div>
+                                </div>
+                            </div>
 
 
                             <div class="d-flex justify-content-between paddin-top-1x mt-4">
