@@ -41,7 +41,7 @@ class SettingRepository
             $input['twilio_section'] = json_encode($input['twilio_section'], true);
         }
 
-        $setting_fields = ['is_attribute_search', 'is_range_search', 'is_shop', 'is_blog', 'is_campaign', 'is_brands', 'is_faq', 'is_contact', 'is_loader', 'recaptcha', 'is_google_analytics', 'is_google_adsense', 'is_facebook_pixel', 'is_facebook_messenger', 'is_privacy_trams', 'is_guest_checkout', 'is_disqus', 'is_single_checkout',"is_show_category", 'is_facebook_capi'];
+        $setting_fields = ['is_attribute_search', 'is_range_search', 'is_shop', 'is_blog', 'is_campaign', 'is_brands', 'is_faq', 'is_contact', 'is_loader', 'recaptcha', 'is_google_analytics', 'is_google_adsense', 'is_facebook_pixel', 'is_facebook_messenger', 'is_privacy_trams', 'is_guest_checkout', 'is_disqus', 'is_single_checkout', 'is_checkout_district', 'is_checkout_district_required', 'is_checkout_police_station', 'is_checkout_police_station_required',"is_show_category", 'is_facebook_capi'];
 
         foreach ($setting_fields as $setting_field) {
             if ($request->has($setting_field)) {
@@ -108,6 +108,12 @@ class SettingRepository
 
         if ($request->has('meta_keywords')) {
             $input['meta_keywords'] = str_replace(["value", "{", "}", "[", "]", ":", "\""], '', $request->meta_keywords);
+        }
+
+        if ($request->has('checkout_shipping_charge_source')) {
+            $input['checkout_shipping_charge_source'] = in_array($request->checkout_shipping_charge_source, ['district', 'state'])
+                ? $request->checkout_shipping_charge_source
+                : 'district';
         }
 
         $data->update($input);

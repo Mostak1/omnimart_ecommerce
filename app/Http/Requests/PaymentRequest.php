@@ -32,9 +32,11 @@ class PaymentRequest extends FormRequest
         if(PriceHelper::CheckDigital() == false){
             return [];
         }
-        $state = 'nullable';
+        $state = PriceHelper::checkoutUsesStateShipping() ? 'required' : 'nullable';
         
         $shipping = 'nullable';
+        $district = PriceHelper::checkoutDistrictRequired() ? 'required' : 'nullable';
+        $policeStation = PriceHelper::checkoutPoliceStationRequired() ? 'required' : 'nullable';
 
         if($this->single_page_checkout == 1){
             return [
@@ -44,8 +46,8 @@ class PaymentRequest extends FormRequest
                 'bill_email' => 'nullable|email',
                 'bill_phone' => 'required',
                 'bill_address1' => 'required',
-                'bill_country' => 'required',
-                'bill_thana' => 'required',
+                'bill_country' => $district,
+                'bill_thana' => $policeStation,
             ];
         }else{
             return [

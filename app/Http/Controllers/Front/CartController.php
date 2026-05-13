@@ -10,7 +10,6 @@ use App\{
 };
 use App\Helpers\PriceHelper;
 use App\Models\ShippingService;
-use App\Models\State;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -253,30 +252,16 @@ class CartController extends Controller
             ?: Session::get('billing_address.bill_country')
             ?: (Auth::check() ? (Auth::user()->ship_country ?: Auth::user()->bill_country) : null);
 
-        $shipping = PriceHelper::Digital() ? ShippingService::appliedService($district, $cart) : null;
+        $shipping = PriceHelper::Digital() && PriceHelper::checkoutUsesDistrictShipping()
+            ? ShippingService::appliedService($district, $cart)
+            : null;
         $discount = Session::get('coupon');
 
         $grandTotal = $cartTotal + ($shipping ? $shipping->price : 0) + $totalTax;
         $grandTotal -= $discount['discount'] ?? 0;
 
-        $statePrice = 0;
         $stateId = $request->input('state_id');
-
-        if ($stateId) {
-            $state = State::find($stateId);
-            if ($state) {
-                $statePrice = $state->type === 'fixed'
-                    ? $state->price
-                    : ($cartTotal * $state->price) / 100;
-            }
-        } elseif (Auth::check() && Auth::user()->state_id) {
-            $state = Auth::user()->state;
-            if ($state) {
-                $statePrice = $state->type === 'fixed'
-                    ? $state->price
-                    : ($cartTotal * $state->price) / 100;
-            }
-        }
+        $statePrice = PriceHelper::StatePrce($stateId ?: (Auth::check() ? Auth::user()->state_id : null), $cartTotal);
 
         $grandTotal += $statePrice;
 
@@ -285,6 +270,7 @@ class CartController extends Controller
             'discount_name' => $discount['code']['title'] ?? '',
             'grand_total' => PriceHelper::setCurrencyPrice($grandTotal),
             'shipping_price' => PriceHelper::setCurrencyPrice($shipping ? $shipping->price : 0),
+            'state_price' => PriceHelper::setCurrencyPrice($statePrice),
         ];
     }
 }

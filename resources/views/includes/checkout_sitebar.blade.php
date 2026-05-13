@@ -33,11 +33,20 @@
                 </td>
             </tr>
 
-            @if ($shipping || PriceHelper::CheckDigital())
+            @if (($shipping || PriceHelper::CheckDigital()) && PriceHelper::checkoutUsesDistrictShipping())
                 <tr class="{{ $shipping ? '' : 'd-none' }} set__shipping_price_tr">
                     <td>{{ __('Shipping') }}:</td>
                     <td class="text-gray-dark set__shipping_price">
                         {{ PriceHelper::setCurrencyPrice($shipping ? $shipping->price : 0) }}</td>
+                </tr>
+            @endif
+            @if (PriceHelper::CheckDigital() && PriceHelper::checkoutUsesStateShipping())
+                @php
+                    $checkout_state_price = PriceHelper::StatePrce(auth()->check() ? auth()->user()->state_id : null, $cart_total);
+                @endphp
+                <tr class="{{ $checkout_state_price > 0 ? '' : 'd-none' }} set__state_price_tr">
+                    <td>{{ __('Shipping') }}:</td>
+                    <td class="text-gray-dark set__state_price">{{ PriceHelper::setCurrencyPrice($checkout_state_price) }}</td>
                 </tr>
             @endif
             <tr>
@@ -102,4 +111,3 @@
     @endif
 
 </aside>
-

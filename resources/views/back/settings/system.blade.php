@@ -852,6 +852,67 @@
                                                             </div>
 
                                                             <div class="form-group">
+                                                                <label for="checkout_shipping_charge_source">{{ __('Checkout Shipping Charge Source') }} *</label>
+                                                                <select name="checkout_shipping_charge_source" class="form-control" id="checkout_shipping_charge_source">
+                                                                    <option value="district" {{ ($setting->checkout_shipping_charge_source ?? 'district') == 'district' ? 'selected' : '' }}>
+                                                                        {{ __('District Based Shipping Charge') }}
+                                                                    </option>
+                                                                    <option value="state" {{ ($setting->checkout_shipping_charge_source ?? 'district') == 'state' ? 'selected' : '' }}>
+                                                                        {{ __('Admin State / Shipping Charge') }}
+                                                                    </option>
+                                                                </select>
+                                                                <small class="text-info">{{ __('District mode uses District shipping rates. State mode uses Manage Ecommerce > State as the shipping charge.') }}</small>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label class="switch-primary">
+                                                                    <input type="checkbox"
+                                                                        class="switch switch-bootstrap status"
+                                                                        name="is_checkout_district" value="1"
+                                                                        {{ ($setting->is_checkout_district ?? 1) == 1 ? 'checked' : '' }}>
+                                                                    <span class="switch-body"></span>
+                                                                    <span
+                                                                        class="switch-text">{{ __('Show District Field On Checkout') }}</span>
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label class="switch-primary">
+                                                                    <input type="checkbox"
+                                                                        class="switch switch-bootstrap status"
+                                                                        name="is_checkout_district_required" value="1"
+                                                                        {{ ($setting->is_checkout_district_required ?? 1) == 1 ? 'checked' : '' }}>
+                                                                    <span class="switch-body"></span>
+                                                                    <span
+                                                                        class="switch-text">{{ __('Make District Required On Checkout') }}</span>
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label class="switch-primary">
+                                                                    <input type="checkbox"
+                                                                        class="switch switch-bootstrap status"
+                                                                        name="is_checkout_police_station" value="1"
+                                                                        {{ ($setting->is_checkout_police_station ?? 1) == 1 ? 'checked' : '' }}>
+                                                                    <span class="switch-body"></span>
+                                                                    <span
+                                                                        class="switch-text">{{ __('Show Police Station Field On Checkout') }}</span>
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label class="switch-primary">
+                                                                    <input type="checkbox"
+                                                                        class="switch switch-bootstrap status"
+                                                                        name="is_checkout_police_station_required" value="1"
+                                                                        {{ ($setting->is_checkout_police_station_required ?? 1) == 1 ? 'checked' : '' }}>
+                                                                    <span class="switch-body"></span>
+                                                                    <span
+                                                                        class="switch-text">{{ __('Make Police Station Required On Checkout') }}</span>
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="form-group">
                                                                 <label class="switch-primary">
                                                                     <input type="checkbox"
                                                                         class="switch switch-bootstrap status"

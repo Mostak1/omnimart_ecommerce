@@ -22,7 +22,6 @@ use App\Models\District;
 use App\Models\Item;
 use App\Models\Setting;
 use App\Models\ShippingService;
-use App\Models\State;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -92,12 +91,12 @@ class CheckoutController extends Controller
         if (!PriceHelper::Digital()) {
             $shipping = null;
         } else {
-            $shipping = ShippingService::appliedService($this->checkoutDistrict(), $cart);
+            $shipping = PriceHelper::appliedShippingService();
         }
 
         $grand_total = ($cart_total + ($shipping ? $shipping->price : 0) + $total_tax);
         $grand_total = $grand_total - ($discount ? $discount['discount'] : 0);
-        $state_tax = Auth::check() && Auth::user()->state_id ? ($cart_total * Auth::user()->state->price) / 100 : 0;
+        $state_tax = PriceHelper::StatePrce(Auth::check() ? Auth::user()->state_id : null, $cart_total);
         $grand_total = $grand_total + $state_tax;
 
 
@@ -164,7 +163,7 @@ class CheckoutController extends Controller
 
         $grand_total = $cart_total + $total_tax;
         $grand_total = $grand_total - ($discount ? $discount['discount'] : 0);
-        $state_tax = Auth::check() && Auth::user()->state_id ? ($cart_total * Auth::user()->state->price) / 100 : 0;
+        $state_tax = PriceHelper::StatePrce(Auth::check() ? Auth::user()->state_id : null, $cart_total);
         $grand_total = $grand_total + $state_tax;
 
         $total_amount = $grand_total;
@@ -200,8 +199,8 @@ class CheckoutController extends Controller
             'bill_email' => 'nullable|email',
             'bill_phone' => 'required',
             'bill_address1' => 'required',
-            'bill_country' => 'required',
-            'bill_thana' => 'required',
+            'bill_country' => PriceHelper::checkoutDistrictRequired() ? 'required' : 'nullable',
+            'bill_thana' => PriceHelper::checkoutPoliceStationRequired() ? 'required' : 'nullable',
         ]);
 
         if ($request->same_ship_address) {
@@ -218,8 +217,8 @@ class CheckoutController extends Controller
                     "ship_address2" => $request->bill_address2,
                     "ship_zip" => $request->bill_zip,
                     "ship_city" => $request->bill_city,
-                    "ship_country" => $request->bill_country,
-                    "ship_thana" => $request->bill_thana,
+                    "ship_country" => PriceHelper::checkoutDistrictEnabled() ? $request->bill_country : null,
+                    "ship_thana" => PriceHelper::checkoutPoliceStationEnabled() ? $request->bill_thana : null,
                 ];
             } else {
                 $shipping = [
@@ -283,7 +282,7 @@ class CheckoutController extends Controller
 
         $grand_total = $cart_total + $total_tax;
         $grand_total = $grand_total - ($discount ? $discount['discount'] : 0);
-        $state_tax = Auth::check() && Auth::user()->state_id ? ($cart_total * Auth::user()->state->price) / 100 : 0;
+        $state_tax = PriceHelper::StatePrce(Auth::check() ? Auth::user()->state_id : null, $cart_total);
         $grand_total = $grand_total + $state_tax;
 
         $total_amount = $grand_total;
@@ -307,8 +306,8 @@ class CheckoutController extends Controller
             'ship_email' => 'nullable|email',
             'ship_phone' => 'required',
             'ship_address1' => 'required',
-            'ship_country' => 'required',
-            'ship_thana' => 'required',
+            'ship_country' => PriceHelper::checkoutDistrictRequired() ? 'required' : 'nullable',
+            'ship_thana' => PriceHelper::checkoutPoliceStationRequired() ? 'required' : 'nullable',
         ]);
 
         Session::put('shipping_address', $request->all());
@@ -358,12 +357,12 @@ class CheckoutController extends Controller
         if (!PriceHelper::Digital()) {
             $shipping = null;
         } else {
-            $shipping = ShippingService::appliedService($this->checkoutDistrict(), $cart);
+            $shipping = PriceHelper::appliedShippingService();
         }
 
         $grand_total = ($cart_total + ($shipping ? $shipping->price : 0) + $total_tax);
         $grand_total = $grand_total - ($discount ? $discount['discount'] : 0);
-        $state_tax = Auth::check() && Auth::user()->state_id ? ($cart_total * Auth::user()->state->price) / 100 : 0;
+        $state_tax = PriceHelper::StatePrce(Auth::check() ? Auth::user()->state_id : null, $cart_total);
         $grand_total = $grand_total + $state_tax;
 
 
@@ -768,12 +767,14 @@ class CheckoutController extends Controller
             }
         }
 
-        $shipping = [];
-        if ($shipping_id) {
+        $shipping = null;
+        if ($shipping_id && PriceHelper::checkoutUsesDistrictShipping()) {
             $shipping = ShippingService::findOrFail($shipping_id);
         }
         $district = $this->checkoutDistrict($request);
-        $shipping = ShippingService::appliedService($district, $cart);
+        $shipping = PriceHelper::checkoutUsesDistrictShipping()
+            ? ShippingService::appliedService($district, $cart)
+            : null;
         $discount = [];
         if (Session::has('coupon')) {
             $discount = Session::get('coupon');
@@ -782,26 +783,7 @@ class CheckoutController extends Controller
         $grand_total = ($cart_total + ($shipping ? $shipping->price : 0)) + $total_tax;
         $grand_total = $grand_total - ($discount ? $discount['discount'] : 0);
 
-        $state_price = 0;
-        if ($state_id) {
-            $state = State::findOrFail($state_id);
-            if ($state->type == 'fixed') {
-                $state_price = $state->price;
-            } else {
-                $state_price = ($cart_total * $state->price) / 100;
-            }
-        } else {
-            if (Auth::check() && Auth::user()->state_id) {
-                $state = Auth::user()->state;
-                if ($state->type == 'fixed') {
-                    $state_price = $state->price;
-                } else {
-                    $state_price = ($cart_total * $state->price) / 100;
-                }
-            } else {
-                $state_price = 0;
-            }
-        }
+        $state_price = PriceHelper::StatePrce($state_id ?: (Auth::check() ? Auth::user()->state_id : null), $cart_total);
 
         $total_amount = $grand_total + $state_price;
 
@@ -840,7 +822,9 @@ class CheckoutController extends Controller
         }
 
         $district = $this->checkoutDistrict($request);
-        $shipping = ShippingService::appliedService($district, $cart);
+        $shipping = PriceHelper::checkoutUsesDistrictShipping()
+            ? ShippingService::appliedService($district, $cart)
+            : null;
 
         $discount = [];
         if (Session::has('coupon')) {
@@ -850,26 +834,10 @@ class CheckoutController extends Controller
         $grand_total = ($cart_total + ($shipping ? $shipping->price : 0)) + $total_tax;
         $grand_total = $grand_total - ($discount ? $discount['discount'] : 0);
 
-        $state_price = 0;
-        if ($state_id && $state_id != 'undefined') {
-            $state = State::findOrFail($state_id);
-            if ($state->type == 'fixed') {
-                $state_price = $state->price;
-            } else {
-                $state_price = ($cart_total * $state->price) / 100;
-            }
-        } else {
-            if (Auth::check() && Auth::user()->state_id) {
-                $state = Auth::user()->state;
-                if ($state->type == 'fixed') {
-                    $state_price = $state->price;
-                } else {
-                    $state_price = ($cart_total * $state->price) / 100;
-                }
-            } else {
-                $state_price = 0;
-            }
-        }
+        $state_price = PriceHelper::StatePrce(
+            $state_id && $state_id != 'undefined' ? $state_id : (Auth::check() ? Auth::user()->state_id : null),
+            $cart_total
+        );
 
         $total_amount = $grand_total + $state_price;
 

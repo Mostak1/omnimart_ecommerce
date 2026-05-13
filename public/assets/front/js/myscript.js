@@ -1153,6 +1153,11 @@ $(function ($) {
                 $('.set__shipping_price').text(data.shipping_price);
             }
 
+            if (data.state_price !== undefined) {
+                $('.set__state_price_tr').removeClass('d-none');
+                $('.set__state_price').text(data.state_price);
+            }
+
             if (data.grand_total !== undefined) {
                 $('.grand_total_set').text(data.grand_total);
             }

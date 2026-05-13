@@ -76,11 +76,12 @@
                                     </div>
                                 </div>
                             </div>
+                            @if (PriceHelper::checkoutDistrictEnabled())
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-{{ PriceHelper::checkoutPoliceStationEnabled() ? '6' : '12' }}">
                                     <div class="form-group">
-                                        <label for="shipping-country">{{ __('District') }} *</label>
-                                        <select class="form-control {{ $errors->has('ship_country') ? 'requireInput' : '' }}" name="ship_country"  id="shipping-country" required data-shipping-url="{{ route('front.shipping.setup') }}"
+                                        <label for="shipping-country">{{ __('District') }}{{ PriceHelper::checkoutDistrictRequired() ? ' *' : '' }}</label>
+                                        <select class="form-control {{ $errors->has('ship_country') ? 'requireInput' : '' }}" name="ship_country"  id="shipping-country" {{ PriceHelper::checkoutDistrictRequired() ? 'required' : '' }} data-shipping-url="{{ route('front.shipping.setup') }}"
                                             data-police-stations-url="{{ url('/get-police-stations') }}">
                                             <option value="" selected disabled>{{ __('Choose District') }}</option>
                                             @foreach ($districts as $district)
@@ -91,10 +92,11 @@
                                         </select>
                                     </div>
                                 </div>
+                                @if (PriceHelper::checkoutPoliceStationEnabled())
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="shipping-thana">{{ __('Police Station') }} *</label>
-                                        <select class="form-control {{ $errors->has('ship_thana') ? 'requireInput' : '' }}" name="ship_thana" id="shipping-thana" required>
+                                        <label for="shipping-thana">{{ __('Police Station') }}{{ PriceHelper::checkoutPoliceStationRequired() ? ' *' : '' }}</label>
+                                        <select class="form-control {{ $errors->has('ship_thana') ? 'requireInput' : '' }}" name="ship_thana" id="shipping-thana" {{ PriceHelper::checkoutPoliceStationRequired() ? 'required' : '' }}>
                                             <option value="" selected disabled>{{ __('Select Police Station') }}</option>
                                             @if(isset($user) && $user->ship_thana)
                                                 <option value="{{ $user->ship_thana }}" selected>{{ $user->ship_thana }}</option>
@@ -102,7 +104,9 @@
                                         </select>
                                     </div>
                                 </div>
+                                @endif
                             </div>
+                            @endif
 
 
                             <div class="d-flex justify-content-between paddin-top-1x mt-4">

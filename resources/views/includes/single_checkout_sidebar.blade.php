@@ -34,11 +34,20 @@
                     </td>
                 </tr>
 
-                @if ($shipping || PriceHelper::CheckDigital())
+                @if (($shipping || PriceHelper::CheckDigital()) && PriceHelper::checkoutUsesDistrictShipping())
                     <tr class="{{ $shipping ? '' : 'd-none' }} set__shipping_price_tr">
                         <td>{{ __('Shipping') }}:</td>
                         <td class="text-gray-dark set__shipping_price">
                             {{ PriceHelper::setCurrencyPrice($shipping ? $shipping->price : 0) }}</td>
+                    </tr>
+                @endif
+                @if (PriceHelper::CheckDigital() && PriceHelper::checkoutUsesStateShipping())
+                    @php
+                        $checkout_state_price = PriceHelper::StatePrce(auth()->check() ? auth()->user()->state_id : null, $cart_total);
+                    @endphp
+                    <tr class="{{ $checkout_state_price > 0 ? '' : 'd-none' }} set__state_price_tr">
+                        <td>{{ __('Shipping') }}:</td>
+                        <td class="text-gray-dark set__state_price">{{ PriceHelper::setCurrencyPrice($checkout_state_price) }}</td>
                     </tr>
                 @endif
                 <tr>
@@ -50,20 +59,20 @@
         </section>
     @endif
 
-    @if (PriceHelper::CheckDigital() == true && DB::table('states')->whereStatus(1)->count() > 0)
+    @if (PriceHelper::CheckDigital() == true && PriceHelper::checkoutUsesStateShipping() && DB::table('states')->whereStatus(1)->count() > 0)
         @if (data_get($site_visibility, 'checkout_order_summary', 1))
             <section class="card widget widget-featured-posts widget-order-summary p-4">
                 <h3 class="widget-title">{{ __('Shipping Charge') }}</h3>
                 <div class="row">
                     <div class="col-sm-12 mb-3">
                         <small
-                            class="text-info">{{ __('Shipping is calculated from district overrides or the default rate, plus extra charge after the first KG.') }}</small>
+                            class="text-info">{{ __('Shipping is calculated from the selected admin State / Shipping Charge.') }}</small>
                         <p class="mb-0 mt-2 shipping_message">
-                            {{ __('Select district to calculate shipping automatically.') }}</p>
+                            {{ __('Select shipping charge to calculate order total.') }}</p>
                     </div>
                     <div class="col-sm-12 mb-3">
                         <select name="state_id" class="form-control" id="state_id_select" required>
-                            <option value="" selected disabled>{{ __('Select Shipping State') }}*</option>
+                            <option value="" selected disabled>{{ __('Select Shipping Charge') }}*</option>
                             @foreach (DB::table('states')->whereStatus(1)->get() as $state)
                                 <option value="{{ $state->id }}" data-href="{{ route('front.state.setup') }}"
                                     {{ Auth::check() && Auth::user()->state_id == $state->id ? 'selected' : '' }}>

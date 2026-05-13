@@ -469,6 +469,10 @@ class PriceHelper
 
     public static function StatePrce($state_id, $grand_total)
     {
+        if (self::checkoutShippingChargeSource() !== 'state') {
+            return 0;
+        }
+
         $state_price = 0;
         if ($state_id) {
             $state = State::findOrFail($state_id);
@@ -482,9 +486,55 @@ class PriceHelper
         return $state_price;
     }
 
+    public static function checkoutShippingChargeSource(): string
+    {
+        $setting = Setting::first();
+        $source = $setting->checkout_shipping_charge_source ?? 'district';
+
+        return in_array($source, ['district', 'state']) ? $source : 'district';
+    }
+
+    public static function checkoutUsesDistrictShipping(): bool
+    {
+        return self::checkoutShippingChargeSource() === 'district';
+    }
+
+    public static function checkoutUsesStateShipping(): bool
+    {
+        return self::checkoutShippingChargeSource() === 'state';
+    }
+
+    public static function checkoutDistrictEnabled(): bool
+    {
+        $setting = Setting::first();
+
+        return (int) ($setting->is_checkout_district ?? 1) === 1;
+    }
+
+    public static function checkoutDistrictRequired(): bool
+    {
+        $setting = Setting::first();
+
+        return self::checkoutDistrictEnabled() && (int) ($setting->is_checkout_district_required ?? 1) === 1;
+    }
+
+    public static function checkoutPoliceStationEnabled(): bool
+    {
+        $setting = Setting::first();
+
+        return self::checkoutDistrictEnabled() && (int) ($setting->is_checkout_police_station ?? 1) === 1;
+    }
+
+    public static function checkoutPoliceStationRequired(): bool
+    {
+        $setting = Setting::first();
+
+        return self::checkoutPoliceStationEnabled() && (int) ($setting->is_checkout_police_station_required ?? 1) === 1;
+    }
+
     public static function appliedShippingService($shippingId = null)
     {
-        if (!self::Digital()) {
+        if (!self::Digital() || !self::checkoutUsesDistrictShipping()) {
             return null;
         }
 
@@ -523,8 +573,8 @@ class PriceHelper
                     "ship_address2" => $request->bill_address2,
                     "ship_zip" => $request->bill_zip,
                     "ship_city" => $request->bill_city,
-                    "ship_country" => $request->bill_country,
-                    "ship_thana" => $request->bill_thana,
+                    "ship_country" => self::checkoutDistrictEnabled() ? $request->bill_country : null,
+                    "ship_thana" => self::checkoutPoliceStationEnabled() ? $request->bill_thana : null,
                 ];
             } else {
                 $shipping = [

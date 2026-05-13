@@ -73,12 +73,12 @@
                                
                             </div>
                         </div>
-                        @if (PriceHelper::CheckDigital() == true)
-                        <h6 class="pb-2 widget-title2">{{ __('Shipping Charge') }} :</h6>
-                        @endif
-                        <div class="row">
-                            <div class="col-sm-6  mb-4">
-                                @if (PriceHelper::CheckDigital() == true)
+                                @if (PriceHelper::CheckDigital() == true && PriceHelper::checkoutUsesDistrictShipping())
+                                <h6 class="pb-2 widget-title2">{{ __('Shipping Charge') }} :</h6>
+                                @endif
+                                <div class="row">
+                                @if (PriceHelper::CheckDigital() == true && PriceHelper::checkoutUsesDistrictShipping())
+                                    <div class="col-sm-6  mb-4">
                                     <div class="border rounded p-3">
                                         <p class="mb-2"><strong>{{ __('District') }}:</strong>
                                             {{ $shipping && $shipping->calculated_district ? $shipping->calculated_district : __('Not Selected') }}</p>
@@ -91,12 +91,12 @@
                                     @error('shipping_id')
                                         <p class="text-danger mt-2 shipping_message">{{ $message }}</p>
                                     @enderror
-                                @endif
                             </div>
-                            @if (PriceHelper::CheckDigital() == true && DB::table('states')->whereStatus(1)->count() > 0)
-                            <div class="col-sm-6  mb-4">
+                                @endif
+                            @if (PriceHelper::CheckDigital() == true && PriceHelper::checkoutUsesStateShipping() && DB::table('states')->whereStatus(1)->count() > 0)
+                            <div class="col-sm-12  mb-4">
                                     <select name="state_id" class="form-control" id="state_id_select" required>
-                                        <option value="" selected disabled>{{ __('Select Shipping State') }}</option>
+                                        <option value="" selected disabled>{{ __('Select Shipping Charge') }}</option>
                                         @foreach (DB::table('states')->whereStatus(1)->get() as $state)
                                             <option value="{{ $state->id }}"
                                                 data-href="{{ route('front.state.setup') }}"
@@ -196,4 +196,3 @@
         </script>
     @endif
 @endsection
-
