@@ -3,7 +3,7 @@ name: Deploy to cPanel via FTP
 on:
     push:
         branches:
-            - sathi_ecom
+            - med
 
 jobs:
   deploy:
@@ -17,10 +17,10 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ftp.techseba.com
-          username: sathi_ecom@sathysfashion.com
-          password: sathi_ecom_techseba
+          username: med@med.techseba.com
+          password: med_ecom_techseba
           port: 21
-          server-dir: sathysfashion.com/
+          server-dir: med.techseba.com/
           exclude: |
             **/.git*
             **/.git*/**
