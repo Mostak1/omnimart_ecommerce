@@ -60,8 +60,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                
-                                <div class="col-sm-6">
+                                <div class="col-sm-12">
                                     <div class="form-group">
                                         <label for="checkout-phone">{{ __('Phone Number') }}*</label>
                                         <input class="form-control {{ $errors->has('bill_phone') ? 'requireInput' : '' }}" name="bill_phone" type="text" id="checkout-phone"

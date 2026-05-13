@@ -74,15 +74,7 @@
                                                     id="checkout-fn" value="{{ isset($user) ? $user->first_name : '' }}">
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label for="checkout_email_billing">{{ __('E-mail Address') }}</label>
-                                                <input class="form-control" name="bill_email" type="email" 
-                                                    id="checkout_email_billing"
-                                                    value="{{ isset($user) ? $user->email : '' }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-12">
                                             <div class="form-group">
                                                 <label for="checkout-phone">{{ __('Phone Number') }}*</label>
                                                 <input class="form-control {{ $errors->has('bill_phone') ? 'requireInput' : '' }}" name="bill_phone" type="text"
@@ -135,6 +127,16 @@
                                         </div>
                                         @endif
                                     @endif
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="checkout_email_billing">{{ __('E-mail Address') }}</label>
+                                                <input class="form-control" name="bill_email" type="email" 
+                                                    id="checkout_email_billing"
+                                                    value="{{ isset($user) ? $user->email : '' }}">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
