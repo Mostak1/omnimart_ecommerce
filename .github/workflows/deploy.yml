@@ -17,10 +17,10 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ftp.techseba.com
-          username: sathi_ecom@sathyfashion.techseba.com
+          username: sathi_ecom@sathysfashion.com
           password: sathi_ecom_techseba
           port: 21
-          server-dir: sathyfashion.techseba.com/
+          server-dir: sathysfashion.com/
           exclude: |
             **/.git*
             **/.git*/**
