@@ -390,7 +390,7 @@ class PrpDemoSeeder extends Seeder
                     'title' => $title,
                     'slug' => Str::slug($title),
                     'details' => '<p>' . e($summary) . '</p><p>This demo article is for ecommerce content layout only. Replace with verified product and compliance information before public launch.</p>',
-                    'photo' => $this->img . $image,
+                    'photo' => json_encode(['img1' => $this->img . $image]),
                     'category_id' => $blogCatId,
                     'tags' => 'PRP kit, clinic supply, bulk order',
                     'meta_keywords' => 'PRP kit, clinic supply, Bangladesh',
