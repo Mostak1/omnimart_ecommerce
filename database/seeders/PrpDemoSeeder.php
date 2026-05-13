@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 class PrpDemoSeeder extends Seeder
 {
-    private string $img = 'assets/images/prp-demo/';
+    private string $img = '';
 
     public function run(): void
     {
@@ -401,15 +401,55 @@ class PrpDemoSeeder extends Seeder
             }
 
             // 11) Optional homepage customize values. Many themes read these as JSON/text ID arrays.
+            $catIdValues = array_values($catIds);
             DB::table('home_cutomizes')->updateOrInsert(
                 ['id' => 1],
                 [
-                    'popular_category' => json_encode(array_values($catIds)),
-                    'feature_category' => json_encode(array_values(array_slice($catIds, 0, 4))),
-                    'two_column_category' => json_encode(array_values(array_slice($catIds, 0, 2))),
-                    'hero_banner' => json_encode(['title' => 'Sterile PRP Kits for Clinics', 'button' => 'View Products', 'link' => '/shop']),
-                    'home_page4' => null,
-                    'home_4_popular_category' => null,
+                    'popular_category' => json_encode([
+                        'popular_title' => 'Popular PRP Kits',
+                        'category_id1' => $catIdValues[0] ?? 0, 'subcategory_id1' => 0, 'childcategory_id1' => 0,
+                        'category_id2' => $catIdValues[1] ?? 0, 'subcategory_id2' => 0, 'childcategory_id2' => 0,
+                        'category_id3' => $catIdValues[2] ?? 0, 'subcategory_id3' => 0, 'childcategory_id3' => 0,
+                        'category_id4' => $catIdValues[3] ?? 0, 'subcategory_id4' => 0, 'childcategory_id4' => 0,
+                    ]),
+                    'feature_category' => json_encode([
+                        'feature_title' => 'Featured Supplies',
+                        'category_id1' => $catIdValues[0] ?? 0, 'subcategory_id1' => 0, 'childcategory_id1' => 0,
+                        'category_id2' => $catIdValues[1] ?? 0, 'subcategory_id2' => 0, 'childcategory_id2' => 0,
+                        'category_id3' => $catIdValues[2] ?? 0, 'subcategory_id3' => 0, 'childcategory_id3' => 0,
+                        'category_id4' => $catIdValues[3] ?? 0, 'subcategory_id4' => 0, 'childcategory_id4' => 0,
+                    ]),
+                    'two_column_category' => json_encode([
+                        'category_id1' => $catIdValues[0] ?? 0, 'subcategory_id1' => 0, 'childcategory_id1' => 0,
+                        'category_id2' => $catIdValues[1] ?? 0, 'subcategory_id2' => 0, 'childcategory_id2' => 0,
+                        'category_id3' => $catIdValues[2] ?? 0, 'subcategory_id3' => 0, 'childcategory_id3' => 0,
+                    ]),
+                    'hero_banner' => json_encode([
+                        'img1' => 'hero-prp-clinic-supply.jpg', 'title1' => 'Sterile PRP Kits', 'subtitle1' => 'Professional Grade', 'url1' => '/shop',
+                        'img2' => 'hero-prp-clinic-supply.jpg', 'title2' => 'Clinic Supplies', 'subtitle2' => 'Bulk Discounts', 'url2' => '/shop',
+                    ]),
+                    'banner_first' => json_encode([
+                        'img1' => 'prp-kit-10ml-gel.jpg', 'title1' => 'New Arrival', 'subtitle1' => '10% OFF', 'firsturl1' => '/shop',
+                        'img2' => 'prp-kit-10ml-gel.jpg', 'title2' => 'Best Seller', 'subtitle2' => 'Limited Stock', 'firsturl2' => '/shop',
+                        'img3' => 'prp-kit-10ml-gel.jpg', 'title3' => 'Hot Deal', 'subtitle3' => 'Order Now', 'firsturl3' => '/shop',
+                    ]),
+                    'banner_secend' => json_encode([
+                        'img1' => 'banner-bulk-prp-supply.jpg', 'title1' => 'Bulk Supply', 'subtitle1' => 'Save Big', 'url1' => '/shop',
+                        'img2' => 'banner-bulk-prp-supply.jpg', 'title2' => 'Direct Order', 'subtitle2' => 'Fast Delivery', 'url2' => '/shop',
+                        'img3' => 'banner-bulk-prp-supply.jpg', 'title3' => 'Clinic Pack', 'subtitle3' => 'Exclusive', 'url3' => '/shop',
+                    ]),
+                    'banner_third' => json_encode([
+                        'img1' => 'banner-whatsapp-order.jpg', 'title1' => 'WhatsApp Order', 'subtitle1' => 'Contact Us', 'url1' => 'https://wa.me/yournumber',
+                        'img2' => 'banner-certificate-support.jpg', 'title2' => 'Certified Quality', 'subtitle2' => 'FDA Approved', 'url2' => '/shop',
+                    ]),
+                    'home_page4' => json_encode([
+                        'img1' => 'placeholder.png', 'url1' => '#', 'label1' => 'Label',
+                        'img2' => 'placeholder.png', 'url2' => '#', 'label2' => 'Label',
+                        'img3' => 'placeholder.png', 'url3' => '#', 'label3' => 'Label',
+                        'img4' => 'placeholder.png', 'url4' => '#', 'label4' => 'Label',
+                        'img5' => 'placeholder.png', 'url5' => '#', 'label5' => 'Label',
+                    ]),
+                    'home_4_popular_category' => json_encode([]),
                     'created_at' => $now,
                     'updated_at' => $now,
                 ]
