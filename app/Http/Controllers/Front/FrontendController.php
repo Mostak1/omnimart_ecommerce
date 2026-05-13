@@ -140,7 +140,7 @@ class FrontendController extends Controller
             }
             $pupular_cateogry_home4 = null;
             if ($setting->theme == 'theme4') {
-                $pupular_cateogries_home4 = json_decode($home_customize->home_4_popular_category, true);
+                $pupular_cateogries_home4 = json_decode($home_customize->home_4_popular_category, true) ?: [];
                 $pupular_cateogry_home4 = [];
                 foreach ($pupular_cateogries_home4 as $home4category) {
                     $pupular_cateogry_home4[] = Category::with('items')->findOrFail($home4category);

@@ -276,7 +276,7 @@ class HomePageController extends Controller
 
     public function homepage4categoryupdate(Request $request)
     {
-       $category = json_encode($request->home_4_popular_category,true);
+       $category = json_encode($request->input('home_4_popular_category', []), true);
        $data = HomeCutomize::first();
        $data->home_4_popular_category = $category;
        $data->update();
