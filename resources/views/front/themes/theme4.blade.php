@@ -314,10 +314,10 @@
                                 <h2 class="h3">{{$popularcategory->name}}</h2>
                             </div>
                             <div class="main-content">
-                                <div class="features-slider  owl-carousel" >
+                                <div class="theme4-popular-product-grid" >
                                     @foreach ($popularcategory->items  as $item)
 
-                                        <div class="slider-item">
+                                        <div class="theme4-popular-product-item">
                                             <div class="product-card ">
                                                 <div class="product-thumb" >
                                                     @if ($item->is_stock())
@@ -512,5 +512,4 @@
     @endif
 
 @endsection
-
 
