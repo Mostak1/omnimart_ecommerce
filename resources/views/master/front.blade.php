@@ -87,11 +87,11 @@
     @endif
     {{-- Google AdSense End --}}
 
-    {{-- Google AnalyTics Start --}}
+    {{-- Google Tag Manager Start --}}
     @if ($setting->is_google_analytics == '1')
         {!! $setting->google_analytics !!}
     @endif
-    {{-- Google AnalyTics End --}}
+    {{-- Google Tag Manager End --}}
 
     {{-- Facebook pixel  Start --}}
     @if ($setting->is_facebook_pixel == '1')

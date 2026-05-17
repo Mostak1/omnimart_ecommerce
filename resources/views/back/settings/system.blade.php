@@ -637,12 +637,12 @@
                                                                         {{ $setting->is_google_analytics == 1 ? 'checked' : '' }}>
                                                                     <span class="switch-body"></span>
                                                                     <span
-                                                                        class="switch-text">{{ __('Enable Google Analytics') }}</span>
+                                                                        class="switch-text">{{ __('Enable Google Tag Manager') }}</span>
                                                                 </label>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label>{{ __('Google Analytics') }} *</label>
-                                                                <textarea name="google_analytics" class="form-control" id="" placeholder="{{ __('Google Analytics') }}">{{ $setting->google_analytics }}</textarea>
+                                                                <label>{{ __('Google Tag Manager') }} *</label>
+                                                                <textarea name="google_analytics" class="form-control" id="" placeholder="{{ __('Google Tag Manager Script (Head)') }}">{{ $setting->google_analytics }}</textarea>
                                                             </div>
 
                                                             <hr>
