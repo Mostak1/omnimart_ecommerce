@@ -1127,7 +1127,7 @@ $(function ($) {
         });
 
         function getCheckoutStateId() {
-            return $('#state_id_select').val() || '';
+            return $('.state_id_select:checked').val() || '';
         }
 
         function updateCheckoutCouponUi(data) {
@@ -1314,8 +1314,12 @@ function updatePoliceStations($districtSelect) {
     });
 }
 
-$(document).on('change', '#state_id_select', function () {
-    var url = $('option:selected', this).attr('data-href');
+$(document).on('change', '.state_id_select', function () {
+    $('.state-option-card').removeClass('active-state');
+    if ($(this).is(':checked')) {
+        $(this).closest('.state-option-card').addClass('active-state');
+    }
+    var url = $(this).attr('data-href');
     var state_id = $(this).val();
     var shipping_id = $('.shipping_id_setup').first().val();
     var district = getCheckoutDistrictValue();
@@ -1339,7 +1343,7 @@ $(document).on('change', '#state_id_select', function () {
 
 $(document).on('change', '#shipping_id_select', function () {
     var url = $('option:selected', this).attr('data-href');
-    var state_id = $('#state_id_select option:selected').val();
+    var state_id = $('.state_id_select:checked').val();
     var shipping_id = $(this).val();
     url = url + '?state_id=' + state_id + '&shipping_id=' + shipping_id;
     $.get(url, function (response) {
@@ -1354,7 +1358,7 @@ $(document).on('change', '#shipping_id_select', function () {
 $(document).on('change', '#billing-country[data-shipping-url], #shipping-country[data-shipping-url]', function () {
     var url = $(this).data('shipping-url');
     var district = $(this).val();
-    var stateId = $('#state_id_select option:selected').val();
+    var stateId = $('.state_id_select:checked').val();
     updateAutomatedShipping(url, district, stateId);
     updatePoliceStations($(this));
 })

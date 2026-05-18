@@ -96,7 +96,7 @@ class CheckoutController extends Controller
 
         $grand_total = ($cart_total + ($shipping ? $shipping->price : 0) + $total_tax);
         $grand_total = $grand_total - ($discount ? $discount['discount'] : 0);
-        $state_tax = PriceHelper::StatePrce(Auth::check() ? Auth::user()->state_id : null, $cart_total);
+        $state_tax = PriceHelper::StatePrce($this->getDefaultStateId(), $cart_total);
         $grand_total = $grand_total + $state_tax;
 
 
@@ -163,7 +163,7 @@ class CheckoutController extends Controller
 
         $grand_total = $cart_total + $total_tax;
         $grand_total = $grand_total - ($discount ? $discount['discount'] : 0);
-        $state_tax = PriceHelper::StatePrce(Auth::check() ? Auth::user()->state_id : null, $cart_total);
+        $state_tax = PriceHelper::StatePrce($this->getDefaultStateId(), $cart_total);
         $grand_total = $grand_total + $state_tax;
 
         $total_amount = $grand_total;
@@ -282,7 +282,7 @@ class CheckoutController extends Controller
 
         $grand_total = $cart_total + $total_tax;
         $grand_total = $grand_total - ($discount ? $discount['discount'] : 0);
-        $state_tax = PriceHelper::StatePrce(Auth::check() ? Auth::user()->state_id : null, $cart_total);
+        $state_tax = PriceHelper::StatePrce($this->getDefaultStateId(), $cart_total);
         $grand_total = $grand_total + $state_tax;
 
         $total_amount = $grand_total;
@@ -362,7 +362,7 @@ class CheckoutController extends Controller
 
         $grand_total = ($cart_total + ($shipping ? $shipping->price : 0) + $total_tax);
         $grand_total = $grand_total - ($discount ? $discount['discount'] : 0);
-        $state_tax = PriceHelper::StatePrce(Auth::check() ? Auth::user()->state_id : null, $cart_total);
+        $state_tax = PriceHelper::StatePrce($this->getDefaultStateId(), $cart_total);
         $grand_total = $grand_total + $state_tax;
 
 
@@ -868,5 +868,11 @@ class CheckoutController extends Controller
         }
 
         return null;
+    }
+
+    private function getDefaultStateId()
+    {
+        $highest_state = \App\Models\State::whereStatus(1)->orderByDesc('price')->first();
+        return $highest_state ? $highest_state->id : (Auth::check() ? Auth::user()->state_id : null);
     }
 }
