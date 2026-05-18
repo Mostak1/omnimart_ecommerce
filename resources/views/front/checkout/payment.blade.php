@@ -222,7 +222,7 @@
                                             <div class="state-option-card {{ $is_selected ? 'active-state' : '' }}" onclick="$(this).find('input').click();">
                                                 <label class="state-option-label" for="state_payment_{{ $state->id }}" onclick="event.stopPropagation();">
                                                     <input type="radio" name="state_id" id="state_payment_{{ $state->id }}" 
-                                                        value="{{ $state->id }}" class="state_id_select state_id_setup"
+                                                        value="{{ $state->id }}" class="state_id_select"
                                                         data-href="{{ route('front.state.setup') }}"
                                                         {{ $is_selected ? 'checked' : '' }}>
                                                     <div class="state-option-content">

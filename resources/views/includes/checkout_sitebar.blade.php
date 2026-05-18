@@ -42,7 +42,9 @@
             @endif
             @if (PriceHelper::CheckDigital() && PriceHelper::checkoutUsesStateShipping())
                 @php
-                    $checkout_state_price = PriceHelper::StatePrce(auth()->check() ? auth()->user()->state_id : null, $cart_total);
+                    $highest_state = DB::table('states')->whereStatus(1)->orderByDesc('price')->first();
+                    $default_state_id = $highest_state ? $highest_state->id : (auth()->check() && auth()->user()->state_id ? auth()->user()->state_id : null);
+                    $checkout_state_price = PriceHelper::StatePrce($default_state_id, $cart_total);
                 @endphp
                 <tr class="{{ $checkout_state_price > 0 ? '' : 'd-none' }} set__state_price_tr">
                     <td>{{ __('Shipping') }}:</td>
