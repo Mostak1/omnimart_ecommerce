@@ -62,6 +62,34 @@
                     eventID: '{{ $fb_event_id }}'
                 });
             }
+
+            // GTM purchase GA4 eCommerce
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'purchase',
+                'ecommerce': {
+                    'transaction_id': '{{ $order->transaction_number }}',
+                    'value': {{ (float)$order->grand_total }},
+                    'tax': {{ (float)$order->tax }},
+                    'shipping': {{ (float)(json_decode($order->shipping, true)['price'] ?? 0) }},
+                    'currency': '{{ PriceHelper::getCurrencyCode() }}',
+                    'items': [
+                        @foreach ($cart as $key => $items)
+                            @php
+                                $item = \App\Models\Item::find(\App\Helpers\PriceHelper::GetItemId($key));
+                            @endphp
+                            {
+                                'item_id': '{{ \App\Helpers\PriceHelper::GetItemId($key) }}',
+                                'item_name': '{{ $items['name'] }}',
+                                'item_brand': '{{ $item && $item->brand ? $item->brand->name : '' }}',
+                                'item_category': '{{ $item && $item->category ? $item->category->name : '' }}',
+                                'price': {{ (float)$items['main_price'] }},
+                                'quantity': {{ (int)$items['qty'] }}
+                            }@if(!$loop->last),@endif
+                        @endforeach
+                    ]
+                }
+            });
         </script>
     @endif
 @endsection

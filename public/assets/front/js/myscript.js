@@ -1058,6 +1058,10 @@ $(function ($) {
                             if (data.fb_event && typeof fbq === 'function') {
                                 fbq('track', data.fb_event.eventName, data.fb_event.data, data.fb_event.options);
                             }
+                            if (data.gtm_event) {
+                                window.dataLayer = window.dataLayer || [];
+                                window.dataLayer.push(data.gtm_event);
+                            }
                             $(".cart_count").text(data.qty);
                             $(".cart_view_header").load(
                                 $("#header_cart_load").attr("data-target")

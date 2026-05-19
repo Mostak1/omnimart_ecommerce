@@ -49,6 +49,7 @@ class CartController extends Controller
 
         // Facebook CAPI AddToCart
         $fb_event = null;
+        $gtm_event = null;
         $item = Item::find($request->item_id);
         if ($item) {
             $fb_event_id = 'add_to_cart_' . $item->id . '_' . time();
@@ -73,14 +74,36 @@ class CartController extends Controller
                 ],
                 'options' => ['eventID' => $fb_event_id]
             ];
+
+            // GTM add_to_cart GA4 eCommerce
+            $qty = $request->quantity ?? 1;
+            $qty = is_numeric($qty) ? (int)$qty : 1;
+            $gtm_event = [
+                'event' => 'add_to_cart',
+                'ecommerce' => [
+                    'currency' => \App\Helpers\PriceHelper::getCurrencyCode(),
+                    'value' => (float)$item->discount_price * $qty,
+                    'items' => [
+                        [
+                            'item_id' => (string)$item->id,
+                            'item_name' => $item->name,
+                            'item_brand' => isset($item->brand) ? $item->brand->name : '',
+                            'item_category' => isset($item->category) ? $item->category->name : '',
+                            'price' => (float)$item->discount_price,
+                            'quantity' => $qty,
+                        ]
+                    ]
+                ]
+            ];
         }
 
         if ($request->ajax()) {
             if (is_array($msg)) {
                 $msg['fb_event'] = $fb_event;
+                $msg['gtm_event'] = $gtm_event;
                 return response()->json($msg);
             }
-            return response()->json(['message' => $msg, 'fb_event' => $fb_event]);
+            return response()->json(['message' => $msg, 'fb_event' => $fb_event, 'gtm_event' => $gtm_event]);
         }
     }
 
@@ -91,6 +114,7 @@ class CartController extends Controller
 
         // Facebook CAPI AddToCart
         $fb_event = null;
+        $gtm_event = null;
         $item = Item::find($request->item_id);
         if ($item) {
             $fb_event_id = 'add_to_cart_' . $item->id . '_' . time();
@@ -115,14 +139,44 @@ class CartController extends Controller
                 ],
                 'options' => ['eventID' => $fb_event_id]
             ];
+
+            // GTM add_to_cart GA4 eCommerce
+            $qty = $request->quantity ?? 1;
+            $qty = is_numeric($qty) ? (int)$qty : 1;
+            $gtm_event = [
+                'event' => 'add_to_cart',
+                'ecommerce' => [
+                    'currency' => \App\Helpers\PriceHelper::getCurrencyCode(),
+                    'value' => (float)$item->discount_price * $qty,
+                    'items' => [
+                        [
+                            'item_id' => (string)$item->id,
+                            'item_name' => $item->name,
+                            'item_brand' => isset($item->brand) ? $item->brand->name : '',
+                            'item_category' => isset($item->category) ? $item->category->name : '',
+                            'price' => (float)$item->discount_price,
+                            'quantity' => $qty,
+                        ]
+                    ]
+                ]
+            ];
         }
 
         if ($request->ajax()) {
             if (is_array($msg)) {
                 $msg['fb_event'] = $fb_event;
+                $msg['gtm_event'] = $gtm_event;
                 return response()->json($msg);
             }
-            return response()->json(['message' => $msg, 'fb_event' => $fb_event]);
+            return response()->json(['message' => $msg, 'fb_event' => $fb_event, 'gtm_event' => $gtm_event]);
+        }
+
+        if (! $request->ajax()) {
+            if (is_array($msg) && isset($msg['status']) && ($msg['status'] == 'outStock' || $msg['status'] == 'alreadyInCart')) {
+                // Do not flash on error
+            } else {
+                Session::flash('gtm_add_to_cart', $gtm_event);
+            }
         }
 
         if (isset($request->addtocart)) {
