@@ -737,6 +737,7 @@ body_theme4 @endif
                 SuccessNotification('{{ Session::get('success') }}');
             })
         </script>
+    @endif
     @if (Session::has('gtm_add_to_cart'))
         <script>
             window.dataLayer = window.dataLayer || [];
@@ -747,4 +748,3 @@ body_theme4 @endif
 </body>
 
 </html>
-
