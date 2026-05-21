@@ -630,6 +630,26 @@
                     eventID: '{{ $fb_event_id }}'
                 });
             }
+
+            // GTM view_item GA4 eCommerce
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'view_item',
+                'ecommerce': {
+                    'currency': '{{ PriceHelper::getCurrencyCode() }}',
+                    'value': {{ (float) $item->discount_price }},
+                    'items': [
+                        {
+                            'item_id': '{{ $item->id }}',
+                            'item_name': '{{ $item->name }}',
+                            'item_brand': '{{ isset($item->brand) ? $item->brand->name : '' }}',
+                            'item_category': '{{ isset($item->category) ? $item->category->name : '' }}',
+                            'price': {{ (float) $item->discount_price }},
+                            'quantity': 1
+                        }
+                    ]
+                }
+            });
         </script>
     @endif
 @endsection

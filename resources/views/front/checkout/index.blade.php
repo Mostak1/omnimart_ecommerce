@@ -154,3 +154,32 @@
         </div>
     </div>
 @endsection
+
+@section('script')
+    <script>
+        // GTM begin_checkout GA4 eCommerce
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            'event': 'begin_checkout',
+            'ecommerce': {
+                'currency': '{{ PriceHelper::getCurrencyCode() }}',
+                'value': {{ (float) $grand_total }},
+                'items': [
+                    @foreach ($cart as $key => $items)
+                        @php
+                            $item = \App\Models\Item::find(\App\Helpers\PriceHelper::GetItemId($key));
+                        @endphp
+                        {
+                            'item_id': '{{ \App\Helpers\PriceHelper::GetItemId($key) }}',
+                            'item_name': '{{ $items['name'] }}',
+                            'item_brand': '{{ $item && $item->brand ? $item->brand->name : '' }}',
+                            'item_category': '{{ $item && $item->category ? $item->category->name : '' }}',
+                            'price': {{ (float) $items['main_price'] }},
+                            'quantity': {{ (int) $items['qty'] }}
+                        }@if(!$loop->last),@endif
+                    @endforeach
+                ]
+            }
+        });
+    </script>
+@endsection
