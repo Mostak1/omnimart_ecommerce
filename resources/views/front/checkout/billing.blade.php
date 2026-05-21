@@ -206,9 +206,9 @@
                         @endphp
                         {
                             'item_id': '{{ \App\Helpers\PriceHelper::GetItemId($key) }}',
-                            'item_name': '{{ $items['name'] }}',
-                            'item_brand': '{{ $item && $item->brand ? $item->brand->name : '' }}',
-                            'item_category': '{{ $item && $item->category ? $item->category->name : '' }}',
+                            'item_name': '{{ addslashes($items['name']) }}',
+                            'item_brand': '{{ $item && $item->brand ? addslashes($item->brand->name) : '' }}',
+                            'item_category': '{{ $item && $item->category ? addslashes($item->category->name) : '' }}',
                             'price': {{ (float) $items['main_price'] }},
                             'quantity': {{ (int) $items['qty'] }}
                         }@if(!$loop->last),@endif

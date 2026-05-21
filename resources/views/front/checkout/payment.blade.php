@@ -324,6 +324,31 @@
                     eventID: '{{ $fb_event_id }}'
                 });
             }
+
+            // GTM begin_checkout GA4 eCommerce
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'begin_checkout',
+                'ecommerce': {
+                    'currency': '{{ PriceHelper::getCurrencyCode() }}',
+                    'value': {{ (float) $grand_total }},
+                    'items': [
+                        @foreach ($cart as $key => $items)
+                            @php
+                                $item = \App\Models\Item::find(\App\Helpers\PriceHelper::GetItemId($key));
+                            @endphp
+                            {
+                                'item_id': '{{ \App\Helpers\PriceHelper::GetItemId($key) }}',
+                                'item_name': '{{ addslashes($items['name']) }}',
+                                'item_brand': '{{ $item && $item->brand ? addslashes($item->brand->name) : '' }}',
+                                'item_category': '{{ $item && $item->category ? addslashes($item->category->name) : '' }}',
+                                'price': {{ (float) $items['main_price'] }},
+                                'quantity': {{ (int) $items['qty'] }}
+                            }@if(!$loop->last),@endif
+                        @endforeach
+                    ]
+                }
+            });
         </script>
     @endif
 @endsection
