@@ -611,6 +611,103 @@ body_theme4 @endif
     <script type="text/javascript" src="{{ asset('assets/front/js/lazy.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/front/js/lazy.plugin.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/front/js/myscript.js') }}"></script>
+    <script>
+        (function() {
+            var beginCheckoutClickKey = 'omnimart_begin_checkout_clicked_at';
+            var recentClickWindow = 5000;
+
+            function getRecentClickTime() {
+                try {
+                    return Number(sessionStorage.getItem(beginCheckoutClickKey) || 0);
+                } catch (error) {
+                    return 0;
+                }
+            }
+
+            function setRecentClickTime() {
+                try {
+                    sessionStorage.setItem(beginCheckoutClickKey, String(Date.now()));
+                } catch (error) {}
+            }
+
+            function clearRecentClickTime() {
+                try {
+                    sessionStorage.removeItem(beginCheckoutClickKey);
+                } catch (error) {}
+            }
+
+            function hasRecentCheckoutClick() {
+                var clickedAt = getRecentClickTime();
+                return clickedAt > 0 && Date.now() - clickedAt < recentClickWindow;
+            }
+
+            function pushBeginCheckout(payload, options) {
+                if (!payload || payload.event !== 'begin_checkout') {
+                    return;
+                }
+
+                options = options || {};
+
+                if (options.skipRecentClick && hasRecentCheckoutClick()) {
+                    clearRecentClickTime();
+                    return;
+                }
+
+                clearRecentClickTime();
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({ ecommerce: null });
+                window.dataLayer.push(payload);
+            }
+
+            window.omnimartPushBeginCheckout = pushBeginCheckout;
+
+            document.addEventListener('click', function(event) {
+                if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+                    return;
+                }
+
+                var link = event.target.closest('a[data-begin-checkout-trigger="1"]');
+
+                if (!link || !link.href || link.target === '_blank') {
+                    return;
+                }
+
+                var payload = null;
+
+                try {
+                    payload = JSON.parse(link.getAttribute('data-begin-checkout-payload') || '');
+                } catch (error) {
+                    return;
+                }
+
+                if (!payload || payload.event !== 'begin_checkout') {
+                    return;
+                }
+
+                event.preventDefault();
+                setRecentClickTime();
+
+                var didNavigate = false;
+                var goToCheckout = function() {
+                    if (didNavigate) {
+                        return;
+                    }
+
+                    didNavigate = true;
+                    window.location.href = link.href;
+                };
+
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({ ecommerce: null });
+                window.dataLayer.push(Object.assign({}, payload, {
+                    eventCallback: goToCheckout,
+                    eventTimeout: 800
+                }));
+
+                setTimeout(goToCheckout, 900);
+            });
+        })();
+    </script>
     @yield('script')
 
     @if ($setting->is_facebook_messenger == '1')

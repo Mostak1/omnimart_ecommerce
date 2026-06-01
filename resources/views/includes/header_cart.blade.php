@@ -41,9 +41,9 @@
         <div class="w-50 d-block"><a class="btn btn-primary btn-sm  mb-0"
                 href="{{ route('front.cart') }}"><span>{{ __('Cart') }}</span></a></div>
         <div class="w-50 d-block text-end"><a class="btn btn-primary btn-sm  mb-0"
-                href="{{ route('front.checkout.billing') }}"><span>{{ __('Checkout') }}</span></a></div>
+                href="{{ route('front.checkout.billing') }}"
+                @include('includes.gtm_begin_checkout_attributes')><span>{{ __('Checkout') }}</span></a></div>
     @else
         {{ __('Cart empty') }}
 @endif
 </div>
-

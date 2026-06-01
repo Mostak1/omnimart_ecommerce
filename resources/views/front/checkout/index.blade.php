@@ -221,7 +221,14 @@
 
     <script>
         // GTM begin_checkout GA4 eCommerce
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push(@json($beginCheckoutPayload));
+        if (typeof window.omnimartPushBeginCheckout === 'function') {
+            window.omnimartPushBeginCheckout(@json($beginCheckoutPayload), {
+                skipRecentClick: true
+            });
+        } else {
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({ ecommerce: null });
+            window.dataLayer.push(@json($beginCheckoutPayload));
+        }
     </script>
 @endsection

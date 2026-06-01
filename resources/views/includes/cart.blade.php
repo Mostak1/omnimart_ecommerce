@@ -108,10 +108,10 @@
             <div class="column"><a class="btn btn-primary " href="{{ route('front.catalog') }}"><span><i
                             class="icon-arrow-left"></i> {{ __('Back to Shopping') }}</span></a></div>
             <div class="column"><a class="btn btn-primary"
-                    href="{{ route('front.checkout.billing') }}"><span>{{ __('Checkout') }}</span></a></div>
+                    href="{{ route('front.checkout.billing') }}"
+                    @include('includes.gtm_begin_checkout_attributes')><span>{{ __('Checkout') }}</span></a></div>
         </div>
     </div>
 </div>
 </div>
 @endif
-

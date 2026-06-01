@@ -193,30 +193,43 @@
 @endsection
 
 @section('script')
+    @php
+        $beginCheckoutItems = [];
+
+        foreach ($cart as $key => $items) {
+            $itemId = \App\Helpers\PriceHelper::GetItemId($key);
+            $item = \App\Models\Item::with(['brand', 'category'])->find($itemId);
+
+            $beginCheckoutItems[] = [
+                'item_id' => (string) $itemId,
+                'item_name' => (string) data_get($items, 'name', ''),
+                'item_brand' => $item && $item->brand ? $item->brand->name : '',
+                'item_category' => $item && $item->category ? $item->category->name : '',
+                'price' => (float) data_get($items, 'main_price', 0) + (float) data_get($items, 'attribute_price', 0),
+                'quantity' => (int) data_get($items, 'qty', 0),
+            ];
+        }
+
+        $beginCheckoutPayload = [
+            'event' => 'begin_checkout',
+            'ecommerce' => [
+                'currency' => PriceHelper::getCurrencyCode(),
+                'value' => (float) $cart_total,
+                'items' => $beginCheckoutItems,
+            ],
+        ];
+    @endphp
+
     <script>
         // GTM begin_checkout GA4 eCommerce
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-            'event': 'begin_checkout',
-            'ecommerce': {
-                'currency': '{{ PriceHelper::getCurrencyCode() }}',
-                'value': {{ (float) $grand_total }},
-                'items': [
-                    @foreach ($cart as $key => $items)
-                        @php
-                            $item = \App\Models\Item::find(\App\Helpers\PriceHelper::GetItemId($key));
-                        @endphp
-                        {
-                            'item_id': '{{ \App\Helpers\PriceHelper::GetItemId($key) }}',
-                            'item_name': '{{ addslashes($items['name']) }}',
-                            'item_brand': '{{ $item && $item->brand ? addslashes($item->brand->name) : '' }}',
-                            'item_category': '{{ $item && $item->category ? addslashes($item->category->name) : '' }}',
-                            'price': {{ (float) $items['main_price'] }},
-                            'quantity': {{ (int) $items['qty'] }}
-                        }@if(!$loop->last),@endif
-                    @endforeach
-                ]
-            }
-        });
+        if (typeof window.omnimartPushBeginCheckout === 'function') {
+            window.omnimartPushBeginCheckout(@json($beginCheckoutPayload), {
+                skipRecentClick: true
+            });
+        } else {
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({ ecommerce: null });
+            window.dataLayer.push(@json($beginCheckoutPayload));
+        }
     </script>
 @endsection
