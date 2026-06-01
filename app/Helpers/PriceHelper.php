@@ -532,6 +532,20 @@ class PriceHelper
         return self::checkoutPoliceStationEnabled() && (int) ($setting->is_checkout_police_station_required ?? 1) === 1;
     }
 
+    public static function checkoutEmailEnabled(): bool
+    {
+        $setting = Setting::first();
+
+        return (int) ($setting->is_checkout_email ?? 1) === 1;
+    }
+
+    public static function checkoutEmailRequired(): bool
+    {
+        $setting = Setting::first();
+
+        return self::checkoutEmailEnabled() && (int) ($setting->is_checkout_email_required ?? 1) === 1;
+    }
+
     public static function appliedShippingService($shippingId = null)
     {
         if (!self::Digital() || !self::checkoutUsesDistrictShipping()) {

@@ -131,6 +131,8 @@ class Setting extends Model
         "is_checkout_district_required",
         "is_checkout_police_station",
         "is_checkout_police_station_required",
+        "is_checkout_email",
+        "is_checkout_email_required",
         "checkout_shipping_charge_source",
         "attribute_type",
         "working_days_from_to",

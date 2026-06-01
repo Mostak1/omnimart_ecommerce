@@ -37,13 +37,14 @@ class PaymentRequest extends FormRequest
         $shipping = 'nullable';
         $district = PriceHelper::checkoutDistrictRequired() ? 'required' : 'nullable';
         $policeStation = PriceHelper::checkoutPoliceStationRequired() ? 'required' : 'nullable';
+        $email = PriceHelper::checkoutEmailRequired() ? 'required|email' : 'nullable|email';
 
         if($this->single_page_checkout == 1){
             return [
                 'state_id' => $state,
                 "shipping_id" => $shipping,
                 'bill_first_name' => 'required',
-                'bill_email' => 'nullable|email',
+                'bill_email' => $email,
                 'bill_phone' => 'required',
                 'bill_address1' => 'required',
                 'bill_country' => $district,

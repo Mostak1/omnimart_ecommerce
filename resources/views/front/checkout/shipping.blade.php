@@ -103,15 +103,17 @@
                             @endif
 
 
+                            @if (PriceHelper::checkoutEmailEnabled())
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label for="checkout-email">{{ __('E-mail Address') }}</label>
+                                        <label for="checkout-email">{{ __('E-mail Address') }}{{ PriceHelper::checkoutEmailRequired() ? ' *' : '' }}</label>
                                         <input class="form-control {{ $errors->has('ship_email') ? 'requireInput' : '' }}" name="ship_email" type="email" id="checkout-email"
-                                            value="{{ isset($user) ? $user->email : '' }}">
+                                            value="{{ isset($user) ? $user->email : '' }}" {{ PriceHelper::checkoutEmailRequired() ? 'required' : '' }}>
                                     </div>
                                 </div>
                             </div>
+                            @endif
 
 
                             <div class="d-flex justify-content-between paddin-top-1x mt-4">

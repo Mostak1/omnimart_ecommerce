@@ -130,15 +130,17 @@
                                 </div>
                                 @endif
                             @endif
+                            @if (PriceHelper::checkoutEmailEnabled())
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label for="checkout_email_billing">{{ __('E-mail Address') }}</label>
+                                        <label for="checkout_email_billing">{{ __('E-mail Address') }}{{ PriceHelper::checkoutEmailRequired() ? ' *' : '' }}</label>
                                         <input class="form-control {{ $errors->has('bill_email') ? 'requireInput' : '' }}" name="bill_email" type="email" 
-                                            id="checkout_email_billing" value="{{ isset($user) ? $user->email : '' }}">
+                                            id="checkout_email_billing" value="{{ isset($user) ? $user->email : '' }}" {{ PriceHelper::checkoutEmailRequired() ? 'required' : '' }}>
                                     </div>
                                 </div>
                             </div>
+                            @endif
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox">
                                     <input class="custom-control-input" type="checkbox" id="same_address"

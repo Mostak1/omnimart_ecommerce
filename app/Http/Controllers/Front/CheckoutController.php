@@ -196,7 +196,7 @@ class CheckoutController extends Controller
         // laravel validation
         $request->validate([
             'bill_first_name' => 'required',
-            'bill_email' => 'nullable|email',
+            'bill_email' => PriceHelper::checkoutEmailRequired() ? 'required|email' : 'nullable|email',
             'bill_phone' => 'required',
             'bill_address1' => 'required',
             'bill_country' => PriceHelper::checkoutDistrictRequired() ? 'required' : 'nullable',
@@ -303,7 +303,7 @@ class CheckoutController extends Controller
         // laravel validation
         $request->validate([
             'ship_first_name' => 'required',
-            'ship_email' => 'nullable|email',
+            'ship_email' => PriceHelper::checkoutEmailRequired() ? 'required|email' : 'nullable|email',
             'ship_phone' => 'required',
             'ship_address1' => 'required',
             'ship_country' => PriceHelper::checkoutDistrictRequired() ? 'required' : 'nullable',

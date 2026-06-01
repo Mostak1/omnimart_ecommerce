@@ -48,6 +48,12 @@ class EmailHelper
 
     public function sendTemplateMail(array $emailData)
     {
+        if (empty($emailData['to'])) {
+            if ($this->setting->order_mail == 1) {
+                $this->adminMail($emailData);
+            }
+            return true;
+        }
         $template = EmailTemplate::whereType($emailData['type'])->first();
         try {
             $email_body = preg_replace("/{user_name}/", $emailData['user_name'], $template->body);
@@ -73,6 +79,9 @@ class EmailHelper
 
     public function sendCustomMail(array $emailData)
     {
+        if (empty($emailData['to'])) {
+            return true;
+        }
 
         try {
 
@@ -97,7 +106,7 @@ class EmailHelper
         if (isset($user)) {
             $email = $user->email;
         } else {
-            $email = Session::get('billing_address')['bill_email'] ?? Setting::first()->email_from;
+            $email = Session::get('billing_address')['bill_email'] ?? null;
         }
         return $email;
     }
