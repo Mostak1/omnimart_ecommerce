@@ -43,13 +43,18 @@
                 @endif
                 @if (PriceHelper::CheckDigital() && PriceHelper::checkoutUsesStateShipping())
                     @php
-                        $highest_state = DB::table('states')->whereStatus(1)->orderByDesc('price')->first();
-                        $default_state_id = $highest_state ? $highest_state->id : (auth()->check() && auth()->user()->state_id ? auth()->user()->state_id : null);
+                        $lowest_state = DB::table('states')->whereStatus(1)->orderBy('price')->first();
+                        $default_state_id = $lowest_state
+                            ? $lowest_state->id
+                            : (auth()->check() && auth()->user()->state_id
+                                ? auth()->user()->state_id
+                                : null);
                         $checkout_state_price = PriceHelper::StatePrce($default_state_id, $cart_total);
                     @endphp
                     <tr class="{{ $checkout_state_price > 0 ? '' : 'd-none' }} set__state_price_tr">
                         <td>{{ __('Shipping') }}:</td>
-                        <td class="text-gray-dark set__state_price">{{ PriceHelper::setCurrencyPrice($checkout_state_price) }}</td>
+                        <td class="text-gray-dark set__state_price">
+                            {{ PriceHelper::setCurrencyPrice($checkout_state_price) }}</td>
                     </tr>
                 @endif
                 <tr>
@@ -61,120 +66,122 @@
         </section>
     @endif
 
-    @if (PriceHelper::CheckDigital() == true && PriceHelper::checkoutUsesStateShipping() && DB::table('states')->whereStatus(1)->count() > 0)
+    @if (PriceHelper::CheckDigital() == true &&
+            PriceHelper::checkoutUsesStateShipping() &&
+            DB::table('states')->whereStatus(1)->count() > 0)
         @if (data_get($site_visibility, 'checkout_order_summary', 1))
             <style>
-            .state-options-container {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-                margin-top: 10px;
-            }
+                .state-options-container {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    margin-top: 10px;
+                }
 
-            .state-option-card {
-                position: relative;
-                border: 1.5px solid #e1e8ed;
-                border-radius: 8px;
-                padding: 12px 16px;
-                background-color: #fff;
-                cursor: pointer;
-                transition: all 0.25s ease;
-                display: block;
-                margin-bottom: 0;
-            }
+                .state-option-card {
+                    position: relative;
+                    border: 1.5px solid #e1e8ed;
+                    border-radius: 8px;
+                    padding: 12px 16px;
+                    background-color: #fff;
+                    cursor: pointer;
+                    transition: all 0.25s ease;
+                    display: block;
+                    margin-bottom: 0;
+                }
 
-            .state-option-card:hover {
-                border-color: #cbd5e1;
-                background-color: #f8fafc;
-            }
+                .state-option-card:hover {
+                    border-color: #cbd5e1;
+                    background-color: #f8fafc;
+                }
 
-            .state-option-card.active-state {
-                border-color: #0d6efd;
-                background-color: #f0f7ff;
-                box-shadow: 0 4px 10px rgba(13, 110, 253, 0.06);
-            }
+                .state-option-card.active-state {
+                    border-color: #0d6efd;
+                    background-color: #f0f7ff;
+                    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.06);
+                }
 
-            .state-option-card input[type="radio"] {
-                position: absolute;
-                opacity: 0;
-                width: 0;
-                height: 0;
-            }
+                .state-option-card input[type="radio"] {
+                    position: absolute;
+                    opacity: 0;
+                    width: 0;
+                    height: 0;
+                }
 
-            .state-option-label {
-                display: block;
-                width: 100%;
-                margin-bottom: 0;
-                cursor: pointer;
-            }
+                .state-option-label {
+                    display: block;
+                    width: 100%;
+                    margin-bottom: 0;
+                    cursor: pointer;
+                }
 
-            .state-option-content {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                width: 100%;
-            }
+                .state-option-content {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 100%;
+                }
 
-            .state-option-left {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-            }
+                .state-option-left {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                }
 
-            .custom-checkbox-indicator {
-                width: 18px;
-                height: 18px;
-                border: 2px solid #cbd5e1;
-                border-radius: 4px;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                transition: all 0.2s ease;
-                background-color: #fff;
-                flex-shrink: 0;
-            }
+                .custom-checkbox-indicator {
+                    width: 18px;
+                    height: 18px;
+                    border: 2px solid #cbd5e1;
+                    border-radius: 4px;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.2s ease;
+                    background-color: #fff;
+                    flex-shrink: 0;
+                }
 
-            .state-option-card.active-state .custom-checkbox-indicator {
-                border-color: #0d6efd;
-                background-color: #0d6efd;
-            }
+                .state-option-card.active-state .custom-checkbox-indicator {
+                    border-color: #0d6efd;
+                    background-color: #0d6efd;
+                }
 
-            .custom-checkbox-indicator::after {
-                content: '';
-                width: 5px;
-                height: 9px;
-                border: solid white;
-                border-width: 0 2px 2px 0;
-                transform: rotate(45deg);
-                opacity: 0;
-                transition: all 0.1s ease;
-                margin-bottom: 2px;
-            }
+                .custom-checkbox-indicator::after {
+                    content: '';
+                    width: 5px;
+                    height: 9px;
+                    border: solid white;
+                    border-width: 0 2px 2px 0;
+                    transform: rotate(45deg);
+                    opacity: 0;
+                    transition: all 0.1s ease;
+                    margin-bottom: 2px;
+                }
 
-            .state-option-card.active-state .custom-checkbox-indicator::after {
-                opacity: 1;
-            }
+                .state-option-card.active-state .custom-checkbox-indicator::after {
+                    opacity: 1;
+                }
 
-            .state-option-name {
-                font-size: 14px;
-                font-weight: 500;
-                color: #334155;
-            }
+                .state-option-name {
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #334155;
+                }
 
-            .state-option-price {
-                font-size: 13px;
-                font-weight: 600;
-                color: #475569;
-                background-color: #f1f5f9;
-                padding: 3px 8px;
-                border-radius: 6px;
-                transition: all 0.2s ease;
-            }
+                .state-option-price {
+                    font-size: 13px;
+                    font-weight: 600;
+                    color: #475569;
+                    background-color: #f1f5f9;
+                    padding: 3px 8px;
+                    border-radius: 6px;
+                    transition: all 0.2s ease;
+                }
 
-            .state-option-card.active-state .state-option-price {
-                color: #0288d1;
-                background-color: #e0f2fe;
-            }
+                .state-option-card.active-state .state-option-price {
+                    color: #0288d1;
+                    background-color: #e0f2fe;
+                }
             </style>
 
             <section class="card widget widget-featured-posts widget-order-summary p-4">
@@ -189,17 +196,19 @@
                     <div class="col-sm-12 mb-3">
                         @php
                             $states = DB::table('states')->whereStatus(1)->get();
-                            $highest_state = $states->sortByDesc('price')->first();
-                            $highest_state_id = $highest_state ? $highest_state->id : null;
+                            $lowest_state = $states->sortBy('price')->first();
+                            $lowest_state_id = $lowest_state ? $lowest_state->id : null;
                         @endphp
                         <div class="state-options-container">
                             @foreach ($states as $state)
                                 @php
-                                    $is_selected = ($state->id == $highest_state_id);
+                                    $is_selected = $state->id == $lowest_state_id;
                                 @endphp
-                                <div class="state-option-card {{ $is_selected ? 'active-state' : '' }}" onclick="$(this).find('input').click();">
-                                    <label class="state-option-label" for="state_sidebar_{{ $state->id }}" onclick="event.stopPropagation();">
-                                        <input type="radio" name="state_id" id="state_sidebar_{{ $state->id }}" 
+                                <div class="state-option-card {{ $is_selected ? 'active-state' : '' }}"
+                                    onclick="$(this).find('input').click();">
+                                    <label class="state-option-label" for="state_sidebar_{{ $state->id }}"
+                                        onclick="event.stopPropagation();">
+                                        <input type="radio" name="state_id" id="state_sidebar_{{ $state->id }}"
                                             value="{{ $state->id }}" class="state_id_select"
                                             data-href="{{ route('front.state.setup') }}"
                                             {{ $is_selected ? 'checked' : '' }}>
@@ -230,22 +239,6 @@
         @endif
     @endif
 
-    @if (data_get($site_visibility, 'checkout_order_summary', 1))
-        <section class="card widget widget-featured-posts widget-order-summary p-4">
-            <h3 class="widget-title">{{ __('Coupon') }}</h3>
-            <form method="post" id="checkout_coupon_form" action="{{ route('front.promo.submit') }}">
-                @csrf
-                <div class="form-group mb-2">
-                    <input class="form-control form-control-sm" name="code" type="text"
-                        placeholder="{{ __('Coupon code') }}" required>
-                </div>
-                <button class="btn btn-primary btn-sm" type="submit"><span>{{ __('Apply Coupon') }}</span></button>
-                <p class="small text-success mt-2 mb-0 checkout_coupon_name {{ $discount ? '' : 'd-none' }}">
-                    {{ $discount ? $discount['code']['title'] : '' }}
-                </p>
-            </form>
-        </section>
-    @endif
 
 
 
@@ -294,7 +287,7 @@
                     @endif
 
                     <button id="single_checkout_payment" class="btn btn-primary mt-4 single_checkout_payment"
-                        type="submit"><span>@lang('Order now')</span></button>
+                        type="button"><span>@lang('Order now')</span></button>
                 </div>
 
             </div>
@@ -305,52 +298,36 @@
 
 @section('script')
     <script>
-        // Show the modal on #single_checkout_payment change
-        $(document).on("click", "#single_checkout_payment", function() {
-            let keyword = $('.payment_gateway').val();
+        $(document).on("click", "#single_checkout_payment", function(e) {
+            e.preventDefault();
+            let $gateway = $('.payment_gateway');
+            let keyword = $gateway.val();
             if (!keyword) {
                 DangerNotification('{{ __('Please select a payment method') }}');
                 return;
             }
-            let modalElement = document.getElementById(keyword);
 
-            if (modalElement) {
-                // Open the modal using Bootstrap 5's API
-                let modal = new bootstrap.Modal(modalElement);
-                modal.show();
+            let paymentMethod = $gateway.find('option:selected').text().trim();
+            $('#checkout_payment_method').val(paymentMethod);
 
-                let modalForm = $(modalElement).find('form').first();
-                modalForm.find('.single-checkout-hidden').remove();
-
-                // Copy checkout form inputs/selects/textareas into payment form
-                $("#checkoutBilling").find('input, select, textarea').each(function() {
-                    if (!$(this).attr('name')) {
-                        return;
-                    }
-
-                    // Create a new hidden input field with the same name and value
-                    let hiddenInput = $('<input>')
-                        .attr('type', 'hidden') // Set the input type to hidden
-                        .attr('name', $(this).attr('name')) // Use the same name attribute
-                        .addClass('single-checkout-hidden')
-                        .val($(this).val()); // Set the value of the hidden input
-
-                    // Append the hidden input to the modal form
-                    modalForm.append(hiddenInput);
-                });
+            let selectedState = $('.state_id_select:checked').val();
+            if (selectedState) {
+                $('#checkout_state_id').val(selectedState);
             }
+
+            let shippingId = $('.shipping_id_setup').first().val();
+            if (shippingId) {
+                $('#checkout_shipping_id').val(shippingId);
+            }
+
+            $('#checkoutBilling').submit();
         });
 
         // Handle the "Terms and Conditions" checkbox click
         $(document).on("click", "#trams__condition_single", function() {
             if ($("#trams__condition_single").is(':checked')) {
-                console.log("check");
-                // Enable the dropdown by assigning the ID and removing the disabled attribute
-                $('.single_checkout_payment').attr('id', "single_checkout_payment");
                 $('.single_checkout_payment').attr('disabled', false);
             } else {
-                // Remove the ID and disable the dropdown when unchecked
-                $('.single_checkout_payment').removeAttr('id');
                 $('.single_checkout_payment').attr('disabled', true);
             }
         });
