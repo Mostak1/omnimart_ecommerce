@@ -72,6 +72,9 @@ class CatalogController extends Controller
         $minPrice = $request->has('minPrice') ?  ( !empty($request->minPrice) ? PriceHelper::convertPrice($request->minPrice) : null ) : null;
         $maxPrice = $request->has('maxPrice') ?  ( !empty($request->maxPrice) ? PriceHelper::convertPrice($request->maxPrice) : null ) : null;
         $tag = $request->has('tag') ?  ( !empty($request->tag) ? $request->tag : null ) : null;
+        // Determine the featured item type set by admin
+        $featuredItemType = $setting->shop_featured_item_type ?? null;
+
         $items = Item::with('category')
         ->when($category, function ($query, $category) {
             return $query->where('category_id', $category->id);
@@ -136,6 +139,11 @@ class CatalogController extends Controller
         })
 
         ->where('status',1)
+
+        // If admin has set a featured item_type, sort it to the top first
+        ->when($featuredItemType, function ($query, $featuredItemType) {
+            return $query->orderByRaw("CASE WHEN item_type = ? THEN 0 ELSE 1 END", [$featuredItemType]);
+        })
 
         ->orderby('id','desc')->paginate($setting->view_product);
 

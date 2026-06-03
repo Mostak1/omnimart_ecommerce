@@ -149,6 +149,7 @@ class Setting extends Model
         'facebook_pixel_id',
         'facebook_test_code',
         'is_facebook_capi',
+        'shop_featured_item_type',
     ];
 
     public $timestamps = false;

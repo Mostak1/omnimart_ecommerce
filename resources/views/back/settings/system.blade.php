@@ -826,6 +826,26 @@
                                                                     value="{{ $setting->view_product }}">
                                                             </div>
 
+                                                            <div class="form-group">
+                                                                <label for="shop_featured_item_type">{{ __('Shop Featured Item Type (Show First)') }}</label>
+                                                                <select name="shop_featured_item_type" class="form-control" id="shop_featured_item_type">
+                                                                    <option value="">{{ __('None (Default Order)') }}</option>
+                                                                    <option value="normal" {{ ($setting->shop_featured_item_type ?? '') == 'normal' ? 'selected' : '' }}>
+                                                                        {{ __('Normal Product') }}
+                                                                    </option>
+                                                                    <option value="digital" {{ ($setting->shop_featured_item_type ?? '') == 'digital' ? 'selected' : '' }}>
+                                                                        {{ __('Digital Product') }}
+                                                                    </option>
+                                                                    <option value="affiliate" {{ ($setting->shop_featured_item_type ?? '') == 'affiliate' ? 'selected' : '' }}>
+                                                                        {{ __('Affiliate Product') }}
+                                                                    </option>
+                                                                    <option value="license" {{ ($setting->shop_featured_item_type ?? '') == 'license' ? 'selected' : '' }}>
+                                                                        {{ __('License Product') }}
+                                                                    </option>
+                                                                </select>
+                                                                <small class="text-info">{{ __('The selected product type will always appear at the top of the shop listing.') }}</small>
+                                                            </div>
+
 
 
                                                             <div class="form-group">
