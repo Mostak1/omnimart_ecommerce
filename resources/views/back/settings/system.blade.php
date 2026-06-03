@@ -827,23 +827,23 @@
                                                             </div>
 
                                                             <div class="form-group">
-                                                                <label for="shop_featured_item_type">{{ __('Shop Featured Item Type (Show First)') }}</label>
+                                                                <label for="shop_featured_item_type">{{ __('Shop Highlight Product Type (Show First)') }}</label>
                                                                 <select name="shop_featured_item_type" class="form-control" id="shop_featured_item_type">
                                                                     <option value="">{{ __('None (Default Order)') }}</option>
-                                                                    <option value="normal" {{ ($setting->shop_featured_item_type ?? '') == 'normal' ? 'selected' : '' }}>
-                                                                        {{ __('Normal Product') }}
+                                                                    <option value="feature" {{ ($setting->shop_featured_item_type ?? '') == 'feature' ? 'selected' : '' }}>
+                                                                        {{ __('Featured Products') }}
                                                                     </option>
-                                                                    <option value="digital" {{ ($setting->shop_featured_item_type ?? '') == 'digital' ? 'selected' : '' }}>
-                                                                        {{ __('Digital Product') }}
+                                                                    <option value="best" {{ ($setting->shop_featured_item_type ?? '') == 'best' ? 'selected' : '' }}>
+                                                                        {{ __('Best Sellers') }}
                                                                     </option>
-                                                                    <option value="affiliate" {{ ($setting->shop_featured_item_type ?? '') == 'affiliate' ? 'selected' : '' }}>
-                                                                        {{ __('Affiliate Product') }}
+                                                                    <option value="top" {{ ($setting->shop_featured_item_type ?? '') == 'top' ? 'selected' : '' }}>
+                                                                        {{ __('Top Rated') }}
                                                                     </option>
-                                                                    <option value="license" {{ ($setting->shop_featured_item_type ?? '') == 'license' ? 'selected' : '' }}>
-                                                                        {{ __('License Product') }}
+                                                                    <option value="new" {{ ($setting->shop_featured_item_type ?? '') == 'new' ? 'selected' : '' }}>
+                                                                        {{ __('New Arrival') }}
                                                                     </option>
                                                                 </select>
-                                                                <small class="text-info">{{ __('The selected product type will always appear at the top of the shop listing.') }}</small>
+                                                                <small class="text-info">{{ __('The selected highlight type will always appear at the top of the shop listing.') }}</small>
                                                             </div>
 
 
