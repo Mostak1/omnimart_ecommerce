@@ -25,7 +25,6 @@ Route::get('/run-migration', function () {
         ], 500)->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
     }
 })->name('global.run.migration');
-
 Route::get('/run-clear', function () {
     try {
         Artisan::call('cache:clear');
@@ -78,7 +77,7 @@ Route::get('/run-storage-link', function () {
 })->name('global.run.storage.link');
 
 Route::group(['middleware' => ['adminlocalize', 'demo']], function () {
-    Route::prefix('admin')->group(function () { 
+    Route::prefix('admin')->group(function () {
         //------------ AUTH ------------
         Route::get('/login', 'Auth\Back\LoginController@showForm')->name('back.login');
         Route::post('/login-submit', 'Auth\Back\LoginController@login')->name('back.login.submit');
@@ -525,7 +524,7 @@ Route::group(['middleware' => 'maintainance'], function () {
         Route::post('/sslcommerz/submit', 'Payment\SslCommerzController@store')->name('front.sslcommerz.submit');
         Route::post('/paytab/submit', 'Payment\PaytabsCheckout@store')->name('front.paytab.submit');
         Route::post('/paytab/callback', 'Payment\PaytabsCheckout@paytabCallback')->name('paytab.callback');
-        
+
         // ----------- TRACK ORDER ----------//
         Route::get('/track/order', 'Front\FrontendController@trackOrder')->name('front.order.track');
         Route::get('/order/track/submit', 'Front\FrontendController@track')->name('front.order.track.submit');
