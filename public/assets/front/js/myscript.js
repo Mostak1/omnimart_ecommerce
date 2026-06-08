@@ -1234,6 +1234,17 @@ function getCheckoutDistrictValue() {
     return '';
 }
 
+function logCheckoutRequestError(context, xhr) {
+    if (!window.console || !console.warn) {
+        return;
+    }
+
+    console.warn('Checkout request failed: ' + context, {
+        status: xhr.status,
+        response: xhr.responseText
+    });
+}
+
 function updateAutomatedShipping(url, district, stateId) {
     if (!url || !district) {
         return;
@@ -1250,6 +1261,8 @@ function updateAutomatedShipping(url, district, stateId) {
             $('.set__state_price').text(response.state_price);
         }
         $(".shipping_message").addClass('d-none');
+    }).fail(function (xhr) {
+        logCheckoutRequestError('shipping setup', xhr);
     })
 }
 
@@ -1300,8 +1313,9 @@ function updatePoliceStations($districtSelect) {
                 $thanaSelect.append($option);
             });
         },
-        error: function () {
+        error: function (xhr) {
             resetPoliceStationSelect($thanaSelect, 'Select Police Station');
+            logCheckoutRequestError('police stations', xhr);
         }
     });
 }
@@ -1325,6 +1339,8 @@ $(document).on('change', '#state_id_select', function () {
             $('.shipping_id_setup').val(response.shipping_id);
         }
         $(".state_message").addClass('d-none');
+    }).fail(function (xhr) {
+        logCheckoutRequestError('state setup', xhr);
     })
 })
 
@@ -1340,6 +1356,8 @@ $(document).on('change', '#shipping_id_select', function () {
         $('.grand_total_set').text(response.grand_total);
         $('.shipping_id_setup').val(shipping_id);
         $(".shipping_message").addClass('d-none');
+    }).fail(function (xhr) {
+        logCheckoutRequestError('manual shipping setup', xhr);
     })
 })
 
