@@ -16,13 +16,13 @@ Route::get('/run-migration', function () {
             'status' => true,
             'message' => 'Migration completed successfully.',
             'output' => Artisan::output(),
-        ]);
+        ])->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
     } catch (\Throwable $th) {
         return response()->json([
             'status' => false,
             'message' => 'Migration failed.',
             'error' => $th->getMessage(),
-        ], 500);
+        ], 500)->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
     }
 })->name('global.run.migration');
 
@@ -49,13 +49,13 @@ Route::get('/run-clear', function () {
                 'route' => $routeOutput,
                 'view' => $viewOutput,
             ],
-        ]);
+        ])->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
     } catch (\Throwable $th) {
         return response()->json([
             'status' => false,
             'message' => 'Clear command failed.',
             'error' => $th->getMessage(),
-        ], 500);
+        ], 500)->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
     }
 })->name('global.run.clear');
 
@@ -67,13 +67,13 @@ Route::get('/run-storage-link', function () {
             'status' => true,
             'message' => 'Storage linked successfully.',
             'output' => Artisan::output(),
-        ]);
+        ])->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
     } catch (\Throwable $th) {
         return response()->json([
             'status' => false,
             'message' => 'Storage link failed.',
             'error' => $th->getMessage(),
-        ], 500);
+        ], 500)->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
     }
 })->name('global.run.storage.link');
 
