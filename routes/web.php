@@ -61,7 +61,6 @@ Route::get('/run-clear', function () {
 Route::get('/run-storage-link', function () {
     try {
         Artisan::call('storage:link');
-
         return response()->json([
             'status' => true,
             'message' => 'Storage linked successfully.',
