@@ -152,7 +152,7 @@
                                             @endif
                                         @endif
                                     </form>
-                                    @if (data_get($site_visibility, 'checkout_order_summary', 1))
+                                    @if (data_get($site_visibility, 'checkout_order_summary', 1) && \App\Models\PromoCode::where('status', 1)->where('no_of_times', '>', 0)->exists())
                                         <div class="card mt-4">
                                             <div class="card-body">
                                                 <h6>{{ __('Coupon') }}</h6>

@@ -60,7 +60,7 @@
     </section>
     @endif
 
-    @if (data_get($site_visibility, 'checkout_order_summary', 1))
+    @if (data_get($site_visibility, 'checkout_order_summary', 1) && \App\Models\PromoCode::where('status', 1)->where('no_of_times', '>', 0)->exists())
     <section class="card widget widget-featured-posts widget-order-summary p-4">
         <h3 class="widget-title">{{ __('Coupon') }}</h3>
         <form method="post" id="checkout_coupon_form" action="{{ route('front.promo.submit') }}">
