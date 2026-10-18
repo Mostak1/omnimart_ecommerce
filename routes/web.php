@@ -58,13 +58,26 @@ Route::get('/run-clear', function () {
     }
 })->name('global.run.clear');
 
-Route::get('/run-storage-link', function () {
+Route::get('/run-storage-link', function (Request $request) {
     try {
-        Artisan::call('storage:link');
+        $link = public_path('storage');
+        $target = storage_path('app/public');
+
+        if (is_link($link)) {
+            @unlink($link);
+        }
+
+        Artisan::call('storage:link', ['--force' => true]);
+        $output = Artisan::output();
+
         return response()->json([
             'status' => true,
             'message' => 'Storage linked successfully.',
-            'output' => Artisan::output(),
+            'link' => $link,
+            'target' => $target,
+            'link_exists' => file_exists($link),
+            'link_is_symlink' => is_link($link),
+            'output' => $output,
         ])->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
     } catch (\Throwable $th) {
         return response()->json([
@@ -74,6 +87,20 @@ Route::get('/run-storage-link', function () {
         ], 500)->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
     }
 })->name('global.run.storage.link');
+
+Route::get('/storage/{path}', function ($path) {
+    $filePath = storage_path('app/public/' . $path);
+    $realStoragePath = realpath(storage_path('app/public'));
+    $realFilePath = realpath($filePath);
+
+    if (!$realStoragePath || !$realFilePath || !str_starts_with($realFilePath, $realStoragePath) || !is_file($realFilePath)) {
+        abort(404);
+    }
+
+    return response()->file($realFilePath, [
+        'Cache-Control' => 'public, max-age=31536000',
+    ]);
+})->where('path', '.*')->name('global.storage.fallback');
 
 Route::group(['middleware' => ['adminlocalize', 'demo']], function () {
     Route::prefix('admin')->group(function () {

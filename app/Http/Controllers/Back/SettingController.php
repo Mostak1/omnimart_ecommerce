@@ -113,8 +113,11 @@ class SettingController extends Controller
 
     public function storageLink(Request $request)
     {
-       Artisan::call('storage:unlink');
-       Artisan::call('storage:link');
+       $link = public_path('storage');
+       if (is_link($link)) {
+           @unlink($link);
+       }
+       Artisan::call('storage:link', ['--force' => true]);
        return redirect()->back()->withSuccess(__('Storage Linked Successfully.'));
     }
 
