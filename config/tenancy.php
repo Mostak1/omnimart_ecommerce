@@ -61,71 +61,12 @@ return [
     */
     'domains' => [
 
-        // Development / local test domains
-        'store1.test' => [
-            'tenant' => 'store1',
-            'name' => 'Store 1',
-            'database' => env('TENANT_DB_1_DATABASE', 'omnimart_store1'),
-            'host' => env('TENANT_DB_1_HOST', env('DB_HOST', '127.0.0.1')),
-            'port' => env('TENANT_DB_1_PORT', env('DB_PORT', '3306')),
-            'username' => env('TENANT_DB_1_USERNAME', env('DB_USERNAME', 'root')),
-            'password' => env('TENANT_DB_1_PASSWORD', env('DB_PASSWORD', '')),
+        'ecom.techseba.com' => [
+            'tenant'   => 'techseba',
+            'name'     => 'TechSeba Store',
+            'database' => 'techseba_ecom',
         ],
 
-        'store2.test' => [
-            'tenant' => 'store2',
-            'name' => 'Store 2',
-            'database' => env('TENANT_DB_2_DATABASE', 'omnimart_store2'),
-            'host' => env('TENANT_DB_2_HOST', env('DB_HOST', '127.0.0.1')),
-            'port' => env('TENANT_DB_2_PORT', env('DB_PORT', '3306')),
-            'username' => env('TENANT_DB_2_USERNAME', env('DB_USERNAME', 'root')),
-            'password' => env('TENANT_DB_2_PASSWORD', env('DB_PASSWORD', '')),
-        ],
-
-        'store1.localhost' => [
-            'tenant' => 'store1',
-            'name' => 'Store 1',
-            'database' => env('TENANT_DB_1_DATABASE', 'omnimart_store1'),
-            'host' => env('TENANT_DB_1_HOST', env('DB_HOST', '127.0.0.1')),
-            'port' => env('TENANT_DB_1_PORT', env('DB_PORT', '3306')),
-            'username' => env('TENANT_DB_1_USERNAME', env('DB_USERNAME', 'root')),
-            'password' => env('TENANT_DB_1_PASSWORD', env('DB_PASSWORD', '')),
-        ],
-
-        'store2.localhost' => [
-            'tenant' => 'store2',
-            'name' => 'Store 2',
-            'database' => env('TENANT_DB_2_DATABASE', 'omnimart_store2'),
-            'host' => env('TENANT_DB_2_HOST', env('DB_HOST', '127.0.0.1')),
-            'port' => env('TENANT_DB_2_PORT', env('DB_PORT', '3306')),
-            'username' => env('TENANT_DB_2_USERNAME', env('DB_USERNAME', 'root')),
-            'password' => env('TENANT_DB_2_PASSWORD', env('DB_PASSWORD', '')),
-        ],
-
-        // Production-style example domains
-        'example1.com' => [
-            'tenant' => 'example1',
-            'name' => 'Example One',
-            'database' => env('TENANT_DB_1_DATABASE', 'omnimart_store1'),
-        ],
-
-        'example2.com' => [
-            'tenant' => 'example2',
-            'name' => 'Example Two',
-            'database' => env('TENANT_DB_2_DATABASE', 'omnimart_store2'),
-        ],
-
-        'shop1.example.com' => [
-            'tenant' => 'shop1',
-            'name' => 'Shop One',
-            'database' => env('TENANT_DB_1_DATABASE', 'omnimart_store1'),
-        ],
-
-        'shop2.example.com' => [
-            'tenant' => 'shop2',
-            'name' => 'Shop Two',
-            'database' => env('TENANT_DB_2_DATABASE', 'omnimart_store2'),
-        ],
     ],
 
     /*
