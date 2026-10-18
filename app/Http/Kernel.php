@@ -17,6 +17,7 @@ class Kernel extends HttpKernel
         // \App\Http\Middleware\TrustHosts::class,
         \App\Http\Middleware\TrustProxies::class,
         \Illuminate\Http\Middleware\HandleCors::class,
+        \App\Http\Middleware\IdentifyTenant::class,
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\Security::class,
@@ -70,5 +71,6 @@ class Kernel extends HttpKernel
         'permissions' => \App\Http\Middleware\Permission::class,
         'maintainance' => \App\Http\Middleware\Maintainance::class,
         'demo' => \App\Http\Middleware\Demo::class,
+        'tenancy.identify' => \App\Http\Middleware\IdentifyTenant::class,
     ];
 }

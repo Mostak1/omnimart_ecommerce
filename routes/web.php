@@ -88,19 +88,14 @@ Route::get('/run-storage-link', function (Request $request) {
     }
 })->name('global.run.storage.link');
 
-Route::get('/storage/{path}', function ($path) {
-    $filePath = storage_path('app/public/' . $path);
-    $realStoragePath = realpath(storage_path('app/public'));
-    $realFilePath = realpath($filePath);
+Route::get('/storage/tenants/{tenant}/{path}', [\App\Http\Controllers\Tenancy\TenantMediaController::class, 'serveTenantFile'])
+    ->where('path', '.*')
+    ->name('tenancy.storage.tenant');
 
-    if (!$realStoragePath || !$realFilePath || !str_starts_with($realFilePath, $realStoragePath) || !is_file($realFilePath)) {
-        abort(404);
-    }
+Route::get('/storage/{path}', [\App\Http\Controllers\Tenancy\TenantMediaController::class, 'serveFallback'])
+    ->where('path', '.*')
+    ->name('global.storage.fallback');
 
-    return response()->file($realFilePath, [
-        'Cache-Control' => 'public, max-age=31536000',
-    ]);
-})->where('path', '.*')->name('global.storage.fallback');
 
 Route::group(['middleware' => ['adminlocalize', 'demo']], function () {
     Route::prefix('admin')->group(function () {
