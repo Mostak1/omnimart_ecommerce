@@ -72,6 +72,8 @@ class VisibilityHelper
             'cart_summary' => 1,
             'checkout_breadcrumb' => 1,
             'checkout_billing_form' => 1,
+            'checkout_district_field' => 0,
+            'checkout_police_station_field' => 0,
             'checkout_order_summary' => 1,
             'checkout_payment_methods' => 1,
             'checkout_success_content' => 1,

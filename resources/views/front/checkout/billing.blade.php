@@ -104,34 +104,45 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="checkout-country">{{ __('District') }} *</label>
-                                            <select class="form-control {{ $errors->has('bill_country') ? 'requireInput' : '' }}"  name="bill_country"
-                                                id="billing-country" required data-shipping-url="{{ route('front.shipping.setup') }}"
-                                                data-police-stations-url="{{ url('/get-police-stations') }}">
-                                                <option value="" selected disabled>{{ __('Choose District') }}</option>
-                                                @foreach ($districts as $district)
-                                                    <option value="{{ $district->name }}"
-                                                        {{ isset($user) && $user->bill_country == $district->name ? 'selected' : '' }}>
-                                                        {{ $district->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
+                                @php
+                                    $showDistrict = (bool) data_get($site_visibility, 'checkout_district_field', 0);
+                                    $showThana = (bool) data_get($site_visibility, 'checkout_police_station_field', 0);
+                                    $colClass = ($showDistrict && $showThana) ? 'col-sm-6' : 'col-sm-12';
+                                @endphp
+                                @if ($showDistrict || $showThana)
+                                    <div class="row">
+                                        @if ($showDistrict)
+                                            <div class="{{ $colClass }}">
+                                                <div class="form-group">
+                                                    <label for="checkout-country">{{ __('District') }}</label>
+                                                    <select class="form-control" name="bill_country"
+                                                        id="billing-country" data-shipping-url="{{ route('front.shipping.setup') }}"
+                                                        data-police-stations-url="{{ url('/get-police-stations') }}">
+                                                        <option value="" selected disabled>{{ __('Choose District') }}</option>
+                                                        @foreach ($districts as $district)
+                                                            <option value="{{ $district->name }}"
+                                                                {{ isset($user) && $user->bill_country == $district->name ? 'selected' : '' }}>
+                                                                {{ $district->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        @endif
+                                        @if ($showThana)
+                                            <div class="{{ $colClass }}">
+                                                <div class="form-group">
+                                                    <label for="checkout-thana">{{ __('Police Station') }}</label>
+                                                    <select class="form-control" name="bill_thana" id="checkout-thana">
+                                                        <option value="" selected disabled>{{ __('Select Police Station') }}</option>
+                                                        @if(isset($user) && $user->bill_thana)
+                                                            <option value="{{ $user->bill_thana }}" selected>{{ $user->bill_thana }}</option>
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        @endif
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="checkout-thana">{{ __('Police Station') }} *</label>
-                                            <select class="form-control {{ $errors->has('bill_thana') ? 'requireInput' : '' }}" name="bill_thana" id="checkout-thana" required>
-                                                <option value="" selected disabled>{{ __('Select Police Station') }}</option>
-                                                @if(isset($user) && $user->bill_thana)
-                                                    <option value="{{ $user->bill_thana }}" selected>{{ $user->bill_thana }}</option>
-                                                @endif
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
+                                @endif
                             @endif
 
                             <div class="form-group">

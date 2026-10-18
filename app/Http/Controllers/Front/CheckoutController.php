@@ -200,8 +200,8 @@ class CheckoutController extends Controller
             'bill_email' => 'nullable|email',
             'bill_phone' => 'required',
             'bill_address1' => 'required',
-            'bill_country' => 'required',
-            'bill_thana' => 'required',
+            'bill_country' => 'nullable',
+            'bill_thana' => 'nullable',
         ]);
 
         if ($request->same_ship_address) {
@@ -307,8 +307,8 @@ class CheckoutController extends Controller
             'ship_email' => 'nullable|email',
             'ship_phone' => 'required',
             'ship_address1' => 'required',
-            'ship_country' => 'required',
-            'ship_thana' => 'required',
+            'ship_country' => 'nullable',
+            'ship_thana' => 'nullable',
         ]);
 
         Session::put('shipping_address', $request->all());

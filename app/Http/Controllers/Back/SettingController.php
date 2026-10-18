@@ -272,6 +272,8 @@ class SettingController extends Controller
                 ['key' => 'cart_summary', 'label' => __('Cart Summary')],
                 ['key' => 'checkout_breadcrumb', 'label' => __('Checkout Breadcrumb')],
                 ['key' => 'checkout_billing_form', 'label' => __('Checkout Form Area')],
+                ['key' => 'checkout_district_field', 'label' => __('Checkout District Field')],
+                ['key' => 'checkout_police_station_field', 'label' => __('Checkout Police Station Field')],
                 ['key' => 'checkout_order_summary', 'label' => __('Checkout Order Summary')],
                 ['key' => 'checkout_payment_methods', 'label' => __('Checkout Payment Methods')],
                 ['key' => 'checkout_success_content', 'label' => __('Checkout Success Content')],
