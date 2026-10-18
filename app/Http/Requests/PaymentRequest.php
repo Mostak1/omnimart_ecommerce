@@ -44,8 +44,8 @@ class PaymentRequest extends FormRequest
                 'bill_email' => 'nullable|email',
                 'bill_phone' => 'required',
                 'bill_address1' => 'required',
-                'bill_country' => 'required',
-                'bill_thana' => 'required',
+                'bill_country' => 'nullable',
+                'bill_thana' => 'nullable',
             ];
         }else{
             return [

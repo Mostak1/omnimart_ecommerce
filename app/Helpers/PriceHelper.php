@@ -314,9 +314,11 @@ class PriceHelper
     {
         $cart = Session::get('cart');
         $check_digital = false;
-        foreach ($cart as $key => $item) {
-            if ($item['item_type'] == 'normal') {
-                $check_digital = true;
+        if (is_array($cart) || is_iterable($cart)) {
+            foreach ($cart as $key => $item) {
+                if (isset($item['item_type']) && $item['item_type'] == 'normal') {
+                    $check_digital = true;
+                }
             }
         }
 
@@ -327,9 +329,11 @@ class PriceHelper
     {
         $cart = Session::get('cart');
         $check_digital = true;
-        foreach ($cart as $key => $item) {
-            if ($item['item_type'] == 'normal') {
-                $check_digital = false;
+        if (is_array($cart) || is_iterable($cart)) {
+            foreach ($cart as $key => $item) {
+                if (isset($item['item_type']) && $item['item_type'] == 'normal') {
+                    $check_digital = false;
+                }
             }
         }
         return $check_digital;

@@ -36,7 +36,8 @@ class PaytabsCheckout
                 'bill_email' => 'nullable|email',
                 'bill_phone' => 'required',
                 'bill_address1' => 'required',
-                'bill_country' => 'required',
+                'bill_country' => 'nullable',
+                'bill_thana' => 'nullable',
             ]);
         }else{
             $request->validate([
@@ -106,7 +107,7 @@ class PaytabsCheckout
         $customer_address = Session::get('billing_address')['bill_address1'];
         $customer_city = Session::get('billing_address')['bill_country'] ?? 'Dhaka';
         $customer_state = '';
-        $customer_country = Session::get('billing_address')['bill_country'];
+        $customer_country = Session::get('billing_address')['bill_country'] ?? 'BD';
         $customer_zip = Session::get('billing_address')['bill_zip'] ?? '1200';
         $customer_ip = request()->ip();
 
