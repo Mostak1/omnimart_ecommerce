@@ -9,7 +9,7 @@ use App\{
 use App\Models\Setting;
 use Illuminate\Http\Request;
 
-class SMSSettingController extends Controller
+class SmsSettingController extends Controller
 {
 
     /**
