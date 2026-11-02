@@ -492,7 +492,7 @@ Route::group(['middleware' => 'maintainance'], function () {
         Route::get('compare/products/', 'Front\CompareController@compare_product')->name('fornt.compare.index');
 
         // Vendor Routes
-        Route::get('/vendor', 'Vendor\VendorController@index')->name('vendor.profile');
+        // Route::get('/vendor', 'Vendor\VendorController@index')->name('vendor.profile');
 
         //------------ CART ------------
         Route::get('/cart', 'Front\CartController@index')->name('front.cart');

@@ -25,7 +25,7 @@ return [
     */
     'central_connection' => env('TENANCY_CENTRAL_CONNECTION', 'central'),
 
-    'central_domains' => array_filter(array_map('trim', explode(',', env('TENANCY_CENTRAL_DOMAINS', 'admin.example.com,central.localhost,main.example.com')))),
+    'central_domains' => array_filter(array_map('trim', explode(',', env('TENANCY_CENTRAL_DOMAINS', 'admin.example.com,central.localhost,main.example.com,localhost,127.0.0.1')))),
 
     /*
     |--------------------------------------------------------------------------
