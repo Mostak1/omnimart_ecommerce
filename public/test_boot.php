@@ -121,6 +121,34 @@ return ComposerAutoloaderUniversal::getLoader();
     return $msg;
 }
 
+// Auto-sync packages/stancl into vendor/stancl if missing
+$vendorStanclDir = __DIR__ . '/../vendor/stancl';
+$packagesStanclDir = __DIR__ . '/../packages/stancl';
+if (!file_exists($vendorStanclDir . '/tenancy/src/TenancyServiceProvider.php') && is_dir($packagesStanclDir)) {
+    if (function_exists('omnimart_sync_dir')) {
+        omnimart_sync_dir($packagesStanclDir, $vendorStanclDir);
+    } else {
+        function omnimart_sync_dir_boot($src, $dst) {
+            if (!is_dir($src)) return;
+            if (!is_dir($dst)) @mkdir($dst, 0755, true);
+            $dir = @opendir($src);
+            if (!$dir) return;
+            while (false !== ($file = readdir($dir))) {
+                if ($file === '.' || $file === '..') continue;
+                $s = $src . '/' . $file;
+                $d = $dst . '/' . $file;
+                if (is_dir($s)) {
+                    omnimart_sync_dir_boot($s, $d);
+                } elseif (!file_exists($d)) {
+                    @copy($s, $d);
+                }
+            }
+            closedir($dir);
+        }
+        omnimart_sync_dir_boot($packagesStanclDir, $vendorStanclDir);
+    }
+}
+
 // Auto-sync framework patches into vendor if missing
 $vendorFrameworkReflectionDir = __DIR__ . '/../vendor/laravel/framework/src/Illuminate/Reflection';
 if (!file_exists($vendorFrameworkReflectionDir . '/Traits/ReflectsClosures.php')) {

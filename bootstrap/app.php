@@ -1,5 +1,32 @@
 <?php
 
+if (!function_exists('omnimart_sync_dir')) {
+    function omnimart_sync_dir($src, $dst) {
+        if (!is_dir($src)) return;
+        if (!is_dir($dst)) @mkdir($dst, 0755, true);
+        $dir = @opendir($src);
+        if (!$dir) return;
+        while (false !== ($file = readdir($dir))) {
+            if ($file === '.' || $file === '..') continue;
+            $s = $src . '/' . $file;
+            $d = $dst . '/' . $file;
+            if (is_dir($s)) {
+                omnimart_sync_dir($s, $d);
+            } elseif (!file_exists($d)) {
+                @copy($s, $d);
+            }
+        }
+        closedir($dir);
+    }
+}
+
+// Auto-sync packages/stancl into vendor/stancl if missing on server
+$vendorStanclDir = __DIR__ . '/../vendor/stancl';
+$packagesStanclDir = __DIR__ . '/../packages/stancl';
+if (!file_exists($vendorStanclDir . '/tenancy/src/TenancyServiceProvider.php') && is_dir($packagesStanclDir)) {
+    omnimart_sync_dir($packagesStanclDir, $vendorStanclDir);
+}
+
 // Autoloader for packages (such as stancl tenancy when composer install is skipped on cPanel)
 spl_autoload_register(function ($class) {
     $prefixes = [
