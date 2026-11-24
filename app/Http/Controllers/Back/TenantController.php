@@ -83,6 +83,10 @@ class TenantController extends Controller
             'custom_db_name' => 'nullable|string|max:100',
             'custom_db_user' => 'nullable|string|max:100',
             'custom_db_pass' => 'nullable|string|max:100',
+            'commission_rate' => 'nullable|numeric|min:0|max:100',
+            'max_due_limit' => 'nullable|numeric|min:0',
+            'min_due_limit' => 'nullable|numeric|min:0',
+            'billing_day' => 'nullable|integer|min:1|max:28',
         ]);
 
         if ($request->input('db_mode') === 'cpanel') {
@@ -167,6 +171,18 @@ class TenantController extends Controller
         } catch (\Throwable $e) {
             \Illuminate\Support\Facades\Log::warning("Could not seed tenant owner: " . $e->getMessage());
         }
+
+        // 4. Initialize Shop Commission & Due Wallet on Mega Marketplace
+        \App\Models\ShopCommission::firstOrCreate(
+            ['tenant_id' => $tenant->id],
+            [
+                'commission_rate' => (float)$request->input('commission_rate', 10.00),
+                'max_due_limit' => (float)$request->input('max_due_limit', 1000.00),
+                'min_due_limit' => (float)$request->input('min_due_limit', 200.00),
+                'billing_day' => (int)$request->input('billing_day', 1),
+                'marketplace_status' => 'active',
+            ]
+        );
 
         $dbName = $tenant->database()->getName();
         $modeLabel = $request->input('db_mode') === 'cpanel' ? 'cPanel Database' : 'Auto Created';

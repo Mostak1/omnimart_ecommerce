@@ -224,6 +224,12 @@ Route::group(['middleware' => ['adminlocalize', 'demo']], function () {
             Route::put('tenants/subscription/{id}', 'Back\TenantController@updateSubscription')->name('back.tenants.subscription');
             Route::get('tenants/get/police-stations/{district_id}', 'Back\TenantController@getPoliceStations')->name('back.tenants.police_stations');
             Route::resource('tenants', 'Back\TenantController', ['as' => 'back', 'except' => ['show', 'edit', 'update']]);
+
+            //------------ MARKETPLACE COMMISSIONS & DUES ------------
+            Route::get('commissions', [\App\Http\Controllers\Back\MarketplaceCommissionController::class, 'index'])->name('back.commissions.index');
+            Route::put('commissions/update-limits/{id}', [\App\Http\Controllers\Back\MarketplaceCommissionController::class, 'updateLimits'])->name('back.commissions.update-limits');
+            Route::post('commissions/record-payment/{id}', [\App\Http\Controllers\Back\MarketplaceCommissionController::class, 'recordPayment'])->name('back.commissions.record-payment');
+            Route::get('commissions/logs', [\App\Http\Controllers\Back\MarketplaceCommissionController::class, 'logs'])->name('back.commissions.logs');
         });
 
         Route::group(['middleware' => 'permissions:Customer List'], function () {
@@ -471,6 +477,8 @@ Route::group(['middleware' => 'maintainance'], function () {
 
         //------------ FRONT ------------
         Route::get('/', 'Front\FrontendController@index')->name('front.index');
+        Route::get('/shops', [\App\Http\Controllers\Front\MarketplaceShopController::class, 'index'])->name('front.shops.index');
+        Route::get('/shops/{subdomain}', [\App\Http\Controllers\Front\MarketplaceShopController::class, 'show'])->name('front.shops.show');
         Route::get('/extra-index', 'Front\FrontendController@extraIndex')->name('front.extraindex');
         Route::get('/product/{slug}', 'Front\FrontendController@product')->name('front.product');
         Route::get('/campaign/products', 'Front\FrontendController@compaignProduct')->name('front.campaign');

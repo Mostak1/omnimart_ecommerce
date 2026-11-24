@@ -34,6 +34,11 @@ class Item extends Model
         return $this->belongsTo('App\Models\Brand')->withDefault();
     }
 
+    public function tenant()
+    {
+        return $this->belongsTo(Tenant::class, 'tenant_id', 'id')->withDefault();
+    }
+
     public function campaigns()
     {
         return $this->hasMany('App\Models\CampaignItem');

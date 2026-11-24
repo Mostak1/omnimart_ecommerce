@@ -25,6 +25,50 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     }
 
     /**
+     * Relationship to ShopCommission (Wallet & Due Settings).
+     */
+    public function commission()
+    {
+        return $this->hasOne(ShopCommission::class, 'tenant_id', 'id');
+    }
+
+    /**
+     * Relationship to ShopCommissionLog (Audit Logs).
+     */
+    public function commissionLogs()
+    {
+        return $this->hasMany(ShopCommissionLog::class, 'tenant_id', 'id')->latest();
+    }
+
+    /**
+     * Get or initialize commission record for this tenant.
+     */
+    public function getOrCreateCommission(): ShopCommission
+    {
+        return $this->commission ?: ShopCommission::create([
+            'tenant_id' => $this->id,
+            'commission_rate' => 10.00,
+            'max_due_limit' => 1000.00,
+            'min_due_limit' => 200.00,
+            'billing_day' => 1,
+            'marketplace_status' => 'active',
+        ]);
+    }
+
+    /**
+     * Check if this shop is active and allowed on the central Mega Marketplace.
+     */
+    public function isMarketplaceActive(): bool
+    {
+        if ($this->isSuspended()) {
+            return false;
+        }
+
+        $comm = $this->commission;
+        return !$comm || $comm->isMarketplaceActive();
+    }
+
+    /**
      * Get plan name.
      */
     public function getPlanNameAttribute(): string

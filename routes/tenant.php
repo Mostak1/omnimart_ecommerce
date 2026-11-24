@@ -100,6 +100,10 @@ Route::middleware([
         Route::post('/staff', [StaffController::class, 'store'])->name('tenant.staff.store');
         Route::put('/staff/{id}', [StaffController::class, 'update'])->name('tenant.staff.update');
         Route::delete('/staff/{id}', [StaffController::class, 'destroy'])->name('tenant.staff.destroy');
+
+        // Marketplace Commission & Due Statement
+        Route::get('/commission', [\App\Http\Controllers\Tenant\CommissionController::class, 'index'])->name('tenant.commission.index');
+        Route::post('/commission/pay', [\App\Http\Controllers\Tenant\CommissionController::class, 'pay'])->name('tenant.commission.pay');
     });
 
     // Alias /admin/pos to tenant POS

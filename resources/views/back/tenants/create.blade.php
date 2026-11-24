@@ -224,6 +224,71 @@
                             </div>
                         </div>
 
+                        <!-- Marketplace Commission & Dual Due Limits -->
+                        <div class="card bg-light border-warning my-4">
+                            <div class="card-header bg-warning text-dark d-flex align-items-center justify-content-between">
+                                <h6 class="mb-0 font-weight-bold"><i class="fas fa-percentage mr-2"></i> {{ __('Mega Marketplace Commission & Dual Due Limits') }}</h6>
+                                <span class="badge badge-dark">Model 2 FinTech Control</span>
+                            </div>
+                            <div class="card-body">
+                                <p class="text-muted small mb-3">
+                                    {{ __('Configure the sales commission percentage and dual credit limits (Min & Max) for this shop on the Mega Marketplace.') }}
+                                </p>
+
+                                <div class="row">
+                                    <!-- Commission Rate (%) -->
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="commission_rate" class="font-weight-bold text-dark">{{ __('Commission Rate (%)') }} *</label>
+                                            <div class="input-group">
+                                                <input type="number" step="0.01" min="0" max="100" name="commission_rate" id="commission_rate"
+                                                    class="form-control" value="{{ old('commission_rate', '10.00') }}" required>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                            <small class="text-muted">{{ __('E.g. 10% on every marketplace sale') }}</small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Max Due Limit (Hard Limit) -->
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="max_due_limit" class="font-weight-bold text-dark">{{ __('Max Due Limit (৳)') }} *</label>
+                                            <input type="number" step="1" min="0" name="max_due_limit" id="max_due_limit"
+                                                class="form-control" value="{{ old('max_due_limit', '1000') }}" required>
+                                            <small class="text-muted">{{ __('Auto-pause shop if due reaches this') }}</small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Min Due Limit (Billing Threshold) -->
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="min_due_limit" class="font-weight-bold text-dark">{{ __('Min Due Limit (৳)') }} *</label>
+                                            <input type="number" step="1" min="0" name="min_due_limit" id="min_due_limit"
+                                                class="form-control" value="{{ old('min_due_limit', '200') }}" required>
+                                            <small class="text-muted">{{ __('Due below this rolls over to next month') }}</small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Monthly Billing Day -->
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="billing_day" class="font-weight-bold text-dark">{{ __('Monthly Billing Day') }} *</label>
+                                            <select name="billing_day" id="billing_day" class="form-control">
+                                                @for($i = 1; $i <= 28; $i++)
+                                                    <option value="{{ $i }}" {{ old('billing_day', 1) == $i ? 'selected' : '' }}>
+                                                        {{ $i }} {{ __('st/th of every month') }}
+                                                    </option>
+                                                @endfor
+                                            </select>
+                                            <small class="text-muted">{{ __('Day when monthly statement is generated') }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-group text-center mt-3">
                             <button type="submit" class="btn btn-secondary btn-lg px-5">
                                 <i class="fas fa-magic mr-2"></i> {{ __('Create Shop & Initialize Database') }}

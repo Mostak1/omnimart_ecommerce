@@ -6,13 +6,13 @@
         </a>
     </li>
 
-    <li class="nav-item {{ request()->routeIs('back.tenants*') ? 'active' : '' }}">
+    <li class="nav-item {{ (request()->routeIs('back.tenants*') || request()->routeIs('back.commissions*')) ? 'active' : '' }}">
         <a data-toggle="collapse" href="#tenants">
             <i class="fas fa-store"></i>
             <p>{{ __('Manage Shops / Tenants') }}</p>
             <span class="caret"></span>
         </a>
-        <div class="collapse {{ request()->routeIs('back.tenants*') ? 'show' : '' }}" id="tenants">
+        <div class="collapse {{ (request()->routeIs('back.tenants*') || request()->routeIs('back.commissions*')) ? 'show' : '' }}" id="tenants">
             <ul class="nav nav-collapse">
                 <li class="{{ request()->routeIs('back.tenants.index') ? 'active' : '' }}">
                     <a class="sub-link" href="{{ route('back.tenants.index') }}">
@@ -22,6 +22,16 @@
                 <li class="{{ request()->routeIs('back.tenants.create') ? 'active' : '' }}">
                     <a class="sub-link" href="{{ route('back.tenants.create') }}">
                         <span class="sub-item">{{ __('Open New Shop') }}</span>
+                    </a>
+                </li>
+                <li class="{{ request()->routeIs('back.commissions.index') ? 'active' : '' }}">
+                    <a class="sub-link" href="{{ route('back.commissions.index') }}">
+                        <span class="sub-item">{{ __('Commissions & Due Limits') }}</span>
+                    </a>
+                </li>
+                <li class="{{ request()->routeIs('back.commissions.logs') ? 'active' : '' }}">
+                    <a class="sub-link" href="{{ route('back.commissions.logs') }}">
+                        <span class="sub-item">{{ __('Commission Audit Logs') }}</span>
                     </a>
                 </li>
             </ul>

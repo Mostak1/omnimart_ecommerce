@@ -161,6 +161,13 @@
                             </a>
                         </li>
 
+                        <li class="nav-item {{ request()->routeIs('tenant.commission.*') ? 'active' : '' }}">
+                            <a href="{{ route('tenant.commission.index') }}">
+                                <i class="fas fa-hand-holding-usd text-warning"></i>
+                                <p>মার্কেটপ্লেস কমিশন ও ডিউ</p>
+                            </a>
+                        </li>
+
                         <li class="nav-item {{ request()->routeIs('tenant.settings.*') ? 'active' : '' }}">
                             <a href="{{ route('tenant.settings.index') }}">
                                 <i class="fas fa-cog"></i>

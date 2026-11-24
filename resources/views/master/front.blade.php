@@ -337,6 +337,10 @@ body_theme4 @endif
                                                                 class="icon-chevron-right"></i>{{ __('Shop') }}</a>
                                                     </li>
                                                 @endif
+                                                <li class="{{ request()->routeIs('front.shops*') ? 'active' : '' }}">
+                                                    <a href="{{ route('front.shops.index') }}"><i
+                                                            class="icon-chevron-right"></i>{{ __('Explore Shops') }}</a>
+                                                </li>
                                                 @if ($setting->is_campaign == 1 && data_get($site_visibility, 'campaign_page', 1))
                                                     <li
                                                         class="{{ request()->routeIs('front.campaign') ? 'active' : '' }}">
