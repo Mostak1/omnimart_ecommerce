@@ -5,6 +5,28 @@
             <p>{{ __('Dashboard') }}</p>
         </a>
     </li>
+
+    <li class="nav-item {{ request()->routeIs('back.tenants*') ? 'active' : '' }}">
+        <a data-toggle="collapse" href="#tenants">
+            <i class="fas fa-store"></i>
+            <p>{{ __('Manage Shops / Tenants') }}</p>
+            <span class="caret"></span>
+        </a>
+        <div class="collapse {{ request()->routeIs('back.tenants*') ? 'show' : '' }}" id="tenants">
+            <ul class="nav nav-collapse">
+                <li class="{{ request()->routeIs('back.tenants.index') ? 'active' : '' }}">
+                    <a class="sub-link" href="{{ route('back.tenants.index') }}">
+                        <span class="sub-item">{{ __('All Shops / Tenants') }}</span>
+                    </a>
+                </li>
+                <li class="{{ request()->routeIs('back.tenants.create') ? 'active' : '' }}">
+                    <a class="sub-link" href="{{ route('back.tenants.create') }}">
+                        <span class="sub-item">{{ __('Open New Shop') }}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </li>
     <li class="nav-item">
         <a data-toggle="collapse" href="#category">
             <i class="fas fa-list-alt"></i>

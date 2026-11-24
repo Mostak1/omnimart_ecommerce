@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Tenancy;
 
 use App\Http\Controllers\Controller;
-use App\Tenancy\TenantContext;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -15,10 +14,10 @@ class TenantMediaController extends Controller
      */
     public function serveTenantFile(Request $request, string $tenantId, string $path): BinaryFileResponse
     {
-        $context = app(TenantContext::class);
+        $currentTenantId = function_exists('tenant') && tenant() ? tenant('id') : null;
 
         // Security check: if in a tenant request, forbid accessing other tenant's files
-        if ($context->hasTenant() && $context->id() !== $tenantId) {
+        if ($currentTenantId && $currentTenantId !== $tenantId) {
             abort(403, 'Cross-tenant file access is forbidden.');
         }
 
@@ -48,13 +47,12 @@ class TenantMediaController extends Controller
      */
     public function serveFallback(Request $request, string $path): BinaryFileResponse
     {
-        $context = app(TenantContext::class);
+        $currentTenantId = function_exists('tenant') && tenant() ? tenant('id') : null;
 
         // 1. If inside tenant context, check tenant's isolated folder first
-        if ($context->hasTenant()) {
-            $tenantId = $context->id();
-            $tenantBaseDir = realpath(storage_path('app/public/tenants/' . $tenantId));
-            $tenantFile = realpath(storage_path('app/public/tenants/' . $tenantId . '/' . ltrim($path, '/')));
+        if ($currentTenantId) {
+            $tenantBaseDir = realpath(storage_path('app/public/tenants/' . $currentTenantId));
+            $tenantFile = realpath(storage_path('app/public/tenants/' . $currentTenantId . '/' . ltrim($path, '/')));
 
             if ($tenantBaseDir && $tenantFile && str_starts_with($tenantFile, $tenantBaseDir) && is_file($tenantFile)) {
                 return response()->file($tenantFile, [
@@ -73,7 +71,7 @@ class TenantMediaController extends Controller
             $tenantsDir = realpath(storage_path('app/public/tenants'));
             if ($tenantsDir && str_starts_with($publicFile, $tenantsDir)) {
                 // If in tenant directory, verify it belongs to current tenant
-                if (!$context->hasTenant() || !str_starts_with($publicFile, storage_path('app/public/tenants/' . $context->id()))) {
+                if (!$currentTenantId || !str_starts_with($publicFile, storage_path('app/public/tenants/' . $currentTenantId))) {
                     abort(403, 'Cross-tenant file access is forbidden.');
                 }
             }

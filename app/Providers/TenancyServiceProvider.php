@@ -1,126 +1,145 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
-use App\Console\Commands\TenantCreateCommand;
-use App\Console\Commands\TenantListCommand;
-use App\Console\Commands\TenantMigrateCommand;
-use App\Console\Commands\TenantRunCommand;
-use App\Tenancy\TenantContext;
-use App\Tenancy\TenantDatabaseManager;
-use App\Tenancy\TenantManager;
-use App\Tenancy\TenantResolver;
-use Illuminate\Queue\Events\JobFailed;
-use Illuminate\Queue\Events\JobProcessed;
-use Illuminate\Queue\Events\JobProcessing;
-use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Stancl\JobPipeline\JobPipeline;
+use Stancl\Tenancy\Events;
+use Stancl\Tenancy\Jobs;
+use Stancl\Tenancy\Listeners;
+use Stancl\Tenancy\Middleware;
 
 class TenancyServiceProvider extends ServiceProvider
 {
-    /**
-     * Register tenancy services.
-     */
-    public function register(): void
+    // By default, no namespace is used to support the callable array syntax.
+    public static string $controllerNamespace = '';
+
+    public function events()
     {
-        // 1. Merge default configuration
-        $this->mergeConfigFrom(__DIR__ . '/../../config/tenancy.php', 'tenancy');
+        return [
+            // Tenant events
+            Events\CreatingTenant::class => [],
+            Events\TenantCreated::class => [
+                JobPipeline::make([
+                    Jobs\CreateDatabase::class,
+                    Jobs\MigrateDatabase::class,
+                    // Jobs\SeedDatabase::class,
+                ])->send(function (Events\TenantCreated $event) {
+                    return $event->tenant;
+                })->shouldBeQueued(false),
+            ],
+            Events\SavingTenant::class => [],
+            Events\TenantSaved::class => [],
+            Events\UpdatingTenant::class => [],
+            Events\TenantUpdated::class => [],
+            Events\DeletingTenant::class => [],
+            Events\TenantDeleted::class => [
+                JobPipeline::make([
+                    Jobs\DeleteDatabase::class,
+                ])->send(function (Events\TenantDeleted $event) {
+                    return $event->tenant;
+                })->shouldBeQueued(false),
+            ],
 
-        // 2. Register Singletons
-        $this->app->singleton(TenantContext::class, function () {
-            return new TenantContext();
-        });
+            // Domain events
+            Events\CreatingDomain::class => [],
+            Events\DomainCreated::class => [],
+            Events\SavingDomain::class => [],
+            Events\DomainSaved::class => [],
+            Events\UpdatingDomain::class => [],
+            Events\DomainUpdated::class => [],
+            Events\DeletingDomain::class => [],
+            Events\DomainDeleted::class => [],
 
-        $this->app->singleton(TenantResolver::class, function () {
-            return new TenantResolver();
-        });
+            // Database events
+            Events\DatabaseCreated::class => [],
+            Events\DatabaseMigrated::class => [],
+            Events\DatabaseSeeded::class => [],
+            Events\DatabaseRolledBack::class => [],
+            Events\DatabaseDeleted::class => [],
 
-        $this->app->singleton(TenantDatabaseManager::class, function () {
-            return new TenantDatabaseManager();
-        });
+            // Tenancy events
+            Events\InitializingTenancy::class => [],
+            Events\TenancyInitialized::class => [
+                Listeners\BootstrapTenancy::class,
+            ],
 
-        $this->app->singleton(TenantManager::class, function ($app) {
-            return new TenantManager(
-                $app->make(TenantContext::class),
-                $app->make(TenantResolver::class),
-                $app->make(TenantDatabaseManager::class)
-            );
-        });
+            Events\EndingTenancy::class => [],
+            Events\TenancyEnded::class => [
+                Listeners\RevertToCentralContext::class,
+            ],
+
+            Events\BootstrappingTenancy::class => [],
+            Events\TenancyBootstrapped::class => [],
+            Events\RevertingToCentralContext::class => [],
+            Events\RevertedToCentralContext::class => [],
+
+            // Resource syncing
+            Events\SyncedResourceSaved::class => [
+                Listeners\UpdateSyncedResource::class,
+            ],
+
+            Events\SyncedResourceChangedInForeignDatabase::class => [],
+        ];
     }
 
-    /**
-     * Bootstrap tenancy services and event listeners.
-     */
-    public function boot(): void
+    public function register()
     {
-        // Register console commands
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                TenantCreateCommand::class,
-                TenantMigrateCommand::class,
-                TenantRunCommand::class,
-                TenantListCommand::class,
-            ]);
-        }
-
-        // Configure Queue tenancy isolation and context propagation
-        $this->registerQueueTenancyHooks();
+        //
     }
 
-    /**
-     * Ensure queued jobs automatically retain tenant context from dispatch
-     * to worker execution, and reset cleanly after each job.
-     */
-    protected function registerQueueTenancyHooks(): void
+    public function boot()
     {
-        if (!$this->app->bound('queue')) {
-            return;
+        $this->bootEvents();
+        $this->mapRoutes();
+
+        $this->makeTenancyMiddlewareHighestPriority();
+
+        Middleware\InitializeTenancyBySubdomain::$onFail = function ($exception, $request, $next) {
+            abort(404, 'Store or tenant subdomain not found.');
+        };
+    }
+
+    protected function bootEvents()
+    {
+        foreach ($this->events() as $event => $listeners) {
+            foreach ($listeners as $listener) {
+                if ($listener instanceof JobPipeline) {
+                    $listener = $listener->toListener();
+                }
+
+                Event::listen($event, $listener);
+            }
         }
+    }
 
-        // 1. Inject tenant_id into queue payload when a job is dispatched
-        Queue::createPayloadUsing(function ($connection, $queue, $payload) {
-            if ($this->app->bound(TenantContext::class)) {
-                $context = $this->app->make(TenantContext::class);
-                if ($context->hasTenant()) {
-                    return ['tenant_id' => $context->id()];
-                }
-            }
-            return [];
-        });
+    protected function mapRoutes()
+    {
+        if (file_exists(base_path('routes/tenant.php'))) {
+            Route::namespace(static::$controllerNamespace)
+                ->group(base_path('routes/tenant.php'));
+        }
+    }
 
-        // 2. Before a worker handles a job: bootstrap the job's tenant context
-        Queue::before(function (JobProcessing $event) {
-            $payload = $event->job->payload();
-            $tenantId = $payload['tenant_id'] ?? null;
+    protected function makeTenancyMiddlewareHighestPriority()
+    {
+        $tenancyMiddleware = [
+            // Even higher priority than the initialization middleware
+            Middleware\PreventAccessFromCentralDomains::class,
 
-            if ($tenantId && $this->app->bound(TenantManager::class)) {
-                $manager = $this->app->make(TenantManager::class);
-                $manager->bootstrapTenantById($tenantId, lock: false);
-            }
-        });
+            Middleware\InitializeTenancyByDomain::class,
+            Middleware\InitializeTenancyBySubdomain::class,
+            Middleware\InitializeTenancyByDomainOrSubdomain::class,
+            Middleware\InitializeTenancyByPath::class,
+            Middleware\InitializeTenancyByRequestData::class,
+        ];
 
-        // 3. After worker completes job: reset connection and state to prevent leakage
-        Queue::after(function (JobProcessed $event) {
-            if ($this->app->bound(TenantManager::class)) {
-                $this->app->make(TenantManager::class)->reset();
-            }
-        });
-
-        // 4. When a job fails: reset connection and state
-        Queue::failing(function (JobFailed $event) {
-            if ($this->app->bound(TenantManager::class)) {
-                $this->app->make(TenantManager::class)->reset();
-            }
-        });
-
-        // 5. In daemon worker loop: ensure clean state before waiting for new jobs
-        Queue::looping(function () {
-            if ($this->app->bound(TenantManager::class)) {
-                $context = $this->app->make(TenantContext::class);
-                if ($context->hasTenant()) {
-                    $this->app->make(TenantManager::class)->reset();
-                }
-            }
-        });
+        foreach (array_reverse($tenancyMiddleware) as $middleware) {
+            $this->app[\Illuminate\Contracts\Http\Kernel::class]->prependToMiddlewarePriority($middleware);
+        }
     }
 }

@@ -1,114 +1,115 @@
 <?php
 
+declare(strict_types=1);
+
+use Stancl\Tenancy\Database\Models\Domain;
+use App\Models\Tenant;
+
 return [
+    'tenant_model' => Tenant::class,
+    'id_generator' => Stancl\Tenancy\UUIDGenerator::class,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Tenancy Master Switch
-    |--------------------------------------------------------------------------
-    |
-    | When enabled, requests are resolved to a tenant context and database.
-    | When disabled (e.g. during certain CLI operations or maintenance),
-    | the standard default database configuration is retained.
-    |
-    */
-    'enabled' => env('TENANCY_ENABLED', true),
+    'domain_model' => Domain::class,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Central Connection & Central Domains
-    |--------------------------------------------------------------------------
-    |
-    | Central domains (e.g. system administration, platform landing page)
-    | operate on the central database and do NOT switch to a tenant database.
-    |
-    */
-    'central_connection' => env('TENANCY_CENTRAL_CONNECTION', 'central'),
+    /**
+     * The list of domains hosting your central app.
+     * Only relevant if you're using the domain or subdomain identification middleware.
+     */
+    'central_domains' => [
+        '127.0.0.1',
+        'localhost',
+    ],
 
-    'central_domains' => array_filter(array_map('trim', explode(',', env('TENANCY_CENTRAL_DOMAINS', 'admin.example.com,central.localhost,main.example.com,localhost,127.0.0.1')))),
+    /**
+     * Tenancy bootstrappers are executed when tenancy is initialized.
+     * Their responsibility is making Laravel features tenant-aware.
+     */
+    'bootstrappers' => [
+        Stancl\Tenancy\Bootstrappers\DatabaseTenancyBootstrapper::class,
+        Stancl\Tenancy\Bootstrappers\CacheTenancyBootstrapper::class,
+        Stancl\Tenancy\Bootstrappers\FilesystemTenancyBootstrapper::class,
+        Stancl\Tenancy\Bootstrappers\QueueTenancyBootstrapper::class,
+    ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Database Connection Configuration
-    |--------------------------------------------------------------------------
-    |
-    | The default connection template to clone settings from (e.g. 'mysql' or 'sqlite').
-    | The tenant connection will be registered dynamically under 'tenant_connection_name'.
-    |
-    */
-    'tenant_connection_name' => 'tenant',
-    'connection_template' => env('TENANCY_TEMPLATE_CONNECTION', env('DB_CONNECTION', 'mysql')),
+    /**
+     * Database tenancy config. Used by DatabaseTenancyBootstrapper.
+     */
+    'database' => [
+        'central_connection' => env('DB_CONNECTION', 'mysql'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Domain to Tenant / Database Mapping
-    |--------------------------------------------------------------------------
-    |
-    | Configurable in code. Supports root domains, subdomains, localhost, and custom ports.
-    | Hostnames are automatically normalized (lowercase, trim, port removed, www stripped).
-    |
-    | Example:
-    |   'example1.com' => ['database' => 'database_1'],
-    |   'store1.test'  => [
-    |       'tenant'   => 'store1',
-    |       'name'     => 'Store One',
-    |       'database' => env('TENANT_DB_1_DATABASE', 'store1_db'),
-    |       'host'     => env('TENANT_DB_1_HOST', '127.0.0.1'),
-    |       'username' => env('TENANT_DB_1_USERNAME', 'root'),
-    |       'password' => env('TENANT_DB_1_PASSWORD', ''),
-    |   ],
-    |
-    */
-    'domains' => [
+        /**
+         * Connection used as a "template" for the dynamically created tenant database connection.
+         * Note: don't name your template connection tenant. That name is reserved by package.
+         */
+        'template_tenant_connection' => null,
 
-        'ecom.techseba.com' => [
-            'tenant'   => 'techseba',
-            'name'     => 'TechSeba Store',
-            'database' => 'techseba_ecom',
+        /**
+         * Tenant database names are created like this:
+         * prefix + tenant_id + suffix.
+         */
+        'prefix' => 'db_tenant_',
+        'suffix' => '',
+
+        /**
+         * TenantDatabaseManagers are classes that handle the creation & deletion of tenant databases.
+         */
+        'managers' => [
+            'sqlite' => Stancl\Tenancy\TenantDatabaseManagers\SQLiteDatabaseManager::class,
+            'mysql' => Stancl\Tenancy\TenantDatabaseManagers\MySQLDatabaseManager::class,
+            'mariadb' => Stancl\Tenancy\TenantDatabaseManagers\MySQLDatabaseManager::class,
+            'pgsql' => Stancl\Tenancy\TenantDatabaseManagers\PostgreSQLDatabaseManager::class,
         ],
-
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Tenant Context Locking
-    |--------------------------------------------------------------------------
-    |
-    | Once resolved during an HTTP request, the tenant context is locked.
-    | Attempting to change the tenant context halfway through throws an exception.
-    |
-    */
-    'lock_context' => true,
-
-    /*
-    |--------------------------------------------------------------------------
-    | Isolation Settings
-    |--------------------------------------------------------------------------
-    */
+    /**
+     * Cache tenancy config. Used by CacheTenancyBootstrapper.
+     */
     'cache' => [
-        'prefix_by_tenant' => true,
-        'isolate_file_store' => true,
+        'tag_base' => 'tenant',
     ],
 
-    'session' => [
-        'prefix_cookie_by_tenant' => true,
-        'isolate_file_store' => true,
+    /**
+     * Filesystem tenancy config. Used by FilesystemTenancyBootstrapper.
+     */
+    'filesystem' => [
+        'suffix_base' => 'tenant',
+        'disks' => [
+            'local',
+            'public',
+        ],
+        'root_override' => [
+            'local' => '%storage_path%/app/',
+            'public' => '%storage_path%/app/public/',
+        ],
+        'suffix_storage_path' => true,
+        'asset_helper_tenancy' => false,
     ],
 
-    'storage' => [
-        'isolate_public_disk' => true,
-        'tenant_folder_prefix' => 'tenants/',
+    /**
+     * Redis tenancy config. Used by RedisTenancyBootstrapper.
+     */
+    'redis' => [
+        'prefix_base' => 'tenant',
+        'prefixed_connections' => [],
     ],
 
-    'logging' => [
-        'add_context' => true,
+    'features' => [],
+
+    'routes' => true,
+
+    /**
+     * Parameters used by the tenants:migrate command.
+     */
+    'migration_parameters' => [
+        '--force' => true,
+        '--path' => [database_path('migrations/tenant')],
+        '--realpath' => true,
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Tenant Migrations Path
-    |--------------------------------------------------------------------------
-    */
-    'tenant_migrations_path' => database_path('tenant-migrations'),
-
+    /**
+     * Parameters used by the tenants:seed command.
+     */
+    'seeder_parameters' => [
+        '--class' => 'DatabaseSeeder',
+    ],
 ];

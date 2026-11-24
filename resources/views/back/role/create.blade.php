@@ -40,6 +40,9 @@
 								</div>
 								<div class="row">
 									<div class="col-md-4 my-3">
+										<input type="checkbox" name="section[]" value="Manage Shops / Tenants" id=""> {{ __('Manage Shops / Tenants') }}
+									</div>
+									<div class="col-md-4 my-3">
 										<input type="checkbox" name="section[]" value="Manage Categories" id=""> {{ __('Manage Categories') }}
 									</div>
 									<div class="col-md-4 my-3">

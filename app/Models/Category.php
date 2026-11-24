@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
+    public function getConnectionName()
+    {
+        return config('tenancy.database.central_connection', 'mysql');
+    }
+
     protected $fillable = ['name','slug', 'photo','status','is_feature','meta_keywords','meta_descriptions','serial'];
     public $timestamps = false;
 

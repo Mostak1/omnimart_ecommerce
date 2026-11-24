@@ -46,6 +46,9 @@
 									</div>
 								<div class="row">
 										<div class="col-md-4 my-3">
+											<input type="checkbox" name="section[]" value="Manage Shops / Tenants" {{in_array('Manage Shops / Tenants',$section) ? 'checked' : ''}} id=""> {{ __('Manage Shops / Tenants') }}
+										</div>
+										<div class="col-md-4 my-3">
 											<input type="checkbox" name="section[]" value="Manage Categories" {{in_array('Manage Categories',$section) ? 'checked' : ''}} id=""> {{ __('Manage Categories') }}
 										</div>
 										<div class="col-md-4 my-3">
