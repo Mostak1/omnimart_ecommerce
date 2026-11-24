@@ -22,6 +22,10 @@ class TenancyServiceProvider extends ServiceProvider
 
     public function events()
     {
+        if (! class_exists(JobPipeline::class)) {
+            return [];
+        }
+
         return [
             // Tenant events
             Events\CreatingTenant::class => [],
@@ -96,6 +100,10 @@ class TenancyServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        if (! class_exists(JobPipeline::class)) {
+            return;
+        }
+
         $this->bootEvents();
         $this->mapRoutes();
 
