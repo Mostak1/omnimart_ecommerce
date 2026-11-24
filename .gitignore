@@ -6,8 +6,6 @@
 /.codex
 /.codex/
 *.zip
-!/public/stancl_vendor_bundle.zip
-
 /.phpunit.result.cache
 /.php-cs-fixer.cache
 /.env
