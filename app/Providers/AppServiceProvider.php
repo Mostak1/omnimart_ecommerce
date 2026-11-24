@@ -33,5 +33,25 @@ class AppServiceProvider extends ServiceProvider
 
     public function register()
     {
+        // Tenancy fallback PSR-4 autoloader for environments without terminal
+        spl_autoload_register(function ($class) {
+            $prefixes = [
+                'Stancl\\Tenancy\\' => base_path('vendor/stancl/tenancy/src/'),
+                'Stancl\\JobPipeline\\' => base_path('vendor/stancl/jobpipeline/src/'),
+                'Stancl\\VirtualColumn\\' => base_path('vendor/stancl/virtualcolumn/src/'),
+            ];
+
+            foreach ($prefixes as $prefix => $baseDir) {
+                if (str_starts_with($class, $prefix)) {
+                    $relativeClass = substr($class, strlen($prefix));
+                    $file = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
+                    if (file_exists($file)) {
+                        require_once $file;
+                        return true;
+                    }
+                }
+            }
+            return false;
+        });
     }
 }

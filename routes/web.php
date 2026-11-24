@@ -58,6 +58,73 @@ Route::get('/run-clear', function () {
     }
 })->name('global.run.clear');
 
+Route::get('/install-tenancy-vendor', function () {
+    try {
+        $zipFile = public_path('stancl_vendor_bundle.zip');
+        if (!file_exists($zipFile)) {
+            $zipFile = base_path('public/stancl_vendor_bundle.zip');
+        }
+
+        if (!file_exists($zipFile)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'stancl_vendor_bundle.zip was not found in public folder. Please git push or upload it to public/ folder.',
+            ], 404);
+        }
+
+        $zip = new ZipArchive();
+        if ($zip->open($zipFile) !== true) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to open zip archive.',
+            ], 500);
+        }
+
+        $vendorDir = base_path('vendor');
+        $zip->extractTo($vendorDir);
+        $zip->close();
+
+        Artisan::call('cache:clear');
+        Artisan::call('config:clear');
+        Artisan::call('route:clear');
+        Artisan::call('view:clear');
+
+        $tenantClassOk = class_exists(\Stancl\Tenancy\Database\Models\Tenant::class);
+        $pipelineClassOk = class_exists(\Stancl\JobPipeline\JobPipeline::class);
+
+        return response("
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Tenancy Package Installation</title>
+            <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css'>
+        </head>
+        <body class='bg-light d-flex align-items-center justify-content-center' style='min-height: 100vh;'>
+            <div class='card shadow-lg border-0 text-center p-5' style='max-width: 600px; border-radius: 15px;'>
+                <div class='mb-3 text-success' style='font-size: 65px;'>&#10004;</div>
+                <h3 class='font-weight-bold text-dark mb-2'>Stancl Tenancy প্যাকেজ সফলভাবে ইনস্টল হয়েছে!</h3>
+                <p class='text-muted small'>
+                    ভেন্ডর প্যাকেজ ও অটোলোডার লাইভ সার্ভারে সাকসেসফুলি এক্সট্রাক্ট ও কনফিগার হয়েছে।
+                </p>
+                <div class='alert alert-success text-left small'>
+                    <div><b>&#10004; Tenant Model:</b> " . ($tenantClassOk ? 'Verified & Loaded' : 'Check needed') . "</div>
+                    <div><b>&#10004; JobPipeline:</b> " . ($pipelineClassOk ? 'Verified & Loaded' : 'Check needed') . "</div>
+                </div>
+                <a href='" . url('/admin/tenants') . "' class='btn btn-primary btn-lg mt-3 font-weight-bold'>
+                    Super Admin Tenants এ যান &rarr;
+                </a>
+            </div>
+        </body>
+        </html>
+        ");
+    } catch (\Throwable $e) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Installation failed: ' . $e->getMessage(),
+        ], 500);
+    }
+})->name('global.install.tenancy');
+
 Route::get('/run-storage-link', function (Request $request) {
     try {
         $link = public_path('storage');
