@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
+    public function getConnectionName()
+    {
+        return config('tenancy.database.central_connection', 'mysql');
+    }
+
     protected $fillable = [
         'title',
         'home_page_title',

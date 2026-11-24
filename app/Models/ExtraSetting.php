@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class ExtraSetting extends Model
 {
+    public function getConnectionName()
+    {
+        return config('tenancy.database.central_connection', 'mysql');
+    }
+
     protected $fillable = [
         'is_t4_slider',
         'is_t4_featured_banner',

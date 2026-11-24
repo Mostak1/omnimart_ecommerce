@@ -17,11 +17,12 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrap();
         view()->composer('*', function ($settings) {
+            $centralConn = config('tenancy.database.central_connection', 'mysql');
             $setting = Setting::find(1);
             $settings->with('setting', $setting);
             $settings->with('site_visibility', VisibilityHelper::map($setting));
             $settings->with('extra_settings', ExtraSetting::find(1));
-            $settings->with('menus', DB::table('menus')->find(1));
+            $settings->with('menus', DB::connection($centralConn)->table('menus')->find(1));
 
             if (!session()->has('popup')) {
                 view()->share('visit', 1);

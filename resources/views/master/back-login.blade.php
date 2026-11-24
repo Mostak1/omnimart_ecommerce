@@ -16,7 +16,11 @@
 	<link rel="stylesheet" href="{{ asset('assets/back/css/bootstrap.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('assets/back/css/azzara.min.css') }}">
 
-	@if(DB::table('languages')->where('type', 'Dashboard')->where('is_default',1)->first()->rtl == 1)
+	@php
+		$centralConn = config('tenancy.database.central_connection', 'mysql');
+		$dashLang = \Illuminate\Support\Facades\DB::connection($centralConn)->table('languages')->where('type', 'Dashboard')->where('is_default',1)->first();
+	@endphp
+	@if($dashLang && $dashLang->rtl == 1)
     <link rel="stylesheet" href="{{ asset('assets/back/css/rtl.css') }}">
     @endif
 </head>

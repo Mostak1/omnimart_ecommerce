@@ -137,9 +137,96 @@
                             </div>
                         </div>
 
+                        <!-- Database Setup Mode (Localhost / VPS vs cPanel / Shared Hosting) -->
+                        <div class="card bg-light border-primary my-4">
+                            <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between">
+                                <h6 class="mb-0 font-weight-bold"><i class="fas fa-database mr-2"></i> {{ __('Database Configuration & Provisioning Mode') }}</h6>
+                                <span class="badge badge-light text-primary font-weight-bold">cPanel & Cloud Ready</span>
+                            </div>
+                            <div class="card-body">
+                                <p class="text-muted small mb-3">
+                                    {{ __('Choose whether the system should auto-create a new MySQL database or connect to an existing database created in cPanel.') }}
+                                </p>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6 mb-2">
+                                        <div class="custom-control custom-radio p-3 border rounded bg-white shadow-sm h-100">
+                                            <input type="radio" id="db_mode_auto" name="db_mode" value="auto" class="custom-control-input"
+                                                {{ old('db_mode', 'auto') == 'auto' ? 'checked' : '' }}>
+                                            <label class="custom-control-label font-weight-bold text-dark cursor-pointer" for="db_mode_auto">
+                                                <i class="fas fa-robot text-success mr-1"></i> {{ __('Auto Provision Mode (Local / VPS)') }}
+                                            </label>
+                                            <div class="text-muted small mt-1 pl-4">
+                                                {{ __('System automatically executes CREATE DATABASE db_tenant_<subdomain> using central MySQL credentials.') }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mb-2">
+                                        <div class="custom-control custom-radio p-3 border rounded bg-white shadow-sm h-100">
+                                            <input type="radio" id="db_mode_cpanel" name="db_mode" value="cpanel" class="custom-control-input"
+                                                {{ old('db_mode') == 'cpanel' ? 'checked' : '' }}>
+                                            <label class="custom-control-label font-weight-bold text-dark cursor-pointer" for="db_mode_cpanel">
+                                                <i class="fas fa-server text-info mr-1"></i> {{ __('cPanel / Pre-Created Database Mode') }}
+                                            </label>
+                                            <div class="text-muted small mt-1 pl-4">
+                                                {{ __('Use this for cPanel / Shared Hosting where you create the database & user in cPanel first.') }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- cPanel / Custom Database Credentials Container -->
+                                <div id="cpanel_db_fields" style="{{ old('db_mode') == 'cpanel' ? '' : 'display: none;' }}">
+                                    <div class="alert alert-info py-2 px-3 small mb-3">
+                                        <i class="fas fa-info-circle mr-1"></i>
+                                        <b>cPanel নোট:</b> cPanel এর <i>MySQL Databases</i> সেকশন থেকে ডেটাবেস এবং ইউজার তৈরি করে নিচে বসান। সিস্টেম ওই ডেটাবেসে কানেক্ট হয়ে সকল টেবিল স্বয়ংক্রিয়ভাবে তৈরি (Migrate) করে নিবে।
+                                    </div>
+
+                                    <div class="row">
+                                        <!-- Custom Database Name -->
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="custom_db_name" class="font-weight-bold text-dark">
+                                                    {{ __('cPanel Database Name') }} <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" name="custom_db_name" id="custom_db_name" class="form-control"
+                                                    placeholder="{{ __('e.g. cpuser_shop1') }}" value="{{ old('custom_db_name') }}">
+                                                <small class="text-muted">{{ __('Exact DB name created in cPanel') }}</small>
+                                            </div>
+                                        </div>
+
+                                        <!-- Custom Database User -->
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="custom_db_user" class="font-weight-bold text-dark">
+                                                    {{ __('cPanel DB Username') }}
+                                                </label>
+                                                <input type="text" name="custom_db_user" id="custom_db_user" class="form-control"
+                                                    placeholder="{{ __('e.g. cpuser_dbuser (Optional)') }}" value="{{ old('custom_db_user') }}">
+                                                <small class="text-muted">{{ __('Leave blank to use default .env user') }}</small>
+                                            </div>
+                                        </div>
+
+                                        <!-- Custom Database Password -->
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="custom_db_pass" class="font-weight-bold text-dark">
+                                                    {{ __('cPanel DB User Password') }}
+                                                </label>
+                                                <input type="password" name="custom_db_pass" id="custom_db_pass" class="form-control"
+                                                    placeholder="{{ __('DB password (Optional)') }}">
+                                                <small class="text-muted">{{ __('Leave blank to use default .env password') }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-group text-center mt-3">
                             <button type="submit" class="btn btn-secondary btn-lg px-5">
-                                <i class="fas fa-magic mr-2"></i> {{ __('Create Shop & Provision Database') }}
+                                <i class="fas fa-magic mr-2"></i> {{ __('Create Shop & Initialize Database') }}
                             </button>
                         </div>
                     </form>
@@ -155,6 +242,17 @@
 @section('scripts')
 <script>
 $(document).ready(function() {
+    // Toggle cPanel DB fields
+    $('input[name="db_mode"]').on('change', function() {
+        if ($(this).val() === 'cpanel') {
+            $('#cpanel_db_fields').slideDown(250);
+            $('#custom_db_name').attr('required', true);
+        } else {
+            $('#cpanel_db_fields').slideUp(250);
+            $('#custom_db_name').removeAttr('required');
+        }
+    });
+
     // Auto-generate subdomain slug from shop name if subdomain is untouched
     let subdomainManuallyEdited = false;
     $('#subdomain').on('input', function() {

@@ -221,6 +221,7 @@ Route::group(['middleware' => ['adminlocalize', 'demo']], function () {
         Route::group(['middleware' => 'permissions:Manage Shops / Tenants'], function () {
             //------------ TENANTS / SHOPS ------------
             Route::get('tenants/status/{id}/{status}', 'Back\TenantController@status')->name('back.tenants.status');
+            Route::put('tenants/subscription/{id}', 'Back\TenantController@updateSubscription')->name('back.tenants.subscription');
             Route::get('tenants/get/police-stations/{district_id}', 'Back\TenantController@getPoliceStations')->name('back.tenants.police_stations');
             Route::resource('tenants', 'Back\TenantController', ['as' => 'back', 'except' => ['show', 'edit', 'update']]);
         });

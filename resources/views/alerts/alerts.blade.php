@@ -10,11 +10,11 @@
       <b>{{ Session::get('error') }}</b>
 </div>
 @endif
-@if(count($errors) > 0)
+@if(isset($errors) && $errors->any())
 <div class="alert alert-danger validation">
 	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
 			aria-hidden="true">×</span></button>
-	<ul class="text-left {{ count($errors) == 1 ? 'list-unstyled' : '' }}">
+	<ul class="text-left {{ $errors->count() == 1 ? 'list-unstyled' : '' }}">
 		@foreach($errors->all() as $error)
 		<li>
             <b>{{$error}}</b>
