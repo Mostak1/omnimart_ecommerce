@@ -95,7 +95,9 @@ class TenancyServiceProvider extends ServiceProvider
 
     public function register()
     {
-        //
+        if (class_exists(\Stancl\Tenancy\TenancyServiceProvider::class) && ! $this->app->providerIsLoaded(\Stancl\Tenancy\TenancyServiceProvider::class)) {
+            $this->app->register(\Stancl\Tenancy\TenancyServiceProvider::class);
+        }
     }
 
     public function boot()

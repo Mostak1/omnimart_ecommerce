@@ -57,6 +57,42 @@ Route::get('/view-latest-error', function () {
 
 Route::match(['GET', 'POST'], '/install-tenancy-vendor', function (\Illuminate\Http\Request $request) {
     try {
+        $tenantClassOk = class_exists(\Stancl\Tenancy\Database\Models\Tenant::class);
+        $pipelineClassOk = class_exists(\Stancl\JobPipeline\JobPipeline::class);
+
+        if ($tenantClassOk && $pipelineClassOk) {
+            return response("
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Tenancy Package Active</title>
+                <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css'>
+            </head>
+            <body class='bg-light d-flex align-items-center justify-content-center' style='min-height: 100vh;'>
+                <div class='card shadow-lg border-0 text-center p-5' style='max-width: 600px; border-radius: 15px;'>
+                    <div class='mb-3 text-success' style='font-size: 65px;'>&#10004;</div>
+                    <h3 class='font-weight-bold text-dark mb-2'>Stancl Tenancy প্যাকেজ সম্পূর্ণ সক্রিয় আছে!</h3>
+                    <p class='text-muted small'>
+                        ভেন্ডর ও প্যাকেজ অটোলোডার লাইভ সার্ভারে সাকসেসফুলি কাজ করছে।
+                    </p>
+                    <div class='alert alert-success text-left small'>
+                        <div><b>&#10004; Tenant Model:</b> " . ($tenantClassOk ? 'Verified & Loaded' : 'Missing') . "</div>
+                        <div><b>&#10004; JobPipeline:</b> " . ($pipelineClassOk ? 'Verified & Loaded' : 'Missing') . "</div>
+                    </div>
+                    <div class='mt-4'>
+                        <a href='" . url('/admin/tenants') . "' class='btn btn-primary font-weight-bold mr-2'>
+                            Super Admin Tenants এ যান &rarr;
+                        </a>
+                        <a href='" . url('/run-migration') . "' class='btn btn-outline-secondary font-weight-bold'>
+                            Run Migration
+                        </a>
+                    </div>
+                </div>
+            </body>
+            </html>
+            ");
+        }
+
         $zipFile = public_path('stancl_vendor_bundle.zip');
         if (!file_exists($zipFile)) {
             $zipFile = base_path('public/stancl_vendor_bundle.zip');
@@ -70,83 +106,47 @@ Route::match(['GET', 'POST'], '/install-tenancy-vendor', function (\Illuminate\H
         }
 
         // If file exists, extract it
-        if (file_exists($zipFile)) {
-            $zip = new ZipArchive();
-            if ($zip->open($zipFile) !== true) {
-                return response("<div class='alert alert-danger'>Failed to open zip archive.</div>", 500);
+        if (file_exists($zipFile) && class_exists(\ZipArchive::class)) {
+            $zip = new \ZipArchive();
+            if ($zip->open($zipFile) === true) {
+                $vendorDir = base_path('vendor');
+                $zip->extractTo($vendorDir);
+                $zip->close();
+
+                Artisan::call('cache:clear');
+                Artisan::call('config:clear');
+                Artisan::call('route:clear');
+                Artisan::call('view:clear');
             }
-
-            $vendorDir = base_path('vendor');
-            $zip->extractTo($vendorDir);
-            $zip->close();
-
-            Artisan::call('cache:clear');
-            Artisan::call('config:clear');
-            Artisan::call('route:clear');
-            Artisan::call('view:clear');
-
-            $tenantClassOk = class_exists(\Stancl\Tenancy\Database\Models\Tenant::class);
-            $pipelineClassOk = class_exists(\Stancl\JobPipeline\JobPipeline::class);
-
-            return response("
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>Tenancy Package Installed</title>
-                <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css'>
-            </head>
-            <body class='bg-light d-flex align-items-center justify-content-center' style='min-height: 100vh;'>
-                <div class='card shadow-lg border-0 text-center p-5' style='max-width: 600px; border-radius: 15px;'>
-                    <div class='mb-3 text-success' style='font-size: 65px;'>&#10004;</div>
-                    <h3 class='font-weight-bold text-dark mb-2'>Stancl Tenancy প্যাকেজ সফলভাবে ইনস্টল হয়েছে!</h3>
-                    <p class='text-muted small'>
-                        ভেন্ডর প্যাকেজ ও অটোলোডার লাইভ সার্ভারে সাকসেসফুলি এক্সট্রাক্ট ও কনফিগার হয়েছে।
-                    </p>
-                    <div class='alert alert-success text-left small'>
-                        <div><b>&#10004; Tenant Model:</b> " . ($tenantClassOk ? 'Verified & Loaded' : 'Check needed') . "</div>
-                        <div><b>&#10004; JobPipeline:</b> " . ($pipelineClassOk ? 'Verified & Loaded' : 'Check needed') . "</div>
-                    </div>
-                    <a href='" . url('/admin/tenants') . "' class='btn btn-primary btn-lg mt-3 font-weight-bold'>
-                        Super Admin Tenants এ যান &rarr;
-                    </a>
-                </div>
-            </body>
-            </html>
-            ");
         }
 
-        // If file does not exist yet, render clean upload form
-        $uploadUrl = url('/install-tenancy-vendor');
+        $tenantClassOk = class_exists(\Stancl\Tenancy\Database\Models\Tenant::class);
+        $pipelineClassOk = class_exists(\Stancl\JobPipeline\JobPipeline::class);
+
         return response("
         <!DOCTYPE html>
         <html>
         <head>
-            <title>Upload Tenancy Vendor Bundle</title>
+            <title>Tenancy Package Status</title>
             <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css'>
         </head>
         <body class='bg-light d-flex align-items-center justify-content-center' style='min-height: 100vh;'>
-            <div class='card shadow-lg border-0 p-5' style='max-width: 600px; border-radius: 15px;'>
-                <div class='text-center mb-4'>
-                    <div class='text-primary' style='font-size: 50px;'>&#128230;</div>
-                    <h4 class='font-weight-bold text-dark'>Upload Tenancy Vendor Bundle</h4>
-                    <p class='text-muted small'>cPanel-এ টার্মিনাল ছাড়া সরাসরি ব্রাউজার থেকে stancl_vendor_bundle.zip ইনস্টল করুন।</p>
+            <div class='card shadow-lg border-0 text-center p-5' style='max-width: 600px; border-radius: 15px;'>
+                <div class='mb-3 text-info' style='font-size: 65px;'>&#8505;</div>
+                <h4 class='font-weight-bold text-dark'>Tenancy Package Status</h4>
+                <div class='alert alert-secondary text-left small my-3'>
+                    <div><b>Tenant Model:</b> " . ($tenantClassOk ? 'Loaded' : 'Not Loaded') . "</div>
+                    <div><b>JobPipeline:</b> " . ($pipelineClassOk ? 'Loaded' : 'Not Loaded') . "</div>
                 </div>
-                <form action='{$uploadUrl}' method='POST' enctype='multipart/form-data'>
-                    <div class='form-group mb-4'>
-                        <label class='font-weight-bold text-dark'>Select stancl_vendor_bundle.zip file:</label>
-                        <input type='file' name='bundle' class='form-control-file border p-2 rounded' accept='.zip' required>
-                        <small class='text-muted mt-1 d-block'>ফাইল লোকেশন: <code>public/stancl_vendor_bundle.zip</code></small>
-                    </div>
-                    <button type='submit' class='btn btn-success btn-block btn-lg font-weight-bold'>
-                        Upload & Install Package Now &rarr;
-                    </button>
-                </form>
+                <a href='" . url('/admin') . "' class='btn btn-primary font-weight-bold'>
+                    Admin Dashboard &rarr;
+                </a>
             </div>
         </body>
         </html>
         ");
     } catch (\Throwable $e) {
-        return response("<div class='alert alert-danger p-4'>Installation failed: " . $e->getMessage() . "</div>", 500);
+        return response("<div class='alert alert-danger p-4'>Error: " . $e->getMessage() . "</div>", 500);
     }
 })->name('global.install.tenancy');
 

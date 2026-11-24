@@ -1,5 +1,47 @@
 <?php
 
+// Autoloader for packages (such as stancl tenancy when composer install is skipped on cPanel)
+spl_autoload_register(function ($class) {
+    $prefixes = [
+        'Stancl\\Tenancy\\' => [
+            __DIR__ . '/../packages/stancl/tenancy/src/',
+            __DIR__ . '/../vendor/stancl/tenancy/src/',
+        ],
+        'Stancl\\JobPipeline\\' => [
+            __DIR__ . '/../packages/stancl/jobpipeline/src/',
+            __DIR__ . '/../vendor/stancl/jobpipeline/src/',
+        ],
+        'Stancl\\VirtualColumn\\' => [
+            __DIR__ . '/../packages/stancl/virtualcolumn/src/',
+            __DIR__ . '/../vendor/stancl/virtualcolumn/src/',
+        ],
+    ];
+
+    foreach ($prefixes as $prefix => $dirs) {
+        if (str_starts_with($class, $prefix)) {
+            $relativeClass = substr($class, strlen($prefix));
+            $file = str_replace('\\', '/', $relativeClass) . '.php';
+            foreach ($dirs as $dir) {
+                if (file_exists($dir . $file)) {
+                    require_once $dir . $file;
+                    return;
+                }
+            }
+        }
+    }
+});
+
+// Load Stancl Tenancy helper functions if available
+foreach ([
+    __DIR__ . '/../packages/stancl/tenancy/src/helpers.php',
+    __DIR__ . '/../vendor/stancl/tenancy/src/helpers.php',
+] as $helperPath) {
+    if (file_exists($helperPath)) {
+        require_once $helperPath;
+        break;
+    }
+}
+
 /*
 |--------------------------------------------------------------------------
 | Create The Application

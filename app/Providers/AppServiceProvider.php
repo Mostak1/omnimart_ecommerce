@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-require_once app_path('Helpers/TenancyStub.php');
-
 use App\Helpers\VisibilityHelper;
 use App\Models\ExtraSetting;
 use App\Models\Setting;
