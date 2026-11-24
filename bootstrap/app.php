@@ -31,6 +31,33 @@ spl_autoload_register(function ($class) {
     }
 });
 
+// Laravel version compatibility fallbacks (e.g. ReflectsClosures trait)
+if (!trait_exists('Illuminate\Support\Traits\ReflectsClosures', false)) {
+    foreach ([
+        __DIR__ . '/../packages/framework_patches/Reflection/Traits/ReflectsClosures.php',
+        __DIR__ . '/../packages/framework_patches/ReflectsClosures.php',
+        __DIR__ . '/../vendor/laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php',
+        __DIR__ . '/../vendor/laravel/framework/src/Illuminate/Reflection/Traits/ReflectsClosures.php',
+    ] as $candidate) {
+        if (file_exists($candidate)) {
+            require_once $candidate;
+            break;
+        }
+    }
+}
+if (!class_exists('Illuminate\Support\Reflector', false)) {
+    foreach ([
+        __DIR__ . '/../packages/framework_patches/Reflection/Reflector.php',
+        __DIR__ . '/../vendor/laravel/framework/src/Illuminate/Support/Reflector.php',
+        __DIR__ . '/../vendor/laravel/framework/src/Illuminate/Reflection/Reflector.php',
+    ] as $candidate) {
+        if (file_exists($candidate)) {
+            require_once $candidate;
+            break;
+        }
+    }
+}
+
 // Load Stancl Tenancy helper functions if available
 foreach ([
     __DIR__ . '/../packages/stancl/tenancy/src/helpers.php',

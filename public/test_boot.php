@@ -121,6 +121,23 @@ return ComposerAutoloaderUniversal::getLoader();
     return $msg;
 }
 
+// Auto-sync framework patches into vendor if missing
+$vendorFrameworkReflectionDir = __DIR__ . '/../vendor/laravel/framework/src/Illuminate/Reflection';
+if (!file_exists($vendorFrameworkReflectionDir . '/Traits/ReflectsClosures.php')) {
+    @mkdir($vendorFrameworkReflectionDir . '/Traits', 0755, true);
+    $sourceReflects = __DIR__ . '/../packages/framework_patches/Reflection/Traits/ReflectsClosures.php';
+    if (!file_exists($sourceReflects)) {
+        $sourceReflects = __DIR__ . '/../packages/framework_patches/ReflectsClosures.php';
+    }
+    if (file_exists($sourceReflects)) {
+        @copy($sourceReflects, $vendorFrameworkReflectionDir . '/Traits/ReflectsClosures.php');
+    }
+    $sourceReflector = __DIR__ . '/../packages/framework_patches/Reflection/Reflector.php';
+    if (file_exists($sourceReflector)) {
+        @copy($sourceReflector, $vendorFrameworkReflectionDir . '/Reflector.php');
+    }
+}
+
 // Automatically attempt repair on load
 $autoRepairs = repairComposerAutoloader(false);
 
@@ -204,7 +221,7 @@ $classes = [
 ];
 echo "<h4>Tenancy Classes Check:</h4><ul>";
 foreach ($classes as $cls) {
-    $found = class_exists($cls);
+    $found = class_exists($cls) || trait_exists($cls) || interface_exists($cls);
     $color = $found ? 'green' : 'red';
     $mark = $found ? '&#10004;' : '&#10008;';
     echo "<li style='color:{$color}'>{$mark} {$cls} " . ($found ? 'Loaded' : 'NOT FOUND') . "</li>";
