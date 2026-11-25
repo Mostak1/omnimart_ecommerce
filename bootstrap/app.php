@@ -27,6 +27,13 @@ if (!file_exists($vendorStanclDir . '/tenancy/src/TenancyServiceProvider.php') &
     omnimart_sync_dir($packagesStanclDir, $vendorStanclDir);
 }
 
+// Auto-sync packages/doctrine into vendor/doctrine if missing on server
+$vendorDoctrineDir = __DIR__ . '/../vendor/doctrine/inflector';
+$packagesDoctrineDir = __DIR__ . '/../packages/doctrine/inflector';
+if (!file_exists($vendorDoctrineDir . '/src/InflectorFactory.php') && is_dir($packagesDoctrineDir)) {
+    omnimart_sync_dir($packagesDoctrineDir, $vendorDoctrineDir);
+}
+
 // Autoloader for packages (such as stancl tenancy when composer install is skipped on cPanel)
 spl_autoload_register(function ($class) {
     $prefixes = [
@@ -41,6 +48,10 @@ spl_autoload_register(function ($class) {
         'Stancl\\VirtualColumn\\' => [
             __DIR__ . '/../packages/stancl/virtualcolumn/src/',
             __DIR__ . '/../vendor/stancl/virtualcolumn/src/',
+        ],
+        'Doctrine\\Inflector\\' => [
+            __DIR__ . '/../packages/doctrine/inflector/src/',
+            __DIR__ . '/../vendor/doctrine/inflector/src/',
         ],
     ];
 

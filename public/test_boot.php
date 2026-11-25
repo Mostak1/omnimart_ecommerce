@@ -149,6 +149,17 @@ if (!file_exists($vendorStanclDir . '/tenancy/src/TenancyServiceProvider.php') &
     }
 }
 
+// Auto-sync packages/doctrine into vendor/doctrine if missing
+$vendorDoctrineDir = __DIR__ . '/../vendor/doctrine/inflector';
+$packagesDoctrineDir = __DIR__ . '/../packages/doctrine/inflector';
+if (!file_exists($vendorDoctrineDir . '/src/InflectorFactory.php') && is_dir($packagesDoctrineDir)) {
+    if (function_exists('omnimart_sync_dir')) {
+        omnimart_sync_dir($packagesDoctrineDir, $vendorDoctrineDir);
+    } elseif (function_exists('omnimart_sync_dir_boot')) {
+        omnimart_sync_dir_boot($packagesDoctrineDir, $vendorDoctrineDir);
+    }
+}
+
 // Auto-sync framework patches into vendor if missing
 $vendorFrameworkReflectionDir = __DIR__ . '/../vendor/laravel/framework/src/Illuminate/Reflection';
 if (!file_exists($vendorFrameworkReflectionDir . '/Traits/ReflectsClosures.php')) {
@@ -245,6 +256,7 @@ $classes = [
     'Stancl\Tenancy\Database\Models\Tenant',
     'Stancl\JobPipeline\JobPipeline',
     'Stancl\VirtualColumn\VirtualColumn',
+    'Doctrine\Inflector\InflectorFactory',
     'App\Models\Tenant',
 ];
 echo "<h4>Tenancy Classes Check:</h4><ul>";
