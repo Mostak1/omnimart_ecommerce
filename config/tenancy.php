@@ -12,13 +12,13 @@ return [
     'domain_model' => Domain::class,
 
     /**
-     * The list of domains hosting your central app.
+     * The list of domains hosting your central app (Supershop / Mega Marketplace).
      * Only relevant if you're using the domain or subdomain identification middleware.
      */
-    'central_domains' => [
-        '127.0.0.1',
-        'localhost',
-    ],
+    'central_domains' => array_values(array_filter(array_unique(array_merge(
+        ['127.0.0.1', 'localhost'],
+        array_map('trim', explode(',', env('CENTRAL_DOMAINS', 'ecom.techseba.com')))
+    )))),
 
     /**
      * Tenancy bootstrappers are executed when tenancy is initialized.
