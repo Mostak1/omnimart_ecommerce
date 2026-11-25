@@ -121,44 +121,73 @@ return ComposerAutoloaderUniversal::getLoader();
     return $msg;
 }
 
-// Auto-sync packages/stancl into vendor/stancl if missing
-$vendorStanclDir = __DIR__ . '/../vendor/stancl';
-$packagesStanclDir = __DIR__ . '/../packages/stancl';
-if (!file_exists($vendorStanclDir . '/tenancy/src/TenancyServiceProvider.php') && is_dir($packagesStanclDir)) {
-    if (function_exists('omnimart_sync_dir')) {
-        omnimart_sync_dir($packagesStanclDir, $vendorStanclDir);
-    } else {
-        function omnimart_sync_dir_boot($src, $dst) {
-            if (!is_dir($src)) return;
-            if (!is_dir($dst)) @mkdir($dst, 0755, true);
-            $dir = @opendir($src);
-            if (!$dir) return;
-            while (false !== ($file = readdir($dir))) {
-                if ($file === '.' || $file === '..') continue;
-                $s = $src . '/' . $file;
-                $d = $dst . '/' . $file;
-                if (is_dir($s)) {
-                    omnimart_sync_dir_boot($s, $d);
-                } elseif (!file_exists($d)) {
-                    @copy($s, $d);
-                }
+if (!function_exists('omnimart_sync_dir_boot')) {
+    function omnimart_sync_dir_boot($src, $dst) {
+        if (!is_dir($src)) return;
+        if (!is_dir($dst)) @mkdir($dst, 0755, true);
+        $dir = @opendir($src);
+        if (!$dir) return;
+        while (false !== ($file = readdir($dir))) {
+            if ($file === '.' || $file === '..') continue;
+            $s = $src . '/' . $file;
+            $d = $dst . '/' . $file;
+            if (is_dir($s)) {
+                omnimart_sync_dir_boot($s, $d);
+            } else {
+                @copy($s, $d);
             }
-            closedir($dir);
         }
-        omnimart_sync_dir_boot($packagesStanclDir, $vendorStanclDir);
+        closedir($dir);
     }
 }
 
-// Auto-sync packages/doctrine into vendor/doctrine if missing
+// Auto-sync packages into vendor if missing
+$vendorStanclDir = __DIR__ . '/../vendor/stancl';
+$packagesStanclDir = __DIR__ . '/../packages/stancl';
+if (!file_exists($vendorStanclDir . '/tenancy/src/TenancyServiceProvider.php') && is_dir($packagesStanclDir)) {
+    omnimart_sync_dir_boot($packagesStanclDir, $vendorStanclDir);
+}
+
 $vendorDoctrineDir = __DIR__ . '/../vendor/doctrine/inflector';
 $packagesDoctrineDir = __DIR__ . '/../packages/doctrine/inflector';
 if (!file_exists($vendorDoctrineDir . '/src/InflectorFactory.php') && is_dir($packagesDoctrineDir)) {
-    if (function_exists('omnimart_sync_dir')) {
-        omnimart_sync_dir($packagesDoctrineDir, $vendorDoctrineDir);
-    } elseif (function_exists('omnimart_sync_dir_boot')) {
-        omnimart_sync_dir_boot($packagesDoctrineDir, $vendorDoctrineDir);
-    }
+    omnimart_sync_dir_boot($packagesDoctrineDir, $vendorDoctrineDir);
 }
+
+// Prepend autoloader so packages/ are resolved BEFORE Composer ClassLoader
+spl_autoload_register(function ($class) {
+    $prefixes = [
+        'Doctrine\\Inflector\\' => [
+            __DIR__ . '/../packages/doctrine/inflector/src/',
+            __DIR__ . '/../vendor/doctrine/inflector/src/',
+        ],
+        'Stancl\\Tenancy\\' => [
+            __DIR__ . '/../packages/stancl/tenancy/src/',
+            __DIR__ . '/../vendor/stancl/tenancy/src/',
+        ],
+        'Stancl\\JobPipeline\\' => [
+            __DIR__ . '/../packages/stancl/jobpipeline/src/',
+            __DIR__ . '/../vendor/stancl/jobpipeline/src/',
+        ],
+        'Stancl\\VirtualColumn\\' => [
+            __DIR__ . '/../packages/stancl/virtualcolumn/src/',
+            __DIR__ . '/../vendor/stancl/virtualcolumn/src/',
+        ],
+    ];
+
+    foreach ($prefixes as $prefix => $dirs) {
+        if (str_starts_with($class, $prefix)) {
+            $relativeClass = substr($class, strlen($prefix));
+            $file = str_replace('\\', '/', $relativeClass) . '.php';
+            foreach ($dirs as $dir) {
+                if (file_exists($dir . $file)) {
+                    require_once $dir . $file;
+                    return;
+                }
+            }
+        }
+    }
+}, true, true);
 
 // Auto-sync framework patches into vendor if missing
 $vendorFrameworkReflectionDir = __DIR__ . '/../vendor/laravel/framework/src/Illuminate/Reflection';

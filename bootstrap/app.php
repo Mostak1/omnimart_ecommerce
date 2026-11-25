@@ -12,7 +12,7 @@ if (!function_exists('omnimart_sync_dir')) {
             $d = $dst . '/' . $file;
             if (is_dir($s)) {
                 omnimart_sync_dir($s, $d);
-            } elseif (!file_exists($d)) {
+            } else {
                 @copy($s, $d);
             }
         }
@@ -20,23 +20,26 @@ if (!function_exists('omnimart_sync_dir')) {
     }
 }
 
-// Auto-sync packages/stancl into vendor/stancl if missing on server
+// Auto-sync packages into vendor if missing on server
 $vendorStanclDir = __DIR__ . '/../vendor/stancl';
 $packagesStanclDir = __DIR__ . '/../packages/stancl';
 if (!file_exists($vendorStanclDir . '/tenancy/src/TenancyServiceProvider.php') && is_dir($packagesStanclDir)) {
     omnimart_sync_dir($packagesStanclDir, $vendorStanclDir);
 }
 
-// Auto-sync packages/doctrine into vendor/doctrine if missing on server
 $vendorDoctrineDir = __DIR__ . '/../vendor/doctrine/inflector';
 $packagesDoctrineDir = __DIR__ . '/../packages/doctrine/inflector';
 if (!file_exists($vendorDoctrineDir . '/src/InflectorFactory.php') && is_dir($packagesDoctrineDir)) {
     omnimart_sync_dir($packagesDoctrineDir, $vendorDoctrineDir);
 }
 
-// Autoloader for packages (such as stancl tenancy when composer install is skipped on cPanel)
+// Prepend autoloader so packages/ are checked BEFORE vendor/composer ClassLoader
 spl_autoload_register(function ($class) {
     $prefixes = [
+        'Doctrine\\Inflector\\' => [
+            __DIR__ . '/../packages/doctrine/inflector/src/',
+            __DIR__ . '/../vendor/doctrine/inflector/src/',
+        ],
         'Stancl\\Tenancy\\' => [
             __DIR__ . '/../packages/stancl/tenancy/src/',
             __DIR__ . '/../vendor/stancl/tenancy/src/',
@@ -48,10 +51,6 @@ spl_autoload_register(function ($class) {
         'Stancl\\VirtualColumn\\' => [
             __DIR__ . '/../packages/stancl/virtualcolumn/src/',
             __DIR__ . '/../vendor/stancl/virtualcolumn/src/',
-        ],
-        'Doctrine\\Inflector\\' => [
-            __DIR__ . '/../packages/doctrine/inflector/src/',
-            __DIR__ . '/../vendor/doctrine/inflector/src/',
         ],
     ];
 
@@ -67,7 +66,7 @@ spl_autoload_register(function ($class) {
             }
         }
     }
-});
+}, true, true);
 
 // Laravel version compatibility fallbacks (e.g. ReflectsClosures trait)
 if (!trait_exists('Illuminate\Support\Traits\ReflectsClosures', false)) {
